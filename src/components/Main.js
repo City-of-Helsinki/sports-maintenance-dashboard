@@ -9,6 +9,7 @@ import TasksView from './TasksView';
 class AppComponent extends React.Component {
   render() {
     return (
+      <div>
       <nav className="navbar navbar-inverse navbar-fixed-top">
         <div className="container-fluid">
           <div className="navbar-header">
@@ -35,6 +36,7 @@ class AppComponent extends React.Component {
             <TasksView />
           </div>
         </div>
+      </div>
       </div>
     );
   }
