@@ -1,6 +1,7 @@
 import { CALL_API } from 'redux-api-middleware';
 
-const API_BASE_URL = 'http://localhost:3000';
+require('process');
+const API_BASE_URL = process.env.API_URL;
 
 function getEndPoint(resourceType, id) {
   let base = `${API_BASE_URL}/${resourceType}/`;
