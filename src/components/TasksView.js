@@ -25,15 +25,17 @@ var TaskItem = () => {
     <div className="task-listing-item row">
       <div className="task-listing-item-content col-xs-10">
         <div className="task-source">
-          <a href="#link-to-service">
-            <span className="glyphicon glyphicon-tree-deciduous task-source-icon"></span>
-            <span className="task-source-header">Github/City-of-Helsinki/servicemap issue#514</span>
+          <a href={taskLink} tabIndex="-1">
+            <i className="fa fa-github-square task-source-icon" aria-hidden="true"></i>
+            <span className="task-source-header">{ task.workspace.system }/{ task.workspace.id }/{ task.workspace.organization }/{ task.origin_id }</span>
           </a>
         </div>
         <div className="task-description">Task assigned to Current User in external issue tracking service</div>
       </div>
-      <div className="task-listing-item-actions col-xs-2">
-        <a className="btn btn-default btn-lg time-task-button" href="#" role="button" data-toggle="tooltip" data-placement="left" title="Add to day"><span className="glyphicon glyphicon-time"></span></a>
+      <div className="task-listing-item-actions col-xs-2 text-right">
+        <a className="btn btn-default btn-lg time-task-button" href="#" onClick={onClick} role="button" data-toggle="tooltip" data-placement="left" title="Add to day">
+          <span className="fa fa-calendar-plus-o"></span>
+        </a>
       </div>
     </div>
   )
