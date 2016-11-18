@@ -23,125 +23,91 @@
   font-style: normal;
 }
 
-// Base Application Styles
+/* Base Application Styles */
+
 @import 'bootstrap-variables';
 @import 'bootstrap-custom';
 
 body {
-  background: $gray-lighter;
-  padding-top: $navbar-height;
+
 }
 
-.index {
-  margin-top: $line-height-computed * 2;
+.index img {
+  margin: 40px auto;
+  border-radius: 4px;
+  background: #fff;
+  display: block;
 }
 
 .index .notice {
-  background: #666;
-  border: 1px solid #000;
-  border-width: 1px 0;
   margin: 20px auto;
   padding: 15px 0;
   text-align: center;
+  border: 1px solid #000;
+  border-width: 1px 0;
+  background: #666;
+}
 
-  a {
-    text-decoration: none;
+.view-content {
+  padding-top: $navbar-height + $line-height-computed;
+}
+
+.facility-drilldown {
+  .list-group-item .glyphicon {
+    float: right;
   }
 }
 
-// Task Listing View
-
-.task-listing-view {
-  background: #cdcdcd;
-}
-
-.task-listing-item-actions {
-  .time-task-button {
+.facility-return {
+  text-align: right;
+  .list-group-item .glyphicon {
+    float: left;
   }
 }
 
-.task-source {
-  a {
-    @extend small;
-    color: $gray-light;
+.facility-status {
+  .btn {
+    border: 3px solid #fff;
   }
-  .task-source-icon {
-    font-size: 1.25em;
-  }
-  .task-source-header {
-    margin-left: .5em;
+  .btn.active {
+    border: 3px solid $brand-primary;
   }
 }
 
-// Day View
-
-.current-date {
-  h4 {
-    margin: 0;
-    padding: 6px 0 0;
-    text-align: center;
-  }
+.condition {
+  margin-right: $padding-base-horizontal;
 }
 
-.hours-entry {
-  input {
-    text-align: center;
-  }
-
-  .glyphicon-plus,
-  .glyphicon-minus {
-    //color: $brand-primary;
-  }
-
-  .glyphicon-trash {
-    //color: #c94646;
-  }
-
-  .alert {
-    margin-bottom: 0;
-    padding: $padding-base-vertical $padding-base-horizontal;
-    text-align: center;
-  }
+.condition-ok {
+  //@extend .fa;
+  //@extend .fa-meh-o;
+  color: $brand-success;
 }
 
-.add-task-prompt {
-  color: $gray-light;
-  text-align: center;
+.condition-nosnow {
+  //@extend .fa;
+  //@extend .fa-tint;
+  color: $brand-danger;
 }
 
-.day-footer {
-  background-color: $gray;
-  color: #fff;
-
-  .day-total {
-    border: 1px solid $gray-light;
-    font-size: $font-size-large;
-    font-weight: 600;
-    padding: 6px;
-    text-align: center;
-  }
+.action-icon {
+  color: $brand-primary;
 }
 
-// Do not collapse Bootstrap navbar
-.navbar-collapse.collapse {
+// Make bootstrap navbar non-collapsible
+
+.navbar-collapse.collapse{
   display: block !important;
 }
 
-.navbar-nav>li,
-.navbar-nav {
+.navbar-nav>li, .navbar-nav{
   float: left !important;
 }
 
-.navbar-nav.navbar-right:last-child {
+.navbar-nav.navbar-right:last-child{
   margin-right: -15px !important;
 }
 
-.navbar-right {
-  float: right!important;
-}
-
-.navbar-header {
-  float: left !important;
-  margin-left: 0;
-  margin-right: 0;
+.navbar-right{
+  float: right !important;
 }

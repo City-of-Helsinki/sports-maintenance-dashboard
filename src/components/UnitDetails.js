@@ -1,5 +1,39 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 export default function UnitDetails (props) {
-    return <div>UnitDetails</div>;
+  return (
+    <div className="facility-status">
+      <div className="row">
+        <div className="col-xs-12">
+          <div className="list-group facility-return clearfix">
+            <Link to="group/1" className="list-group-item">
+              <span className="action-icon glyphicon glyphicon-chevron-left"></span>
+              Takaisin
+            </Link>
+          </div>
+          <hr/>
+            <h5>Lassila - Kannelmäki - Keskuspuisto<br/><small>Päivitetty 7.10.2016 11:23</small></h5>
+          <hr/>
+          <h6>Ladun kunto</h6>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-xs-6">
+          <Link to="/unit/1/update/good" className="btn btn-success btn-block active"><span className="fa fa-smile-o fa-lg"></span><br/>Hyvä</Link>
+          <Link to="/unit/1/update/good" className="btn btn-success btn-block active"><span className="fa fa-meh-o fa-lg"></span><br/>Tyydyttävä</Link>
+          <Link to="/unit/1/update/good" className="btn btn-warning btn-block active"><span className="fa fa-frown-o fa-lg"></span><br/>Heikko</Link>
+          <Link to="/unit/1/update/good" className="btn btn-warning btn-block active"><span className="fa fa-road fa-lg"></span><br/>Pohjattu</Link>
+          <Link to="/unit/1/update/good" className="btn btn-warning btn-block active"><span className="fa fa-pagelines fa-lg"></span><br/>Roskainen</Link>
+        </div>
+
+        <div className="col-xs-6">
+          <Link to="/unit/1/update/good" className="btn btn-danger btn-block active"><span className="fa fa-times-circle fa-lg"></span><br/>Suljettu</Link>
+          <Link to="/unit/1/update/good" className="btn btn-danger btn-block active"><span className="fa fa-tint fa-lg"></span><br/>Lumenpuute</Link>
+          <Link to="/unit/1/update/good" className="btn btn-danger btn-block active"><span className="fa fa-trophy fa-lg"></span><br/>Kilpailut</Link>
+          <Link to="/unit/1/update/good" className="btn btn-danger btn-block active"><span className="fa fa-spinner fa-lg"></span><br/>Lumetus</Link>
+        </div>
+      </div>
+    </div>
+  );
 }
