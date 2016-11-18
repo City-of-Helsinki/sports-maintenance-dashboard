@@ -1,7 +1,7 @@
 import 'core-js/fn/object/assign';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import 'bootstrap-sass';
@@ -10,12 +10,13 @@ import { apiMiddleware } from 'redux-api-middleware';
 import rootReducer from './reducers/index';
 
 import App from './components/Main';
-import DayView from './components/DayView';
-import TasksView from './components/TasksView';
 
-var User = () => {
-  return <div>Being a user's profile</div>;
-};
+import DashBoard from './components/DashBoard';
+import GroupList from './components/GroupList';
+import UnitList from './components/UnitList'; 
+import UnitDetails from './components/UnitDetails'; 
+import UpdateConfirmation from './components/UpdateConfirmation'; 
+import UpdateQueue from './components/UpdateQueue'; 
 
 const createStoreWithMiddleware = applyMiddleware(apiMiddleware)(createStore);
 let store = createStoreWithMiddleware(rootReducer);
@@ -25,12 +26,13 @@ window.store = store;
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-        <Route path="/" component={App}>
-            <IndexRedirect to="today" />
-            <Route path="user/:userId" components={{main: User}} />
-            <Route path="user/:userId/tasks" components={{main: TasksView}} />
-            <Route path="date/:date" components={{main: DayView, sidebar: TasksView}} />
-            <Route path="today" components={{main: DayView, sidebar: TasksView}} />
+        <Route path="/" component={App} >
+            <IndexRoute component={DashBoard} />
+            <Route path="/group" component={GroupList} />
+            <Route path="/group/:groupId" component={UnitList} />
+            <Route path="/unit/:unitId" component={UnitDetails} />
+            <Route path="/unit/:unitId/update/:value" component={UpdateConfirmation} />
+            <Route path="/queue" component={UpdateQueue} />
         </Route>
     </Router>
   </Provider>, document.getElementById('app')
