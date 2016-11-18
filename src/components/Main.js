@@ -3,6 +3,7 @@ require('styles/App.scss');
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 import { fetchUser, fetchUsers } from '../actions/index';
 
@@ -16,6 +17,9 @@ class AppComponent extends React.Component {
         <div className="container-fluid">
           <div className="navbar-header">
             tähän navi-ikonit
+          </div>
+          <div>
+          <Link to="/group">selaa...</Link>
           </div>
         </div>
       </nav>
