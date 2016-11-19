@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import promiseMiddleware from 'redux-promise';
 import 'bootstrap-sass';
 
 import * as clientLib from './lib/municipal-services-client';
@@ -20,7 +21,7 @@ import UnitDetails from './components/UnitDetails';
 import UpdateConfirmation from './components/UpdateConfirmation'; 
 import UpdateQueue from './components/UpdateQueue'; 
 
-let store = createStore(rootReducer);
+let store = createStore(rootReducer, applyMiddleware(promiseMiddleware));
 window.store = store;
 
 // Render the main component into the dom

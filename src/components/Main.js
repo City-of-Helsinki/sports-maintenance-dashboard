@@ -5,10 +5,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { fetchUser, fetchUsers } from '../actions/index';
+import { fetchUnitsWithServices } from '../actions/index';
 
 class AppComponent extends React.Component {
   componentWillMount() {
+      this.props.fetchUnitsWithServices(
+          [33483], {selected: ['id', 'name'], embedded: ['observations']});
   }
   render() {
     return (
@@ -35,6 +37,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+      fetchUnitsWithServices: (services, fieldSpecs) => {
+          dispatch(fetchUnitsWithServices(services, fieldSpecs));
+      }
   };
 };
 

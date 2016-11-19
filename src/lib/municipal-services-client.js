@@ -1,4 +1,5 @@
 import URI from 'urijs';
+import _ from 'lodash';
 
 require('process');
 const API_BASE_URL = process.env.API_URL;
@@ -27,7 +28,7 @@ function selectFields(url, selected, embedded) {
 
 function preProcessResponse(resourceType) {
   return function (obj) {
-    return {[resourceType]: obj.results};
+    return {[resourceType]: _.keyBy(obj.results, 'id')};
   };
 };
 

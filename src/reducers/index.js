@@ -1,23 +1,7 @@
 import { combineReducers } from 'redux';
 import _ from 'lodash';
 
-const MOCK_GROUPS = {
-  'itä': {name: "Itä", units: [
-
-  ]},
-  'west': {name: "Länsi", units: [
-
-  ]},
-  'salmi': {name: "Salmi", units: [
-
-  ]},
-  'luukki': {name: "Luukki", units: [
-
-  ]},
-  'pirttimäki': {name: "Pirttimäki", units: [
-
-  ]}
-};
+import MOCK_GROUPS from './mock_groups.js';
 
 let initialDataState = {
   unit: {},
@@ -35,6 +19,14 @@ let initialAuthState = {
 let initialPendingObservationsState = [];
 
 function dataReducer(state = initialDataState, action) {
+  switch (action.type) {
+    case 'GET_RESOURCE':
+      const resourceType = action.meta.resourceType;
+      let resource = state[resourceType];
+      return Object.assign(
+        state,
+        action.payload);
+  }
   return state;
 }
 
