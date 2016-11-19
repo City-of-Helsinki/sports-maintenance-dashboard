@@ -22,7 +22,6 @@ function dataReducer(state = initialDataState, action) {
   switch (action.type) {
     case 'GET_RESOURCE':
       const resourceType = action.meta.resourceType;
-      let resource = state[resourceType];
       return Object.assign(
         state,
         action.payload);

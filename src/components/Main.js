@@ -7,10 +7,15 @@ import { Link } from 'react-router';
 
 import { fetchUnitsWithServices } from '../actions/index';
 
+require('process');
+const { SERVICES } = process.env;
+
 class AppComponent extends React.Component {
   componentWillMount() {
       this.props.fetchUnitsWithServices(
-          [33483], {selected: ['id', 'name'], embedded: ['observations']});
+          [SERVICES], {
+              selected: ['id', 'name'],
+              embedded: ['observations']});
   }
   render() {
     return (
