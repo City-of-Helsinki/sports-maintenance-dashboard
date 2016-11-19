@@ -12,21 +12,30 @@ export default function UpdateConfirmation (props) {
               Takaisin
             </Link>
           </div>
-          <hr/>
-            <h5>Lassila - Kannelmäki - Keskuspuisto<br/><small>Päivitetty 7.10.2016 11:23</small></h5>
-          <hr/>
+          <div className="well">
+            <h4>Lassila - Kannelmäki - Keskuspuisto</h4>
+            <div className="unit-status unit-status--good">hyvä</div>
+            <h5><small>Todettu 7.10.2016 11:23</small><br/><small>Viimeksi kunnostettu 1.10.2016 08:32</small></h5>
+          </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col-xs-12">
-          <h6>Oletko varma että haluat muuttaa ladun statuksen?</h6>
+      <div className="panel panel-warning">
+        <div className="panel-heading">
+          <h6>Oletko varma että haluat päivittää paikan kuntotiedon?</h6>
         </div>
-        <div className="col-xs-6">
-          <Link to="/unit/1" className="btn btn-success btn-block active"><span className="fa fa-smile-o fa-lg"></span><br/>Hyvä</Link>
-        </div>
-
-        <div className="col-xs-6">
-          <Link to="/unit/1" className="btn btn-warning btn-block"><span className="fa fa-frown-o fa-lg"></span><br/>Heikko</Link>
+        <div className="panel-body">
+          <div className="row">
+            <div className="col-xs-6">
+              <Link to="/unit/1" className="btn btn-warning btn-block"><h5>Todettu</h5><span className="fa fa-frown-o fa-lg"></span><br/>Heikko</Link>
+            </div>
+            <div className="col-xs-6">
+              <Link to="/unit/1" className="btn btn-warning btn-block"><h5>Kunnostettu</h5><span className="fa fa-frown-o fa-lg"></span><br/>Heikko</Link>
+            </div>
+            <div className="col-xs-12">
+              <br/>
+              <Link to="/unit/1" className="btn btn-primary btn-block"><h5>Peruuta</h5></Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
