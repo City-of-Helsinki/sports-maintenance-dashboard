@@ -1,9 +1,27 @@
 import { combineReducers } from 'redux';
 import _ from 'lodash';
 
+const MOCK_GROUPS = {
+  'itä': {name: "Itä", units: [
+
+  ]},
+  'west': {name: "Länsi", units: [
+
+  ]},
+  'salmi': {name: "Salmi", units: [
+
+  ]},
+  'luukki': {name: "Luukki", units: [
+
+  ]},
+  'pirttimäki': {name: "Pirttimäki", units: [
+
+  ]}
+};
+
 let initialDataState = {
   unit: {},
-  group: {},
+  group: MOCK_GROUPS,
   observable_property: {},
   observation: {},
   service: {}
@@ -16,6 +34,10 @@ let initialAuthState = {
 
 let initialPendingObservationsState = [];
 
+function dataReducer(state = initialDataState, action) {
+  return state;
+}
+
 function authReducer(state = initialAuthState, action) {
   switch (action.type) {
     case 'LOGIN':
@@ -27,4 +49,4 @@ function pendingObservationsReducer(state = initialPendingObservationsState, act
   return state;
 }
 
-export default combineReducers({data: dataReducer, auth: aauthReducer});
+export default combineReducers({data: dataReducer, auth: authReducer});
