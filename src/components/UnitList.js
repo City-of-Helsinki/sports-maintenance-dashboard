@@ -1,146 +1,65 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import _ from 'lodash';
 
-export default function UnitList (props) {
-return (
-  <div className="row">
-    <div className="col-xs-12">
-      <div className="list-group facility-return">
-        <Link to="/group" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-chevron-left"></span>
-          Takaisin
-        </Link>
-      </div>
-      <h5>Länsi</h5>
-      <div className="list-group facility-drilldown">
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-nosnow fa fa-tint"></span>
-          Paloheinä 1,8 km
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil">
-          </span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Paloheinä 3 km
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Paloheinä 5 km
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-nosnow fa fa-tint"></span>
-          Paloheinä 7,5 km
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Paloheinä peltolatu
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Paloheinä metsälatu
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Paloheinä vetokoiralatu
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Hakuninmaa rullasuksirata
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Pitkäkoski – Niskala
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Tuomarinkylän peltolatu
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Lassila – Kannelmäki – Keskuspuisto
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Pirkkola
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Pirkkola - Laakso
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Pirkkola – Pitkäkoski
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Tali
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Tali – Haaga – Pirkkola
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Maunulan kuntorata
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Taivaskallio – Tuomarinkartano - Paloheinä</Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Pukinmäki peltolatu
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Pitäjänmäki kuntorata
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Kannelmäki peltolatu
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Oulunkylä kuntorata
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Malminkartano
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Kaikki Keskuspuiston ladut
-        </Link>
-        <Link to="/unit/1" className="list-group-item">
-          <span className="action-icon glyphicon glyphicon-pencil"></span>
-          <span className="condition condition-ok fa fa-meh-o"></span>
-          Kaikki Paloheinän ladut (1.8, 3, 5, 7.5 km)
-        </Link>
-      </div>
-    </div>
-  </div>
+
+function styleClassFromObservations(observations) {
+  // TODO move to utils
+  return 'nosnow';
+}
+
+function UnitListElement (props) {
+  const url = `/unit/${props.id}`;
+  const {condition, color} = styleClassFromObservations(props.observations);
+  const className = `condition condition-${condition} fa ${color} fa-tint`;
+  return (
+    <Link to={url} className="list-group-item">
+        <span className="action-icon glyphicon glyphicon-pencil" />
+        <span className={className} />
+        { props.name.fi }
+    </Link>
   );
 }
+
+class UnitList extends React.Component {
+  render () {
+    console.log(this.props);
+    const elements = _.map(this.props.units, (unit) => {
+      return <UnitListElement key={unit.id} {...unit} />;
+    });
+    return (
+      <div className="row">
+          <div className="col-xs-12">
+              <div className="list-group facility-return">
+                  <Link to="/group" className="list-group-item">
+                      <span className="action-icon glyphicon glyphicon-chevron-left"></span>
+                      Takaisin
+                  </Link>
+              </div>
+              <h5>{this.props.name}</h5>
+              <div className="list-group facility-drilldown">
+                  { elements }
+              </div>
+          </div>
+      </div>
+    );
+  }
+}
+
+function unitsForGroup(allUnits, group) {
+  return _.reduce(group.units, (obj, id) => {
+    obj[id] = allUnits[id];
+    return obj;
+  }, {});
+}
+
+function mapStateToProps(state, ownProps) {
+  return {
+    units: unitsForGroup(
+      state.data.unit,
+      state.data.group[ownProps.params.groupId])
+  };
+}
+
+export default connect(mapStateToProps, null)(UnitList);
