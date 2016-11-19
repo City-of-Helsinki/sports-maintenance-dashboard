@@ -1,5 +1,5 @@
 const MOCK_GROUPS = {
-  'itä': {name: "Itä", user: 'hki-ladut', units: [
+  'ita': {id: 'ita', name: "Itä", user: 'hki-ladut', units: [
     51029,
     51048,
     51059,
@@ -29,7 +29,7 @@ const MOCK_GROUPS = {
     51039,
     50833
   ]},
-  'länsi': {name: "Länsi", user: 'hki-ladut', units: [
+  'lansi': {id: 'lansi', name: "Länsi", user: 'hki-ladut', units: [
     51084,
     51047,
     51056,
@@ -99,7 +99,7 @@ const MOCK_GROUPS = {
     50961,
     50812
   ]},
-  'salmi': {name: "Salmi", user: 'hki-ladut', units: [
+  'salmi': {id: 'salmi', name: "Salmi", user: 'hki-ladut', units: [
     51088,
     50997,
     51032,
@@ -107,7 +107,7 @@ const MOCK_GROUPS = {
     51036,
     50785
   ]},
-  'luukki': {name: "Luukki", user: 'hki-ladut', units: [
+  'luukki': {id: 'luukki', name: "Luukki", user: 'hki-ladut', units: [
     50825,
     51035,
     50915,
@@ -117,7 +117,7 @@ const MOCK_GROUPS = {
     51008,
     51009
   ]},
-  'pirttimäki': {name: "Pirttimäki", user: 'hki-ladut', units: [
+  'pirttimaki': {id: 'pirttimaki', name: "Pirttimäki", user: 'hki-ladut', units: [
     51025,
     51061,
     51031,
