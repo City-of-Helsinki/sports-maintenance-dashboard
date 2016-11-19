@@ -5,7 +5,9 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import 'bootstrap-sass';
-import { apiMiddleware } from 'redux-api-middleware';
+
+import * as clientLib from './lib/municipal-services-client';
+window.clientLib = clientLib;
 
 import rootReducer from './reducers/index';
 
@@ -18,8 +20,7 @@ import UnitDetails from './components/UnitDetails';
 import UpdateConfirmation from './components/UpdateConfirmation'; 
 import UpdateQueue from './components/UpdateQueue'; 
 
-const createStoreWithMiddleware = applyMiddleware(apiMiddleware)(createStore);
-let store = createStoreWithMiddleware(rootReducer);
+let store = createStore(rootReducer);
 window.store = store;
 
 // Render the main component into the dom

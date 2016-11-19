@@ -65,6 +65,8 @@
     "autoprefixer": "^6.4.0",
     "bootstrap-sass": "^3.3.7",
     "core-js": "^2.0.0",
+    "es6-promise": "^4.0.5",
+    "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.1.0",
     "lodash": "^4.15.0",
     "moment": "^2.14.1",
@@ -75,8 +77,8 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
     "redux": "^3.5.2",
-    "redux-api-middleware": "^1.0.2",
     "sass-loader": "^4.0.0",
-    "seamless-immutable": "^6.1.1"
+    "seamless-immutable": "^6.1.1",
+    "urijs": "^1.18.3"
   }
 }
