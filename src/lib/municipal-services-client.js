@@ -5,7 +5,7 @@ require('process');
 const API_BASE_URL = process.env.API_URL;
 
 function resourceEndpoint(resourceType) {
-  return `${API_BASE_URL}/${resourceType}/`;
+  return `${API_BASE_URL}/${resourceType}/?page_size=1000`;
 }
 
 function filteredUrl(url, filters) {
