@@ -3,10 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute, applyRouterMiddleware } from 'react-router';
 import { useScroll } from 'react-router-scroll';
-import { createStore, applyMiddleware } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
+import persistState from 'redux-localstorage';
 import 'bootstrap-sass';
+
 
 import * as clientLib from './lib/municipal-services-client';
 import queueHandler from './actions/queueHandler';
@@ -27,7 +29,11 @@ import moment from 'moment';
 
 moment.locale('fi');
 
-let store = createStore(rootReducer, applyMiddleware(promiseMiddleware));
+const finalCreateStore = compose(
+  applyMiddleware(promiseMiddleware),
+  persistState(['data', 'auth', 'updateQueue']))(createStore);
+
+let store = finalCreateStore(rootReducer);
 window.store = store;
 
 // Render the main component into the dom

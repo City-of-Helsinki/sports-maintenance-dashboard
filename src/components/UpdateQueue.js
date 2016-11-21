@@ -14,7 +14,10 @@ class UpdateQueue extends React.Component {
     return (
       <div className="row">
         <div className="col-xs-12">
-          <h5>Verkkoyhteyttä odottavat päivitykset<br/><small>Näitä päivityksiä ei ole vielä julkaistu.</small></h5>
+          <h5>Verkkoyhteyttä odottavat päivitykset<br/>
+              <small>Näitä päivityksiä ei ole vielä julkaistu. Niitä yritetään julkaista uudestaan
+              automaattisesti 15 sekunnin välein sekä "Yritä uudelleen"-nappia painettaessa.</small>
+          </h5>
           <div className="list-group facility-drilldown">
               { items }
 
