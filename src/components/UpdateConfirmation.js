@@ -3,12 +3,16 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import UnitStatusSummary from './UnitStatusSummary';
+import { backLink } from './utils';
 
 class UpdateConfirmation extends React.Component {
   render () {
+    if (this.props.unit === undefined) {
+      return <div>loading...</div>;
+    }
     return (
       <div className="facility-status">
-          <UnitStatusSummary unit={this.props.unit} />
+          <UnitStatusSummary unit={this.props.unit} backLink={backLink(this)} />
           <div className="panel panel-warning">
               <div className="panel-heading">
                   <h6>Oletko varma että haluat päivittää paikan kuntotiedon?</h6>

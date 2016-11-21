@@ -8,7 +8,7 @@ import UnitStatusSummary from './UnitStatusSummary';
 
 // Todettu - Viimeksi kunnostettu
 
-import { COLORS, ICONS, QUALITIES } from './utils';
+import { COLORS, ICONS, QUALITIES, backLink } from './utils';
 
 function ObservableProperty ({quality, property, identifier, name, unitId}) {
   const url = `/unit/${unitId}/update/${property}/${identifier}`;
@@ -24,11 +24,6 @@ class UnitDetails extends React.Component {
     return (props.unit !== undefined &&
             props.observableProperties.length > 0);
   }
-  backLink() {
-    return () => {
-      this.props.history.goBack();
-    };
-  }
   render() {
     if (!this.hasRequiredData(this.props)) {
       return <div>Loading...</div>;
@@ -41,7 +36,7 @@ class UnitDetails extends React.Component {
       });});
     return (
       <div className="facility-status">
-        <UnitStatusSummary unit={this.props.unit} backLink={this.backLink()} />
+        <UnitStatusSummary unit={this.props.unit} backLink={backLink(this)} />
         <div className="panel panel-default">
           <div className="panel-heading">Päivitä paikan kuntotieto</div>
           <div className="panel-body">

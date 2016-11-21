@@ -25,3 +25,9 @@ export function statusBarClassName(observation) {
     // TODO is label- class usage ok for non-label
     return `unit-status unit-status--${observation.quality} label-${COLORS[observation.quality]}`;
 }
+
+export function backLink(component) {
+  return () => {
+    component.props.history.goBack();
+  };
+}
