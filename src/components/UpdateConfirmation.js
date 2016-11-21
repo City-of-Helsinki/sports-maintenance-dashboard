@@ -3,13 +3,70 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import UnitStatusSummary from './UnitStatusSummary';
-import { backLink } from './utils';
+import { COLORS, ICONS, backLink } from './utils';
+import { unitObservableProperties } from '../lib/municipal-services-client';
+
+const ACTION_TYPE = {
+  observed: 'Todettu',
+  serviced: 'Kunnostettu'
+};
+
+const HELP_TEXTS = {
+  observed: `Valitse "${ACTION_TYPE.observed}" jos liikuntapaikkaa ei ole juuri nyt kunnostettu, mutta haluat merkitä sen tilaksi`,
+  serviced: `Valitse "${ACTION_TYPE.serviced}" jos liikuntapaikka on juuri kunnostettu, ja haluat samalla merkitä sen tilaksi`
+};
+
+function ConfirmButton({allowedValue, type}) {
+  const iconClassName = `fa fa-${ICONS[allowedValue.identifier]} fa-lg`;
+  const buttonClassName = `btn btn-${COLORS[allowedValue.quality]} btn-block`;
+  return (
+        <div className={buttonClassName}>
+            <h5>{ ACTION_TYPE[type] }</h5>
+            <span className={iconClassName}></span><br/>
+            { allowedValue.name.fi }
+        </div>
+  );
+};
 
 class UpdateConfirmation extends React.Component {
   render () {
-    if (this.props.unit === undefined) {
+    if (this.props.unit === undefined || this.props.allowedValue === null) {
       return <div>loading...</div>;
     }
+    const quality = this.props.allowedValue.quality;
+    let buttonRow, helpRow;
+    if (quality === 'good' || quality == 'satisfactory' || this.props.allowedValue.identifier == 'event') {
+      buttonRow = (
+        <div className="row">
+            <div className="col-xs-6">
+                <ConfirmButton type='observed' allowedValue={this.props.allowedValue} />
+            </div>
+            <div className="col-xs-6">
+                <ConfirmButton type='serviced' allowedValue={this.props.allowedValue} />
+            </div>
+        </div>
+      );
+      helpRow = (
+        <div className="row">
+            <div className="col-xs-6">
+                <p className="help-block"><small>{ HELP_TEXTS.observed } "{this.props.allowedValue.name.fi}".</small></p>
+            </div>
+            <div className="col-xs-6">
+                <p className="help-block"><small>{ HELP_TEXTS.serviced } "{this.props.allowedValue.name.fi}".</small></p>
+            </div>
+        </div>
+      );
+    }
+    else {
+      buttonRow = (
+        <div className="row">
+            <div className="col-xs-12">
+                <ConfirmButton type='observed' allowedValue={this.props.allowedValue} />
+            </div>
+        </div>);
+      helpRow = null;
+    }
+    const unitUrl = `/unit/${this.props.unit.id}`;
     return (
       <div className="facility-status">
           <UnitStatusSummary unit={this.props.unit} backLink={backLink(this)} />
@@ -18,18 +75,14 @@ class UpdateConfirmation extends React.Component {
                   <h6>Oletko varma että haluat päivittää paikan kuntotiedon?</h6>
               </div>
               <div className="panel-body">
+                  { buttonRow }
                   <div className="row">
-                      <div className="col-xs-6">
-                          <Link to="/unit/1" className="btn btn-warning btn-block"><h5>Todettu</h5><span className="fa fa-frown-o fa-lg"></span><br/>Heikko</Link>
-                      </div>
-                      <div className="col-xs-6">
-                          <Link to="/unit/1" className="btn btn-warning btn-block"><h5>Kunnostettu</h5><span className="fa fa-frown-o fa-lg"></span><br/>Heikko</Link>
-                      </div>
                       <div className="col-xs-12">
                           <br/>
-                          <Link to="/unit/1" className="btn btn-primary btn-block"><h5>Peruuta</h5></Link>
+                          <Link to={unitUrl} className="btn btn-primary btn-block"><h5>Peruuta</h5></Link>
                       </div>
                   </div>
+                  { helpRow }
               </div>
           </div>
       </div>
@@ -37,8 +90,25 @@ class UpdateConfirmation extends React.Component {
   }
 }
 
+function allowedValue(properties, {propertyId, valueId}) {
+  if (properties.length == 0) {
+    return null;
+  }
+  console.log(properties);
+  const property = _.find(properties, (p) => { return p.id == propertyId; });
+  return _.find(property.allowed_values, (value) => {
+      return (value.identifier == valueId);
+  });
+}
+
 function mapStateToProps(state, ownProps) {
-  return { unit: state.data.unit[ownProps.params.unitId] };
+  const unit = state.data.unit[ownProps.params.unitId];
+  return {
+    unit,
+    allowedValue:
+    allowedValue(
+      unitObservableProperties(unit, state.data.service), ownProps.params)
+  };
 }
 
 function mapDispatchToProps(state) {
