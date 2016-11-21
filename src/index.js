@@ -1,7 +1,8 @@
 import 'core-js/fn/object/assign';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute, applyRouterMiddleware } from 'react-router';
+import { useScroll } from 'react-router-scroll';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
@@ -31,7 +32,8 @@ window.store = store;
 // Render the main component into the dom
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router history={browserHistory}
+            render={applyRouterMiddleware(useScroll())}>
         <Route path="/" component={App} >
             <IndexRoute component={DashBoard} />
             <Route path="/group" component={GroupList} />
