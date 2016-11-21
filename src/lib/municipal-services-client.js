@@ -66,6 +66,14 @@ export function fetchUnitsWithServices(services, {selected, embedded}) {
   return fetchResource('unit', {service: serviceParameter}, selected, embedded);
 }
 
+export function postObservation(specification) {
+  postResource(
+    'observation',
+    {unit: specification.unitId, value: specification.value, property: specification.property},
+    'foo'
+  );
+}
+
 // utility functions
 
 export function unitObservableProperties(unit, services, qualityObservationsOnly=true) {

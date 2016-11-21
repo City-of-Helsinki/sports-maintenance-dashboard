@@ -9,6 +9,7 @@ import promiseMiddleware from 'redux-promise';
 import 'bootstrap-sass';
 
 import * as clientLib from './lib/municipal-services-client';
+import queueHandler from './actions/queueHandler';
 window.clientLib = clientLib;
 
 import rootReducer from './reducers/index';
@@ -45,3 +46,5 @@ ReactDOM.render(
     </Router>
   </Provider>, document.getElementById('app')
 );
+
+store.subscribe(queueHandler(store));

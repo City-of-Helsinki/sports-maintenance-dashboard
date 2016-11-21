@@ -16,7 +16,8 @@ let initialAuthState = {
   apiToken: null
 };
 
-let initialPendingObservationsState = [];
+let initialPendingObservationsState = {
+};
 
 function dataReducer(state = initialDataState, action) {
   switch (action.type) {
@@ -34,8 +35,32 @@ function authReducer(state = initialAuthState, action) {
   return state;
 }
 
+function observationPath({unitId, property}) {
+  return `${unitId}.${property}`;
+}
+
+function createObservationData(action, status) {
+  const { unitId, value, property, addServicedObservation } = action.payload;
+  return {
+    unitId,
+    status,
+    serviced: addServicedObservation,
+    property,
+    value: value
+  };
+}
+
 function pendingObservationsReducer(state = initialPendingObservationsState, action) {
+  let path = null;
+  switch (action.type) {
+    case 'ENQUEUE_OBSERVATION':
+      path = observationPath(action.payload);
+      return Object.assign({}, state, {[path]: createObservationData(action, 'enqueued')});
+    case 'MARK_OBSERVATION_SENT':
+      path = observationPath(action.payload);
+      return Object.assign({}, state, {[path]: createObservationData(action, 'pending')});
+  }
   return state;
 }
 
-export default combineReducers({data: dataReducer, auth: authReducer});
+export default combineReducers({data: dataReducer, auth: authReducer, updateQueue: pendingObservationsReducer});

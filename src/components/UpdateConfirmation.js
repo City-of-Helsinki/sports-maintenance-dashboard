@@ -6,6 +6,8 @@ import UnitStatusSummary from './UnitStatusSummary';
 import { COLORS, ICONS, backLink } from './utils';
 import { unitObservableProperties } from '../lib/municipal-services-client';
 
+import * as actions from '../actions/index';
+
 const ACTION_TYPE = {
   observed: 'Todettu',
   serviced: 'Kunnostettu'
@@ -16,11 +18,12 @@ const HELP_TEXTS = {
   serviced: `Valitse "${ACTION_TYPE.serviced}" jos liikuntapaikka on juuri kunnostettu, ja haluat samalla merkitä sen tilaksi`
 };
 
-function ConfirmButton({allowedValue, type}) {
+function ConfirmButton({unitId, allowedValue, type, enqueueObservation}) {
   const iconClassName = `fa fa-${ICONS[allowedValue.identifier]} fa-lg`;
   const buttonClassName = `btn btn-${COLORS[allowedValue.quality]} btn-block`;
+  console.log(allowedValue);
   return (
-        <div className={buttonClassName}>
+        <div className={buttonClassName} onClick={() => { enqueueObservation(allowedValue.property, allowedValue, unitId, (type=='serviced')); }}>
             <h5>{ ACTION_TYPE[type] }</h5>
             <span className={iconClassName}></span><br/>
             { allowedValue.name.fi }
@@ -39,10 +42,10 @@ class UpdateConfirmation extends React.Component {
       buttonRow = (
         <div className="row">
             <div className="col-xs-6">
-                <ConfirmButton type='observed' allowedValue={this.props.allowedValue} />
+                <ConfirmButton type='observed' unitId={this.props.unit.id} allowedValue={this.props.allowedValue} enqueueObservation={this.props.enqueueObservation} />
             </div>
             <div className="col-xs-6">
-                <ConfirmButton type='serviced' allowedValue={this.props.allowedValue} />
+                <ConfirmButton type='serviced' unitId={this.props.unit.id} allowedValue={this.props.allowedValue} enqueueObservation={this.props.enqueueObservation} />
             </div>
         </div>
       );
@@ -94,10 +97,10 @@ function allowedValue(properties, {propertyId, valueId}) {
   if (properties.length == 0) {
     return null;
   }
-  console.log(properties);
   const property = _.find(properties, (p) => { return p.id == propertyId; });
   return _.find(property.allowed_values, (value) => {
-      return (value.identifier == valueId);
+    value.property = property.id;
+    return (value.identifier == valueId);
   });
 }
 
@@ -111,8 +114,13 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-function mapDispatchToProps(state) {
-  return {};
+function mapDispatchToProps(dispatch) {
+  console.log(actions);
+  return {
+    enqueueObservation: (property, allowedValue, unitId, addServicedObservation) => {
+      dispatch(actions.enqueueObservation(property, allowedValue, unitId, addServicedObservation));
+    }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateConfirmation);
