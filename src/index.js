@@ -21,6 +21,10 @@ import UnitDetails from './components/UnitDetails';
 import UpdateConfirmation from './components/UpdateConfirmation'; 
 import UpdateQueue from './components/UpdateQueue'; 
 
+import moment from 'moment';
+
+moment.locale('fi');
+
 let store = createStore(rootReducer, applyMiddleware(promiseMiddleware));
 window.store = store;
 
