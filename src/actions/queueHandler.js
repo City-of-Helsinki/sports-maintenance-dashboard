@@ -2,12 +2,6 @@ import _ from 'lodash';
 
 import { markObservationSent, sendObservation, fetchResource } from './index';
 
-function updater (item) {
-  console.log('updater called for', item);
-}
-
-const throttledUpdater = _.throttle(updater, 1000);
-
 function send(store, item) {
   store.dispatch(sendObservation(item));
 }
@@ -38,13 +32,12 @@ export default function queueHandler(store) {
     _.each(itemsToRetry, (item) => {
       const QUARTER_MINUTE = 15000;
       store.dispatch(markObservationSent(item));
-      _.delay(send, QUARTER_MINUTE, [store, item]);
+      _.delay(send, QUARTER_MINUTE, store, item);
     });
     const itemsToRefresh = _.filter(queue, (item) => {
       return item.status === 'success';
     });
     _.each(itemsToRefresh, (item) => {
-      console.trace();
       store.dispatch(
         fetchResource(
           'unit',
