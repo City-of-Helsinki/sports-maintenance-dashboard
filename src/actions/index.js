@@ -10,7 +10,9 @@ export const fetchUnitsWithServices = createAction(
 export const fetchResource = createAction(
   'GET_RESOURCE',
   ApiClient.fetchResource,
-  (resourceType) => {return { resourceType };}
+  (resourceType, filters, include, embed, meta) => {
+    return Object.assign({}, meta, { resourceType });
+  }
 );
 
 export const enqueueObservation = createAction(

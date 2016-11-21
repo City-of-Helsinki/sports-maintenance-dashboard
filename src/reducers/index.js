@@ -23,7 +23,11 @@ function dataReducer(state = initialDataState, action) {
   switch (action.type) {
     case 'GET_RESOURCE':
       const resourceType = action.meta.resourceType;
-      return Object.assign({}, state, action.payload);
+      return Object.assign(
+        {}, state,
+        {[resourceType]: Object.assign(
+          state[resourceType],
+          action.payload[resourceType])});
   }
   return state;
 }
@@ -65,8 +69,17 @@ function pendingObservationsReducer(state = initialPendingObservationsState, act
         path = observationPath(action.meta);
         return Object.assign({}, state, {[path]: createObservationData(action.meta, 'failed')});
       }
+      console.log(action);
       path = observationPath({unitId: action.payload.unit, property: action.payload.property});
-      return Object.assign({}, _.omit(state, [path]));
+      return Object.assign({}, state, {[path]: createObservationData({unitId: action.payload.unit, property: action.payload.property}, 'success')});
+    case 'GET_RESOURCE':
+      const observation = action.meta.observation;
+      if (observation !== undefined) {
+        path = observationPath({
+          unitId: observation.unitId,
+          property: observation.property});
+        return Object.assign({}, _.omit(state, [path]));
+      }
   }
   return state;
 }

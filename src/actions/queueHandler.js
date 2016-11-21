@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { markObservationSent, sendObservation } from './index';
+import { markObservationSent, sendObservation, fetchResource } from './index';
 
 function updater (item) {
   console.log('updater called for', item);
@@ -39,6 +39,20 @@ export default function queueHandler(store) {
       const QUARTER_MINUTE = 15000;
       store.dispatch(markObservationSent(item));
       _.delay(send, QUARTER_MINUTE, [store, item]);
+    });
+    const itemsToRefresh = _.filter(queue, (item) => {
+      return item.status === 'success';
+    });
+    _.each(itemsToRefresh, (item) => {
+      console.trace();
+      store.dispatch(
+        fetchResource(
+          'unit',
+          {id: item.unitId},
+          ['id', 'name', 'services'],
+          ['observations'],
+          {observation: item})
+      );
     });
   };
 }

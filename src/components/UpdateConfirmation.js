@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
 import UnitStatusSummary from './UnitStatusSummary';
@@ -119,6 +119,7 @@ function mapDispatchToProps(dispatch) {
   return {
     enqueueObservation: (property, allowedValue, unitId, addServicedObservation) => {
       dispatch(actions.enqueueObservation(property, allowedValue, unitId, addServicedObservation));
+      browserHistory.push(`/unit/${unitId}`);
     }
   };
 }
