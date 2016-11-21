@@ -68,13 +68,30 @@ export function fetchUnitsWithServices(services, {selected, embedded}) {
 
 // utility functions
 
-export function unitObservableProperties(unit, services) {
+export function unitObservableProperties(unit, services, qualityObservationsOnly=true) {
   if (unit === null || unit === undefined) {
     return [];
   }
-  const unitServices = _.map(unit.services, (id) => { return services[id]; });
+  const unitServices = _.map(unit.services, (id) => {
+    return services[id]; });
   const reducer = (collection, element) => {
-    return collection.concat(element.observable_properties);
+    let observableProperties = element.observable_properties;
+
+    if (qualityObservationsOnly) {
+      observableProperties = _.filter(
+        observableProperties, (property) => {
+          return (
+            property.observation_type != 'categorical' ||
+            // There must be at least one allowedValue
+            // with a quality specified
+            undefined !== _.find(property.allowed_values, (value) => {
+              return value.quality != 'unknown';
+            }));});
+    }
+    if (observableProperties.length > 0) {
+      return collection.concat(observableProperties);
+    }
+    return collection;
   };
   return _.reduce(unitServices, reducer, []);
 }

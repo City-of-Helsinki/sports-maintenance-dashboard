@@ -39,7 +39,7 @@ ReactDOM.render(
             <Route path="/group" component={GroupList} />
             <Route path="/group/:groupId" component={UnitList} />
             <Route path="/unit/:unitId" component={UnitDetails} />
-            <Route path="/unit/:unitId/update/:value" component={UpdateConfirmation} />
+            <Route path="/unit/:unitId/update/:property/:value" component={UpdateConfirmation} />
             <Route path="/queue" component={UpdateQueue} />
         </Route>
     </Router>

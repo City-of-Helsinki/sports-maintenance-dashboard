@@ -13,14 +13,41 @@ const SHORT_DESCRIPTIONS = {
   ski_trail_condition: 'Kunto todettu'
 };
 
+const QUALITIES = [
+  'good', 'satisfactory', 'unusable'
+];
+
 const COLORS = {
-  satisfactory: 'warning'
+  satisfactory: 'warning',
+  unusable: 'danger',
+  good: 'success'
+};
+
+const ICONS = {
+  good: 'smile-o',
+  satisfactory: 'meh-o',
+  poor: 'frown-o',
+  groomed: 'road',
+  littered: 'pagelines',
+  closed: 'times-circle',
+  snowless: 'tint',
+  event: 'trophy',
+  snowmaking: 'spinner'
 };
 
 function Observation (props) {
   const observationOrAction = "Todettu";
   const time = moment(props.time).format('dd l [klo] LTS');
   return <div className="unit-observation-text" ><small>{ SHORT_DESCRIPTIONS[props.property] } { time }</small></div>;
+}
+
+function ObservableProperty ({quality, property, identifier, name, unitId}) {
+  const url = `/unit/${unitId}/update/${property}/${identifier}`;
+  const color = COLORS[quality];
+  const icon = ICONS[identifier];
+  const buttonClassName = `btn btn-${color} btn-block`;
+  const iconClassName = `fa fa-lg fa-${icon}`;
+  return <Link to={url} className={buttonClassName}><span className={iconClassName}></span><br/>{name.fi}</Link>;
 }
 
 class UnitDetails extends React.Component {
@@ -47,6 +74,11 @@ class UnitDetails extends React.Component {
       this.props.unit.observations,
       (obs) => { return <Observation key={obs.id} {...obs} />; }
     );
+    let allowedValues = { };
+    _.each (QUALITIES, (quality) => {
+      allowedValues[quality] = _.map(this.props.allowedValues[quality], (v) => {
+        return <ObservableProperty key={v.identifier} {...v} unitId={this.props.unit.id} />;
+      });});
     return (
       <div className="facility-status">
         <div className="row">
@@ -71,18 +103,11 @@ class UnitDetails extends React.Component {
           <div className="panel-body">
             <div className="row">
               <div className="col-xs-6">
-                <Link to="/unit/1/update/good" className="btn btn-success btn-block"><span className="fa fa-smile-o fa-lg"></span><br/>Hyvä</Link>
-                <Link to="/unit/1/update/good" className="btn btn-success btn-block"><span className="fa fa-meh-o fa-lg"></span><br/>Tyydyttävä</Link>
-                <Link to="/unit/1/update/good" className="btn btn-warning btn-block"><span className="fa fa-frown-o fa-lg"></span><br/>Heikko</Link>
-                <Link to="/unit/1/update/good" className="btn btn-warning btn-block"><span className="fa fa-road fa-lg"></span><br/>Pohjattu</Link>
-                <Link to="/unit/1/update/good" className="btn btn-warning btn-block"><span className="fa fa-pagelines fa-lg"></span><br/>Roskainen</Link>
+                { allowedValues.good }
+                { allowedValues.satisfactory }
               </div>
-
               <div className="col-xs-6">
-                <Link to="/unit/1/update/good" className="btn btn-danger btn-block"><span className="fa fa-times-circle fa-lg"></span><br/>Suljettu</Link>
-                <Link to="/unit/1/update/good" className="btn btn-danger btn-block"><span className="fa fa-tint fa-lg"></span><br/>Lumenpuute</Link>
-                <Link to="/unit/1/update/good" className="btn btn-danger btn-block"><span className="fa fa-trophy fa-lg"></span><br/>Kilpailut</Link>
-                <Link to="/unit/1/update/good" className="btn btn-danger btn-block"><span className="fa fa-spinner fa-lg"></span><br/>Lumetus</Link>
+                { allowedValues.unusable }
               </div>
             </div>
           </div>
@@ -111,6 +136,18 @@ function getQualityObservation(unit) {
   });
 }
 
+function allowedValuesByQuality(observableProperties) {
+  let result = {};
+  _.each(observableProperties, (property) => {
+    _.each(property.allowed_values, (value) => {
+      value.property = property.id;
+      result[value.quality] = result[value.quality] || [];
+      result[value.quality].push(value);
+    });
+  });
+  return result;
+}
+
 function mapStateToProps(state, ownProps) {
   console.log('MAPSTATETOPROPS UNIT');
   const unit = state.data.unit[ownProps.params.unitId];
@@ -118,7 +155,8 @@ function mapStateToProps(state, ownProps) {
   return {
     unit,
     observableProperties,
-    observedQuality: getQualityObservation(unit)
+    observedQuality: getQualityObservation(unit),
+    allowedValues: allowedValuesByQuality(observableProperties)
   };
 }
 
