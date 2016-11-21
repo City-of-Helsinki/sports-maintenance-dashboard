@@ -23,8 +23,15 @@ function UnitListElement (props) {
 }
 
 class UnitList extends React.Component {
+  hasRequiredData(props) {
+    console.log(props.units);
+    return (props.units && Object.keys(props.units).length > 0);
+  }
   render () {
     console.log(this.props);
+    if (!this.hasRequiredData(this.props)) {
+      return <div>loading...</div>;
+    }
     const elements = _.map(this.props.units, (unit) => {
       return <UnitListElement key={unit.id} {...unit} />;
     });
@@ -48,13 +55,20 @@ class UnitList extends React.Component {
 }
 
 function unitsForGroup(allUnits, group) {
+  if (group === undefined) {
+    return undefined;
+  }
   return _.reduce(group.units, (obj, id) => {
+    if (allUnits[id] === undefined) {
+      return {};
+    }
     obj[id] = allUnits[id];
     return obj;
   }, {});
 }
 
 function mapStateToProps(state, ownProps) {
+  console.log('mapStateToProps');
   return {
     units: unitsForGroup(
       state.data.unit,

@@ -66,4 +66,15 @@ export function fetchUnitsWithServices(services, {selected, embedded}) {
   return fetchResource('unit', {service: serviceParameter}, selected, embedded);
 }
 
-window.fetchResource = fetchResource;
+// utility functions
+
+export function unitObservableProperties(unit, services) {
+  if (unit === null || unit === undefined) {
+    return [];
+  }
+  const unitServices = _.map(unit.services, (id) => { return services[id]; });
+  const reducer = (collection, element) => {
+    return collection.concat(element.observable_properties);
+  };
+  return _.reduce(unitServices, reducer, []);
+}

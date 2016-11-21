@@ -15,8 +15,14 @@ function GroupListElement (props) {
 }
 
 class GroupList extends React.Component {
+  hasRequiredData(props) {
+    return (props.groups && Object.keys(props.groups).length > 0);
+  }
   render() {
     console.log(this.props.groups);
+    if (!this.hasRequiredData(this.props)) {
+      return <div>loading...</div>;
+    }
     const elements = _.map(this.props.groups, (group) => {
       return <GroupListElement key={group.id} {...group} />;
     });

@@ -5,17 +5,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { fetchUnitsWithServices } from '../actions/index';
+import { fetchUnitsWithServices, fetchResource } from '../actions/index';
 
 require('process');
 const { SERVICES } = process.env;
 
 class AppComponent extends React.Component {
   componentWillMount() {
-      this.props.fetchUnitsWithServices(
-          [SERVICES], {
-              selected: ['id', 'name'],
-              embedded: ['observations']});
+    this.props.fetchResource(
+      'service', { id: SERVICES },
+      ['id', 'name'], ['observable_properties']
+    );
+    this.props.fetchUnitsWithServices(
+      [SERVICES], {
+        selected: ['id', 'name', 'services'],
+        embedded: ['observations']});
   }
   render() {
     return (
@@ -42,9 +46,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      fetchUnitsWithServices: (services, fieldSpecs) => {
-          dispatch(fetchUnitsWithServices(services, fieldSpecs));
-      }
+    fetchUnitsWithServices: (services, fieldSpecs) => {
+      dispatch(fetchUnitsWithServices(services, fieldSpecs));
+    },
+    fetchResource: (resourceType, filters, selected, embedded) => {
+      dispatch(fetchResource(resourceType, filters, selected, embedded));
+    }
   };
 };
 
