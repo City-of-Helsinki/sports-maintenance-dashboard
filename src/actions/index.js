@@ -1,4 +1,4 @@
-
+import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import * as ApiClient from '../lib/municipal-services-client.js';
 
@@ -29,4 +29,6 @@ export const markObservationSent = createAction('MARK_OBSERVATION_SENT');
 
 export const sendObservation = createAction(
   'POST_OBSERVATION',
-  ApiClient.postObservation);
+  ApiClient.postObservation,
+  _.identity
+);

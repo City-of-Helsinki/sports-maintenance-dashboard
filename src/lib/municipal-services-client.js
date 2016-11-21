@@ -5,14 +5,16 @@ require('process');
 const API_BASE_URL = process.env.API_URL;
 
 function resourceEndpoint(resourceType) {
-  return `${API_BASE_URL}/${resourceType}/?page_size=1000`;
+  return `${API_BASE_URL}/${resourceType}/`;
 }
 
 function filteredUrl(url, filters) {
+  let uri = URI(url);
+  uri.addSearch({page_size: 1000});
   if (filters === null || filters === undefined) {
-    return url;
+    return uri.toString();
   }
-  return URI(url).addSearch(filters).toString();
+  return uri.addSearch(filters).toString();
 }
 
 function selectFields(url, selected, embedded) {
@@ -56,6 +58,8 @@ export function postResource(resourceType, payload, credentials) {
     headers: {
       'Content-Type': 'application/json'
     }
+  }).then((response) => {
+    return response.json();
   });
 }
 
@@ -67,7 +71,7 @@ export function fetchUnitsWithServices(services, {selected, embedded}) {
 }
 
 export function postObservation(specification) {
-  postResource(
+  return postResource(
     'observation',
     {unit: specification.unitId, value: specification.value, property: specification.property},
     'foo'

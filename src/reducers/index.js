@@ -39,12 +39,12 @@ function observationPath({unitId, property}) {
   return `${unitId}.${property}`;
 }
 
-function createObservationData(action, status) {
-  const { unitId, value, property, addServicedObservation } = action.payload;
+function createObservationData(payload, status) {
+  const { unitId, value, property, addServicedObservation, serviced } = payload;
   return {
     unitId,
     status,
-    serviced: addServicedObservation,
+    serviced: addServicedObservation || serviced,
     property,
     value: value
   };
@@ -55,10 +55,18 @@ function pendingObservationsReducer(state = initialPendingObservationsState, act
   switch (action.type) {
     case 'ENQUEUE_OBSERVATION':
       path = observationPath(action.payload);
-      return Object.assign({}, state, {[path]: createObservationData(action, 'enqueued')});
+      return Object.assign({}, state, {[path]: createObservationData(action.payload, 'enqueued')});
     case 'MARK_OBSERVATION_SENT':
       path = observationPath(action.payload);
-      return Object.assign({}, state, {[path]: createObservationData(action, 'pending')});
+      return Object.assign({}, state, {[path]: createObservationData(action.payload, 'pending')});
+    case 'POST_OBSERVATION':
+      if (action.error) {
+        console.log(action);
+        path = observationPath(action.meta);
+        return Object.assign({}, state, {[path]: createObservationData(action.meta, 'failed')});
+      }
+      path = observationPath({unitId: action.payload.unit, property: action.payload.property});
+      return Object.assign({}, _.omit(state, [path]));
   }
   return state;
 }

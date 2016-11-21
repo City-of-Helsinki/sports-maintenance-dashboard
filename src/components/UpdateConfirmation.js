@@ -64,7 +64,7 @@ class UpdateConfirmation extends React.Component {
       buttonRow = (
         <div className="row">
             <div className="col-xs-12">
-                <ConfirmButton type='observed' allowedValue={this.props.allowedValue} />
+                <ConfirmButton type='observed' unitId={this.props.unit.id} allowedValue={this.props.allowedValue} enqueueObservation={this.props.enqueueObservation} />
             </div>
         </div>);
       helpRow = null;

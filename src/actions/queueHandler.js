@@ -16,6 +16,7 @@ function markAndSendObservation(store, item) {
 export default function queueHandler(store) {
   return () => {
     const queue = store.getState().updateQueue;
+    console.log(queue);
     // const filteredQueue = _.filter(queue, (item) => {
     //   // Pending elements have a web request underway,
     //   // do not retry while waiting for answer
