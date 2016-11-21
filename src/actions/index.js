@@ -28,6 +28,9 @@ export const enqueueObservation = createAction(
 );
 
 export const markObservationSent = createAction('MARK_OBSERVATION_SENT');
+export const markObservationResent = createAction('MARK_OBSERVATION_RESENT');
+export const retryImmediately = createAction('FLUSH_UPDATE_QUEUE');
+export const finishRetryImmediately = createAction('FLUSH_UPDATE_QUEUE_DISABLED');
 
 export const sendObservation = createAction(
   'POST_OBSERVATION',

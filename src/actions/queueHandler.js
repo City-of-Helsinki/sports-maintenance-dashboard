@@ -1,6 +1,11 @@
 import _ from 'lodash';
 
-import { markObservationSent, sendObservation, fetchResource } from './index';
+import {
+  markObservationSent,
+  markObservationResent,
+  sendObservation,
+  fetchResource,
+  finishRetryImmediately } from './index';
 
 function send(store, item) {
   store.dispatch(sendObservation(item));
@@ -11,32 +16,49 @@ function markAndSendObservation(store, item) {
   send(store, item);
 }
 
+function makeFilter(status) {
+  return (item) => { return item.status === status; };
+}
+
 export default function queueHandler(store) {
+  let timers = {};
   return () => {
     const queue = store.getState().updateQueue;
     console.log(queue);
-    // const filteredQueue = _.filter(queue, (item) => {
-    //   // Pending elements have a web request underway,
-    //   // do not retry while waiting for answer
-    //   return item.status !== 'pending';
-    // });
-    const enqueuedItems = _.filter(queue, (item) => {
-      return item.status === 'enqueued';
-    });
+    const enqueuedItems = _.filter(queue, makeFilter('enqueued'));
+    const itemsToRetry = _.filter(queue, makeFilter('failed'));
+    const itemsToRefresh = _.filter(queue, makeFilter('success'));
+
+
     _.each(enqueuedItems, (item) => {
       markAndSendObservation(store, item);
     });
-    const itemsToRetry = _.filter(queue, (item) => {
-      return item.status === 'failed';
-    });
-    _.each(itemsToRetry, (item) => {
-      const QUARTER_MINUTE = 15000;
-      store.dispatch(markObservationSent(item));
-      _.delay(send, QUARTER_MINUTE, store, item);
-    });
-    const itemsToRefresh = _.filter(queue, (item) => {
-      return item.status === 'success';
-    });
+
+    const shouldRetryImmediately = store.getState().updateFlush;
+    if (shouldRetryImmediately) {
+      _.each(timers, (_, key) => {
+        clearTimeout(key);
+      });
+      timers = {};
+      const itemsToRetryImmediately = _.filter(queue, (item) => {
+        const {status} = item;
+        return (status === 'failed' || status === 'retrying');
+      });
+      _.each(itemsToRetryImmediately, (item) => {
+        send(store, item);
+      });
+    }
+    else {
+      _.each(itemsToRetry, (item) => {
+          store.dispatch(markObservationResent(item));
+          const QUARTER_MINUTE = 15000;
+          let timerId = _.delay(send, QUARTER_MINUTE, store, item);
+          timers[timerId] = true;
+      });
+    }
+    if (shouldRetryImmediately) {
+      store.dispatch(finishRetryImmediately());
+    }
     _.each(itemsToRefresh, (item) => {
       store.dispatch(
         fetchResource(

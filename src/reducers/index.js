@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import MOCK_GROUPS from './mock_groups.js';
 
-let initialDataState = {
+const initialDataState = {
   unit: {},
   group: MOCK_GROUPS,
   observable_property: {},
@@ -11,13 +11,14 @@ let initialDataState = {
   service: {}
 };
 
-let initialAuthState = {
+const initialAuthState = {
   userName: null,
   apiToken: null
 };
 
-let initialPendingObservationsState = {
-};
+const initialPendingObservationsState = {};
+
+const manuallyFlushUpdateQueue = false;
 
 function dataReducer(state = initialDataState, action) {
   switch (action.type) {
@@ -63,6 +64,9 @@ function pendingObservationsReducer(state = initialPendingObservationsState, act
     case 'MARK_OBSERVATION_SENT':
       path = observationPath(action.payload);
       return Object.assign({}, state, {[path]: createObservationData(action.payload, 'pending')});
+    case 'MARK_OBSERVATION_RESENT':
+      path = observationPath(action.payload);
+      return Object.assign({}, state, {[path]: createObservationData(action.payload, 'retrying')});
     case 'POST_OBSERVATION':
       if (action.error) {
         console.log(action);
@@ -84,4 +88,18 @@ function pendingObservationsReducer(state = initialPendingObservationsState, act
   return state;
 }
 
-export default combineReducers({data: dataReducer, auth: authReducer, updateQueue: pendingObservationsReducer});
+function updateFlushReducer(state = manuallyFlushUpdateQueue, action) {
+  if (action.type === 'FLUSH_UPDATE_QUEUE') {
+    return true;
+  }
+  else if (action.type === 'FLUSH_UPDATE_QUEUE_DISABLED') {
+    return false;
+  }
+  return state;
+}
+
+export default combineReducers({
+  data: dataReducer,
+  auth: authReducer,
+  updateQueue: pendingObservationsReducer,
+  updateFlush: updateFlushReducer});
