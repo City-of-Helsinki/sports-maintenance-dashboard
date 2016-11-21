@@ -8,9 +8,13 @@ function updater (item) {
 
 const throttledUpdater = _.throttle(updater, 1000);
 
+function send(store, item) {
+  store.dispatch(sendObservation(item));
+}
+
 function markAndSendObservation(store, item) {
   store.dispatch(markObservationSent(item));
-  store.dispatch(sendObservation(item));
+  send(store, item);
 }
 
 export default function queueHandler(store) {
@@ -27,6 +31,14 @@ export default function queueHandler(store) {
     });
     _.each(enqueuedItems, (item) => {
       markAndSendObservation(store, item);
+    });
+    const itemsToRetry = _.filter(queue, (item) => {
+      return item.status === 'failed';
+    });
+    _.each(itemsToRetry, (item) => {
+      const QUARTER_MINUTE = 15000;
+      store.dispatch(markObservationSent(item));
+      _.delay(send, QUARTER_MINUTE, [store, item]);
     });
   };
 }
