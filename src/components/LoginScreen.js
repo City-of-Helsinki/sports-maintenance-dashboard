@@ -38,6 +38,7 @@ class LoginScreen extends React.Component {
                       <form className="form-login" onSubmit={_.bind(this.onSubmit, this)}>
                           <input type="text" id="inputEmail" className="form-control input-lg" placeholder="käyttäjätunnus" required="" autoFocus="" />
                           <input type="password" id="inputPassword" className="form-control input-lg" placeholder="salasana" required="" />
+                          {/*
                           <div className="well">
                               <h5>Vastuualue</h5>
                               <div className="checkbox">
@@ -59,6 +60,7 @@ class LoginScreen extends React.Component {
                                   </label>
                               </div>
                           </div>
+                          */}
                           <button className="btn btn-lg btn-primary btn-block" type="submit">Kirjaudu</button>
                       </form>
                   </div>
