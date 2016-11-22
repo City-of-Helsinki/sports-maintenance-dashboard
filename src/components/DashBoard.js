@@ -8,6 +8,9 @@ import { UnitListElement } from './UnitList';
 class DashBoard extends React.Component {
   
   render() {
+    if (this.props.nearest === undefined || this.props.latest === undefined) {
+      return <div>loading...</div>;
+    }
     const nearest = _.map(this.props.nearest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
     const latest = _.map(this.props.latest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
     return (
@@ -28,17 +31,20 @@ class DashBoard extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return {
-    // TODO repla
-    nearest: [
-      state.data.unit[2147483616],
-      state.data.unit[2147483637],
-      state.data.unit[2147483612]],
-    latest: [
-      state.data.unit[2147483623],
-      state.data.unit[2147483639],
-      state.data.unit[2147483620]]
-  };
+  if (_.keys(state.data.unit).length > 0) {
+    return {
+      // TODO repla
+      nearest: [
+        state.data.unit[2147483616],
+        state.data.unit[2147483637],
+        state.data.unit[2147483612]],
+      latest: [
+        state.data.unit[2147483623],
+        state.data.unit[2147483639],
+        state.data.unit[2147483620]]
+    };
+  }
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {
