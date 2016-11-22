@@ -20,6 +20,8 @@ const initialPendingObservationsState = {};
 
 const manuallyFlushUpdateQueue = false;
 
+const serviceGroup = 'skiing';
+
 function dataReducer(state = initialDataState, action) {
   switch (action.type) {
     case 'GET_RESOURCE':
@@ -35,7 +37,8 @@ function dataReducer(state = initialDataState, action) {
 
 function authReducer(state = initialAuthState, action) {
   switch (action.type) {
-    case 'LOGIN':
+    case 'LOGIN_SUCCESS':
+      return action.payload;
   }
   return state;
 }
@@ -98,8 +101,16 @@ function updateFlushReducer(state = manuallyFlushUpdateQueue, action) {
   return state;
 }
 
+function serviceGroupReducer(state = serviceGroup, action) {
+  if (action.type === 'SELECT_SERVICE_GROUP') {
+    return action.payload;
+  }
+  return state;
+}
+
 export default combineReducers({
   data: dataReducer,
   auth: authReducer,
   updateQueue: pendingObservationsReducer,
-  updateFlush: updateFlushReducer});
+  updateFlush: updateFlushReducer,
+  serviceGroup: serviceGroupReducer});
