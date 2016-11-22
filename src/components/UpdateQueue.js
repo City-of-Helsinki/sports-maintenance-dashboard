@@ -8,7 +8,7 @@ class UpdateQueue extends React.Component {
   render() {
     const items = _.map(this.props.items, (i) => {
       const js = JSON.stringify(i);
-      return (<Link className="list-group-item" to={`/unit/${i.unitId}`} key={i.unitId}>{ this.props.units[i.unitId].name.fi } { js }</Link>);
+      return (<Link className="list-group-item" to={`/unit/${i.unitId}`} key={i.unitId}>{ this.props.units[i.unitId].name.fi }</Link>);
     });
     console.log(this.props.retryImmediately);
     return (
