@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import { getQualityObservation, COLORS, ICONS } from './utils';
 
-function UnitListElement (props) {
+export function UnitListElement (props) {
   const url = `/unit/${props.id}`;
   const qualityObservation = getQualityObservation(props);
   const iconClass = ICONS[qualityObservation.value];
