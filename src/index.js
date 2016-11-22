@@ -24,6 +24,7 @@ import UnitList from './components/UnitList';
 import UnitDetails from './components/UnitDetails'; 
 import UpdateConfirmation from './components/UpdateConfirmation'; 
 import UpdateQueue from './components/UpdateQueue'; 
+import LoginScreen from './components/LoginScreen';
 
 import moment from 'moment';
 
@@ -33,15 +34,28 @@ const finalCreateStore = compose(
   applyMiddleware(promiseMiddleware),
   persistState(['data', 'auth', 'updateQueue']))(createStore);
 
-let store = finalCreateStore(rootReducer);
+const store = finalCreateStore(rootReducer);
 window.store = store;
+
+function hasAuth(state) {
+  const { apiToken } = state.auth;
+  return !(apiToken === null || apiToken === undefined);
+}
+
+function requireAuth(nextState, replace) {
+  if (!hasAuth(store.getState())) {
+    return replace('/login');
+  }
+  return true;
+}
 
 // Render the main component into the dom
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}
             render={applyRouterMiddleware(useScroll())}>
-        <Route path="/" component={App} >
+        <Route path="/login" component={LoginScreen} />
+        <Route path="/" component={App} onEnter={requireAuth}>
             <IndexRoute component={DashBoard} />
             <Route path="/group" component={GroupList} />
             <Route path="/group/:groupId" component={UnitList} />
