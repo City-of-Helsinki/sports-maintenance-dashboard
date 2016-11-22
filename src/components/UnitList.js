@@ -3,16 +3,18 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
 
-
-function styleClassFromObservations(observations) {
-  // TODO move to utils
-  return 'nosnow';
-}
+import { getQualityObservation, COLORS, ICONS } from './utils';
 
 function UnitListElement (props) {
   const url = `/unit/${props.id}`;
-  const {condition, color} = styleClassFromObservations(props.observations);
-  const className = `condition condition-${condition} fa ${color} fa-tint`;
+  const qualityObservation = getQualityObservation(props);
+  const iconClass = ICONS[qualityObservation.value];
+  let colorClass = COLORS[qualityObservation.quality];
+  const condition = qualityObservation.quality;
+  if (qualityObservation.value === 'snowless') {
+    colorClass = 'info';
+  }
+  const className = `condition condition-${condition} fa text-${colorClass} fa-${iconClass}`;
   return (
     <Link to={url} className="list-group-item">
         <span className="action-icon glyphicon glyphicon-pencil" />
@@ -32,7 +34,7 @@ class UnitList extends React.Component {
     if (!this.hasRequiredData(this.props)) {
       return <div>loading...</div>;
     }
-    const elements = _.map(this.props.units, (unit) => {
+    const elements = _.map(_.sortBy(this.props.units, [(u) => { return u.name.fi }]), (unit) => {
       return <UnitListElement key={unit.id} {...unit} />;
     });
     return (

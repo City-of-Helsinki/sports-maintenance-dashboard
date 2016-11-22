@@ -31,3 +31,13 @@ export function backLink(component) {
     component.props.history.goBack();
   };
 }
+
+export function getQualityObservation(unit) {
+  if (unit === undefined) {
+    return undefined;
+  }
+  const observations = unit.observations;
+  return _.find(observations, (obs) => {
+    return (obs.quality !== null && obs.quality !== undefined && obs.quality !== 'unknown');
+  });
+}

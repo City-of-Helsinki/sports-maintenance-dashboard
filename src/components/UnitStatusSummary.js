@@ -1,23 +1,12 @@
 import React from 'react';
 import moment from 'moment';
 
-import { statusBarClassName } from './utils';
+import { statusBarClassName, getQualityObservation } from './utils';
 
 const SHORT_DESCRIPTIONS = {
   ski_trail_maintenance: 'Kunnostettu',
   ski_trail_condition: 'Kunto todettu'
 };
-
-function getQualityObservation(unit) {
-  if (unit === undefined) {
-    return undefined;
-  }
-  const observations = unit.observations;
-  return _.find(observations, (obs) => {
-    console.log(obs);
-    return (obs.quality !== null && obs.quality !== undefined && obs.quality !== 'unknown');
-  });
-}
 
 function Observation (props) {
   const time = moment(props.time).format('dd l [klo] LTS');
