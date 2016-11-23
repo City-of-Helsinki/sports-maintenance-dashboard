@@ -73,7 +73,7 @@ export function fetchUnitsWithServices(services, {selected, embedded}) {
 export function postObservation(specification) {
   return postResource(
     'observation',
-    {unit: specification.unitId, value: specification.value, property: specification.property},
+    {unit: specification.unitId, value: specification.value, property: specification.property, serviced: specification.serviced},
     'foo'
   );
 }
