@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
@@ -21,13 +22,12 @@ const HELP_TEXTS = {
 function ConfirmButton({unitId, allowedValue, type, enqueueObservation}) {
   const iconClassName = `fa fa-${ICONS[allowedValue.identifier]} fa-lg`;
   const buttonClassName = `btn btn-${COLORS[allowedValue.quality]} btn-block`;
-  console.log(allowedValue);
   return (
-        <div className={buttonClassName} onClick={() => { enqueueObservation(allowedValue.property, allowedValue, unitId, (type=='serviced')); }}>
+        <Link to={`/unit/${unitId}`} className={buttonClassName} onClick={() => { enqueueObservation(allowedValue.property, allowedValue, unitId, (type=='serviced')); }}>
             <h5>{ ACTION_TYPE[type] }</h5>
             <span className={iconClassName}></span><br/>
             { allowedValue.name.fi }
-        </div>
+        </Link>
   );
 };
 
@@ -119,7 +119,6 @@ function mapDispatchToProps(dispatch) {
   return {
     enqueueObservation: (property, allowedValue, unitId, addServicedObservation) => {
       dispatch(actions.enqueueObservation(property, allowedValue, unitId, addServicedObservation));
-      browserHistory.push(`/unit/${unitId}`);
     }
   };
 }
