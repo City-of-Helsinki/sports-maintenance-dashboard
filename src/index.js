@@ -28,6 +28,10 @@ import LoginScreen from './components/LoginScreen';
 
 import moment from 'moment';
 
+import ES6Promise from 'es6-promise';
+ES6Promise.polyfill();
+import isomorphicFetch from 'isomorphic-fetch';
+
 moment.locale('fi');
 
 const finalCreateStore = compose(
