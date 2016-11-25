@@ -22,19 +22,17 @@ function makeFilter(status) {
 
 export default function queueHandler(store) {
   let timers = {};
-  return () => {
+  return (opts) => {
     const queue = store.getState().updateQueue;
-    console.log(queue);
     const enqueuedItems = _.filter(queue, makeFilter('enqueued'));
     const itemsToRetry = _.filter(queue, makeFilter('failed'));
     const itemsToRefresh = _.filter(queue, makeFilter('success'));
-
 
     _.each(enqueuedItems, (item) => {
       markAndSendObservation(store, item);
     });
 
-    const shouldRetryImmediately = store.getState().updateFlush;
+    const shouldRetryImmediately = ((opts && opts.initial === true) || store.getState().updateFlush);
     if (shouldRetryImmediately) {
       _.each(timers, (_, key) => {
         clearTimeout(key);

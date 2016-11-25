@@ -71,4 +71,6 @@ ReactDOM.render(
   </Provider>, document.getElementById('app')
 );
 
-store.subscribe(queueHandler(store));
+const handler = queueHandler(store);
+store.subscribe(handler);
+handler({initial: true});
