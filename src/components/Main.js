@@ -1,6 +1,7 @@
 require('normalize.css/normalize.css');
 require('styles/App.scss');
 
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -22,6 +23,10 @@ class AppComponent extends React.Component {
         embedded: ['observations']});
   }
   render() {
+    let queueClassName = `glyphicon glyphicon-transfer`;
+    if (this.props.unsentUpdateCount > 0) {
+      queueClassName += ' has-notifications';
+    }
     return (
       <div className="index">
         <nav className="navbar navbar-inverse navbar-fixed-top">
@@ -29,7 +34,15 @@ class AppComponent extends React.Component {
             <ul className="nav navbar-nav">
               <li><Link to="/"><div className="btn-lg"><span className="glyphicon glyphicon-home"></span></div></Link></li>
               <li><Link to="/group"><div className="btn-lg"><span className="glyphicon glyphicon-pencil"></span></div></Link></li>
-              <li><Link to="/queue"><div className="btn-lg"><span className="glyphicon glyphicon-transfer"></span></div></Link></li>
+              <li>
+                  <Link to="/queue">
+                      <div className="btn-lg">
+                          <span className={queueClassName}>
+                              <span className="notification-count">{this.props.unsentUpdateCount}</span>
+                          </span>
+                      </div>
+                  </Link>
+              </li>
             </ul>
           </div>
         </nav>
@@ -41,7 +54,9 @@ class AppComponent extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-  return { };
+  return {
+    unsentUpdateCount: _.size(state.updateQueue)
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
