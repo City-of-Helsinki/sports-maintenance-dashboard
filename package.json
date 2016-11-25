@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "clean": "rimraf dist/*",
-    "copy": "copyfiles -f ./src/index.html ./src/favicon.ico ./dist",
+    "copy": "copyfiles -f ./src/index.html ./src/pulkka.appcache ./src/favicon.ico ./src/manifest.json ./dist",
     "dist": "npm run copy & webpack --env=dist",
     "lint": "eslint ./src",
     "posttest": "npm run lint",
@@ -14,7 +14,7 @@
     "release:patch": "npm version patch && npm publish && git push --follow-tags",
     "serve": "node server.js --env=dev",
     "serve:dist": "node server.js --env=dist",
-    "start": "cp -n .env.example .env; node server.js --env=dev",
+    "start": "npm run copy && cp -n .env.example .env; node server.js --env=dev",
     "test": "karma start",
     "test:watch": "karma start --autoWatch=true --singleRun=false"
   },

@@ -1,7 +1,8 @@
 {
-  "name": "Pulkka - Pääkaupunkiseudun ulkoliikuntakartan kuntotietopäivitysavustaja",
+  "name": "Pulkka",
   "short_name": "Pulkka",
   "start_url": "/",
+  "description": "Pääkaupunkiseudun ulkoliikuntakartan kuntotietopäivitysavustaja",
   "icons": [
     {
       "src": "/icons/icon36.png",
