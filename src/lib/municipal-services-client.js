@@ -8,9 +8,9 @@ function resourceEndpoint(resourceType) {
   return `${API_BASE_URL}/${resourceType}/`;
 }
 
-function filteredUrl(url, filters) {
+function filteredUrl(url, filters, pageSize) {
   let uri = URI(url);
-  uri.addSearch({page_size: 1000});
+  uri.addSearch({page_size: pageSize || 1000});
   if (filters === null || filters === undefined) {
     return uri.toString();
   }
@@ -28,23 +28,27 @@ function selectFields(url, selected, embedded) {
   return uri.toString();
 };
 
-function preProcessResponse(resourceType) {
-  return function (obj) {
-    return {[resourceType]: _.keyBy(obj.results, 'id')};
-  };
+function preProcessResponse(resourceType, preprocess) {
+  if (preprocess) {
+    return function (obj) {
+      return {[resourceType]: _.keyBy(obj.results, 'id')};
+    };
+  }
+  return (obj) => {
+    return obj.results; };
 };
 
-export function fetchResource(resourceType, filters=null, selected=null, embedded=null) {
+export function fetchResource(resourceType, filters=null, selected=null, embedded=null, pageSize=null, options={}) {
   const url = resourceEndpoint(resourceType);
-  // TODO: pagination
+ // TODO: pagination
   return fetch(
     selectFields(
-      filteredUrl(url, filters),
+      filteredUrl(url, filters, pageSize),
       selected,
       embedded)).then((response) => {
         return response.json();
       }).then(
-        preProcessResponse(resourceType)
+        preProcessResponse(resourceType, options.preprocess)
       );
 }
 
@@ -106,4 +110,14 @@ export function unitObservableProperties(unit, services, qualityObservationsOnly
     return collection;
   };
   return _.reduce(unitServices, reducer, []);
+}
+
+export function getNearestUnits(position, services) {
+  const serviceParameter = services.join(',');
+  return fetchResource(
+    'unit',
+    {lat: position.coords.latitude,
+     lon: position.coords.longitude,
+     service: serviceParameter}, ['id', 'name'], null, 5,
+    {preprocess: false});
 }

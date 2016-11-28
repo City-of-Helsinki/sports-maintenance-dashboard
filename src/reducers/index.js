@@ -5,6 +5,7 @@ import MOCK_GROUPS from './mock_groups.js';
 
 const initialDataState = {
   unit: {},
+  unitsByDistance: [],
   group: MOCK_GROUPS,
   observable_property: {},
   observation: {},
@@ -31,6 +32,10 @@ function dataReducer(state = initialDataState, action) {
         {[resourceType]: Object.assign(
           state[resourceType],
           action.payload[resourceType])});
+    case 'GET_NEAREST_UNITS':
+      return Object.assign(
+        {}, state,
+        {unitsByDistance: action.payload});
   }
   return state;
 }
@@ -108,9 +113,20 @@ function serviceGroupReducer(state = serviceGroup, action) {
   return state;
 }
 
+const userLocation = null;
+
+function userLocationReducer(state = userLocation, action) {
+  if (action.type === 'SET_USER_LOCATION') {
+    return action.payload;
+  }
+  return state;
+}
+
 export default combineReducers({
   data: dataReducer,
   auth: authReducer,
   updateQueue: pendingObservationsReducer,
   updateFlush: updateFlushReducer,
-  serviceGroup: serviceGroupReducer});
+  serviceGroup: serviceGroupReducer,
+  userLocation: userLocationReducer
+});

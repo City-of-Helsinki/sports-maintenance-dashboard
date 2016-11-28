@@ -1,4 +1,8 @@
+import _ from 'lodash';
 import React from 'react';
+
+require('process');
+const { SERVICES } = process.env;
 
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -33,11 +37,9 @@ class DashBoard extends React.Component {
 function mapStateToProps(state) {
   if (_.keys(state.data.unit).length > 0) {
     return {
-      // TODO repla
-      nearest: [
-        state.data.unit[2147483616],
-        state.data.unit[2147483637],
-        state.data.unit[2147483612]],
+      nearest: _.map(state.data.unitsByDistance, (u) => {
+        return state.data.unit[u.id];
+      }),
       latest: [
         state.data.unit[2147483623],
         state.data.unit[2147483639],
