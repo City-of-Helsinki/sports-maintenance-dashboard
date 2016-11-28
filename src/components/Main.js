@@ -32,8 +32,8 @@ class AppComponent extends React.Component {
         <nav className="navbar navbar-inverse navbar-fixed-top">
           <div className="container-fluid">
             <ul className="nav navbar-nav">
-              <li><Link to="/"><div className="btn-lg"><span className="glyphicon glyphicon-home"></span></div></Link></li>
-              <li><Link to="/group"><div className="btn-lg"><span className="glyphicon glyphicon-pencil"></span></div></Link></li>
+              <li><Link to="/"><div className="btn-lg"><span className="icon icon-home"></span></div></Link></li>
+              <li><Link to="/group"><div className="btn-lg"><span className="icon icon-list"></span></div></Link></li>
               <li>
                   <Link to="/queue">
                       <div className="btn-lg">

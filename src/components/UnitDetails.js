@@ -15,7 +15,7 @@ function ObservableProperty ({quality, property, identifier, name, unitId}) {
   const color = COLORS[quality];
   const icon = ICONS[identifier];
   const buttonClassName = `btn btn-${color} btn-block`;
-  const iconClassName = `fa fa-lg fa-${icon}`;
+  const iconClassName = `icon ${icon}`;
   return <Link to={url} className={buttonClassName}><span className={iconClassName}></span><br/>{name.fi}</Link>;
 }
 

@@ -14,7 +14,7 @@ export function UnitListElement (props) {
   if (qualityObservation.value === 'snowless') {
     colorClass = 'info';
   }
-  const className = `condition condition-${condition} fa text-${colorClass} fa-${iconClass}`;
+  const className = `condition condition-${condition} icon text-${colorClass} ${iconClass}`;
   return (
     <Link to={url} className="list-group-item">
         <span className="action-icon glyphicon glyphicon-pencil" />

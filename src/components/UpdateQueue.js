@@ -23,7 +23,7 @@ class UpdateQueue extends React.Component {
 
 {/*
                 <span className="action-icon glyphicon glyphicon-pencil"></span>
-                <span className="condition condition-nosnow fa fa-tint"></span>
+                <span className="condition condition-nosnow icon water"></span>
                 Paloheinä 1,8 km
 */}
 

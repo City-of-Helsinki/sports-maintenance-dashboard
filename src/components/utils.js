@@ -15,8 +15,8 @@ export const ICONS = {
   poor: 'frown-o',
   groomed: 'road',
   littered: 'pagelines',
-  closed: 'times-circle',
-  snowless: 'tint',
+  closed: 'forbidden',
+  snowless: 'water',
   event: 'trophy',
   snowmaking: 'spinner'
 };
