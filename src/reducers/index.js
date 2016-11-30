@@ -126,13 +126,21 @@ function userLocationReducer(state = userLocation, action) {
 const unitsByUpdateTime = [];
 function unitsByUpdateTimeReducer(state = unitsByUpdateTime, action) {
   if (action.type === 'POST_OBSERVATION') {
-    console.log('hererer', action.meta);
+    if (action.error === true) return state;
+    return _.uniq([].concat(action.meta.unitId, state)).slice(0, 20);
   }
   return state;
 }
 
-const unitsByUpdateCount = [];
+const unitsByUpdateCount = {};
 function unitsByUpdateCountReducer(state = unitsByUpdateCount, action) {
+  if (action.type === 'POST_OBSERVATION') {
+    if (action.error === true) return state;
+    const { unitId } = action.meta;
+    const existingCount = (state[unitId] || {}).count || 0;
+    const result = Object.assign({}, state, {[unitId]: {count: existingCount + 1, id: unitId}});
+    return result;
+  }
   return state;
 }
 

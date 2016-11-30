@@ -3,6 +3,24 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { retryImmediately } from '../actions/index';
+import { UnitListElement } from './UnitList';
+
+function LatestUpdates({units}) {
+  const elements = _.map(units, (u) => {
+    return <UnitListElement key={u.id} {...u} />;
+  });
+  return (
+    <div className="row">
+        <div className="col-xs-12">
+            <h5>Onnistuneet päivitykset<br/>
+            <small>Tässä listassa on viimeisimmät onnistuneesti päivitetyt paikat</small></h5>
+            <div className="list-group facility-drilldown">
+            { elements }
+            </div>
+        </div>
+    </div>
+  );
+}
 
 class UpdateQueue extends React.Component {
   render() {
@@ -12,24 +30,27 @@ class UpdateQueue extends React.Component {
     });
     console.log(this.props.retryImmediately);
     return (
-      <div className="row">
-        <div className="col-xs-12">
-          <h5>Verkkoyhteyttä odottavat päivitykset<br/>
-              <small>Näitä päivityksiä ei ole vielä julkaistu. Niitä yritetään julkaista uudestaan
-              automaattisesti 15 sekunnin välein sekä "Yritä uudelleen"-nappia painettaessa.</small>
-          </h5>
-          <div className="list-group facility-drilldown">
-              { items }
+      <div>
+          <div className="row">
+              <div className="col-xs-12">
+                  <h5>Verkkoyhteyttä odottavat päivitykset<br/>
+                      <small>Näitä päivityksiä ei ole vielä julkaistu. Niitä yritetään julkaista uudestaan
+                          automaattisesti 15 sekunnin välein sekä "Yritä uudelleen"-nappia painettaessa.</small>
+                  </h5>
+                  <div className="list-group facility-drilldown">
+                      { items }
 
-{/*
-                <span className="action-icon glyphicon glyphicon-pencil"></span>
-                <span className="condition condition-nosnow fa fa-tint"></span>
-                Paloheinä 1,8 km
-*/}
+                      {/*
+                        <span className="action-icon glyphicon glyphicon-pencil"></span>
+                          <span className="condition condition-nosnow fa fa-tint"></span>
+                            Paloheinä 1,8 km
+                          */}
 
+                  </div>
+                  <a onClick={this.props.retryImmediately} href ="#" className="btn btn-default btn-block"><span className="glyphicon glyphicon-refresh"></span> Yritä uudelleen</a>
+              </div>
           </div>
-          <a onClick={this.props.retryImmediately} href ="#" className="btn btn-default btn-block"><span className="glyphicon glyphicon-refresh"></span> Yritä uudelleen</a>
-        </div>
+          <LatestUpdates units={this.props.latest} />
       </div>
     );
   }
@@ -38,7 +59,10 @@ class UpdateQueue extends React.Component {
 function mapStateToProps(state) {
   return {
     items: state.updateQueue,
-    units: state.data.unit
+    units: state.data.unit,
+    latest: _.map(state.unitsByUpdateTime, (id) => {
+      return state.data.unit[id];
+    })
   };
 }
 

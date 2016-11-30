@@ -12,11 +12,11 @@ import { UnitListElement } from './UnitList';
 class DashBoard extends React.Component {
   
   render() {
-    if (this.props.nearest === undefined || this.props.latest === undefined) {
+    if (this.props.nearest === undefined || this.props.frequent === undefined) {
       return <div>loading...</div>;
     }
     const nearest = _.map(this.props.nearest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
-    const latest = _.map(this.props.latest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
+    const frequent = _.map(this.props.frequent, (u) => { return <UnitListElement key={u.id} {...u}/>; });
     return (
       <div className="row">
           <div className="col-xs-12">
@@ -24,14 +24,20 @@ class DashBoard extends React.Component {
               <div className="list-group facility-drilldown">
                   { nearest }
               </div>
-              <h5>Viimeisimmät</h5>
+              <h5>Yleisimmät</h5>
               <div className="list-group facility-drilldown">
-                  { latest }
+                  { frequent }
               </div>
           </div>
       </div>
     );
   }
+}
+
+function topUnits(n, units, unitsByUpdateCount) {
+  return _.reverse(_.map(_.sortBy(unitsByUpdateCount, ['count']), (u) => {
+    return units[u.id];
+  }).slice(0, n));
 }
 
 function mapStateToProps(state) {
@@ -40,10 +46,7 @@ function mapStateToProps(state) {
       nearest: _.map(state.data.unitsByDistance, (u) => {
         return state.data.unit[u.id];
       }),
-      latest: [
-        state.data.unit[2147483623],
-        state.data.unit[2147483639],
-        state.data.unit[2147483620]]
+      frequent: topUnits(20, state.data.unit, state.unitsByUpdateCount)
     };
   }
   return {};
