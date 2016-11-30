@@ -122,11 +122,27 @@ function userLocationReducer(state = userLocation, action) {
   return state;
 }
 
+
+const unitsByUpdateTime = [];
+function unitsByUpdateTimeReducer(state = unitsByUpdateTime, action) {
+  if (action.type === 'POST_OBSERVATION') {
+    console.log('hererer', action.meta);
+  }
+  return state;
+}
+
+const unitsByUpdateCount = [];
+function unitsByUpdateCountReducer(state = unitsByUpdateCount, action) {
+  return state;
+}
+
 export default combineReducers({
   data: dataReducer,
   auth: authReducer,
   updateQueue: pendingObservationsReducer,
   updateFlush: updateFlushReducer,
   serviceGroup: serviceGroupReducer,
-  userLocation: userLocationReducer
+  userLocation: userLocationReducer,
+  unitsByUpdateTime: unitsByUpdateTimeReducer,
+  unitsByUpdateCount: unitsByUpdateCountReducer
 });
