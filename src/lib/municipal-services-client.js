@@ -38,7 +38,7 @@ function preProcessResponse(resourceType, preprocess) {
     return obj.results; };
 };
 
-export function fetchResource(resourceType, filters=null, selected=null, embedded=null, pageSize=null, options={}) {
+export function fetchResource(resourceType, filters=null, selected=null, embedded=null, pageSize=null, options={preprocess: true}) {
   const url = resourceEndpoint(resourceType);
  // TODO: pagination
   return fetch(
