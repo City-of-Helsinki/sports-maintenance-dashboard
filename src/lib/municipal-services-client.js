@@ -88,9 +88,9 @@ export function login(username, password) {
   });
 }
 
-export function fetchUnitsWithServices(services, {selected, embedded}) {
+export function fetchUnitsWithServices(services, maintenance_organization, {selected, embedded}) {
   const serviceParameter = services.join(',');
-  return fetchResource('unit', {service: serviceParameter}, selected, embedded);
+  return fetchResource('unit', {service: serviceParameter, maintenance_organization }, selected, embedded);
 }
 
 export function postObservation(specification, token) {

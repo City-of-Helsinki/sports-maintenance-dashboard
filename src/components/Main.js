@@ -18,7 +18,7 @@ class AppComponent extends React.Component {
       ['id', 'name'], ['observable_properties']
     );
     this.props.fetchUnitsWithServices(
-      [SERVICES], {
+      [SERVICES], this.props.maintenanceOrganization, {
         selected: ['id', 'name', 'services', 'location', 'extensions'],
         embedded: ['observations']});
   }
@@ -55,14 +55,15 @@ class AppComponent extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    unsentUpdateCount: _.size(state.updateQueue)
+    unsentUpdateCount: _.size(state.updateQueue),
+    maintenanceOrganization: state.auth.maintenance_organization
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUnitsWithServices: (services, fieldSpecs) => {
-      dispatch(fetchUnitsWithServices(services, fieldSpecs));
+    fetchUnitsWithServices: (services, maintenanceOrganization, fieldSpecs) => {
+      dispatch(fetchUnitsWithServices(services, maintenanceOrganization, fieldSpecs));
     },
     fetchResource: (resourceType, filters, selected, embedded) => {
       dispatch(fetchResource(resourceType, filters, selected, embedded));
