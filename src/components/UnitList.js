@@ -7,14 +7,20 @@ import { getQualityObservation, COLORS, ICONS } from './utils';
 
 export function UnitListElement (props) {
   const url = `/unit/${props.id}`;
+  let className;
   const qualityObservation = getQualityObservation(props);
-  const iconClass = ICONS[qualityObservation.value];
-  let colorClass = COLORS[qualityObservation.quality];
-  const condition = qualityObservation.quality;
-  if (qualityObservation.value === 'snowless') {
-    colorClass = 'info';
+  if (qualityObservation) {
+    const iconClass = ICONS[qualityObservation.value];
+    let colorClass = COLORS[qualityObservation.quality];
+    const condition = qualityObservation.quality;
+    if (qualityObservation.value === 'snowless') {
+      colorClass = 'info';
+    }
+    className = `condition condition-${condition} fa text-${colorClass} fa-${iconClass}`;
   }
-  const className = `condition condition-${condition} fa text-${colorClass} fa-${iconClass}`;
+  else {
+    className = 'condition';
+  }
   return (
     <Link to={url} className="list-group-item">
         <span className="action-icon glyphicon glyphicon-pencil" />
