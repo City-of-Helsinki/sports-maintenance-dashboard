@@ -19,7 +19,7 @@ class AppComponent extends React.Component {
     );
     this.props.fetchUnitsWithServices(
       [SERVICES], {
-        selected: ['id', 'name', 'services', 'location'],
+        selected: ['id', 'name', 'services', 'location', 'extensions'],
         embedded: ['observations']});
   }
   render() {

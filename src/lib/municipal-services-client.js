@@ -52,15 +52,16 @@ export function fetchResource(resourceType, filters=null, selected=null, embedde
       );
 }
 
-export function postResource(resourceType, payload, credentials) {
-  if (credentials === null || credentials === undefined) {
-    throw new Error('Credentials needed for API write access.');
+export function postResource(resourceType, payload, token) {
+  if (token === null || token === undefined) {
+    throw new Error('Token needed for API write access.');
   }
   return fetch(resourceEndpoint(resourceType), {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${token}`
     }
   }).then((response) => {
     return response.json();
@@ -69,16 +70,34 @@ export function postResource(resourceType, payload, credentials) {
 
 // concrete use cases
 
+export function login(username, password) {
+  if (!username || username === '' ||
+      !password || password === '') {
+    throw new Error('Credentials needed for API login.');
+  }
+  return fetch(resourceEndpoint('api-token-auth'), {
+    method: 'POST',
+    body: JSON.stringify(
+      {username, password}
+    ),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    return response.json();
+  });
+}
+
 export function fetchUnitsWithServices(services, {selected, embedded}) {
   const serviceParameter = services.join(',');
   return fetchResource('unit', {service: serviceParameter}, selected, embedded);
 }
 
-export function postObservation(specification) {
+export function postObservation(specification, token) {
   return postResource(
     'observation',
     {unit: specification.unitId, value: specification.value, property: specification.property, serviced: specification.serviced},
-    'foo'
+    token
   );
 }
 

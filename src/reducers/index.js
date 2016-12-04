@@ -13,8 +13,9 @@ const initialDataState = {
 };
 
 const initialAuthState = {
-  userName: null,
-  apiToken: null
+  maintenance_organization: null,
+  token: null,
+  error: null
 };
 
 const initialPendingObservationsState = {};
@@ -42,8 +43,27 @@ function dataReducer(state = initialDataState, action) {
 
 function authReducer(state = initialAuthState, action) {
   switch (action.type) {
-    case 'LOGIN_SUCCESS':
-      return action.payload;
+    case 'LOGIN':
+      if (action.error) {
+        return {
+          error: action.payload,
+          token: null,
+          maintenance_organization: null
+        };
+      }
+    const {maintenance_organization, token} = action.payload;
+    if (!maintenance_organization || !token) {
+      return {
+        error: action.payload,
+        maintenance_organization,
+        token
+      };
+    }
+    return {
+      error: null,
+      maintenance_organization,
+      token
+    };
   }
   return state;
 }

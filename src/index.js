@@ -45,8 +45,8 @@ const store = finalCreateStore(rootReducer);
 window.store = store;
 
 function hasAuth(state) {
-  const { apiToken } = state.auth;
-  return !(apiToken === null || apiToken === undefined);
+  const { token } = state.auth;
+  return !(token === null || token === undefined);
 }
 
 function requireAuth(nextState, replace) {
