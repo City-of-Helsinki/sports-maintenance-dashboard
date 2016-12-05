@@ -38,7 +38,7 @@ moment.locale('fi');
 
 const finalCreateStore = compose(
   applyMiddleware(promiseMiddleware),
-  persistState(['data', 'auth', 'updateQueue', 'unitsByUpdateTime', 'unitsByUpdateCount']))(createStore);
+  persistState(['data', 'auth', 'updateQueue', 'unitsByUpdateTime', 'unitsByUpdateCount', 'serviceGroup']))(createStore);
 
 const store = finalCreateStore(rootReducer);
 window.store = store;

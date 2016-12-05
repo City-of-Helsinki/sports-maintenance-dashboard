@@ -10,21 +10,18 @@ import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits
 import { getInitialLocation } from '../lib/geolocation';
 import * as constants from '../constants/index';
 
-require('process');
-const { SERVICES } = process.env;
-
 class AppComponent extends React.Component {
   componentWillMount() {
+    const services = constants.SERVICE_GROUPS[this.props.serviceGroup];
     this.props.fetchResource(
-      'service', { id: SERVICES },
+      'service', { id: services.join(',') },
       ['id', 'name'], ['observable_properties']
     );
     this.props.fetchUnitsWithServices(
-      [SERVICES], this.props.maintenanceOrganization, {
+      services, this.props.maintenanceOrganization, {
         selected: ['id', 'name', 'services', 'location', 'extensions'],
         embedded: ['observations']});
     getInitialLocation((position) => {
-      const services = constants.SERVICE_GROUPS[this.props.serviceGroup];
       this.props.setUserLocation(position);
       if (services) {
         this.props.getNearestUnits(position, services, this.props.maintenanceOrganization);
