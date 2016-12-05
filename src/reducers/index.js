@@ -6,7 +6,6 @@ import MOCK_GROUPS from './mock_groups.js';
 const initialDataState = {
   unit: {},
   unitsByDistance: [],
-  group: MOCK_GROUPS,
   observable_property: {},
   observation: {},
   service: {}

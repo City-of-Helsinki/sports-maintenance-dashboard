@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 export const QUALITIES = [
   'good', 'satisfactory', 'unusable'
@@ -44,3 +45,13 @@ export function getQualityObservation(unit) {
     return (obs.quality !== null && obs.quality !== undefined && obs.quality !== 'unknown');
   });
 }
+
+export function calculateGroups(units) {
+  let result = {};
+  _.each(units, (u) => {
+    const group = result[u.extensions.maintenance_group] || [];
+    result[u.extensions.maintenance_group] = group.concat(u.id);
+  });
+  return result;
+}
+

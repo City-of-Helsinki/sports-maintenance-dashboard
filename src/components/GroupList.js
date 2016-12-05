@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { calculateGroups } from './utils';
 
 function GroupListElement (props) {
-  console.log(props);
   const url = `/group/${props.id}`;
   return (
     <Link to={url} className="list-group-item">
@@ -23,8 +23,8 @@ class GroupList extends React.Component {
     if (!this.hasRequiredData(this.props)) {
       return <div>loading...</div>;
     }
-    const elements = _.map(this.props.groups, (group) => {
-      return <GroupListElement key={group.id} {...group} />;
+    const elements = _.map(this.props.groups, (group, groupId) => {
+      return <GroupListElement key={groupId} id={groupId} name={groupId} />;
     });
     return (
       <div className="row">
@@ -41,7 +41,7 @@ class GroupList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    groups: state.data.group
+    groups: calculateGroups(state.data.unit)
   };
 };
 

@@ -53,8 +53,11 @@ body {
 }
 
 .facility-drilldown {
-  .list-group-item .glyphicon {
-    float: right;
+  .list-group-item {
+    .glyphicon {
+      float: right;
+    }
+    text-transform: capitalize;
   }
 }
 

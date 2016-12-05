@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
+import { calculateGroups } from './utils';
 
 import { getQualityObservation, COLORS, ICONS } from './utils';
 
@@ -76,11 +77,11 @@ function unitsForGroup(allUnits, group) {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log('mapStateToProps');
   return {
-    units: unitsForGroup(
-      state.data.unit,
-      state.data.group[ownProps.params.groupId])
+    units: _.filter(state.data.unit, (u) => {
+      return (u.extensions.maintenance_group
+              === ownProps.params.groupId);
+    })
   };
 }
 
