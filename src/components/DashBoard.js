@@ -15,7 +15,13 @@ class DashBoard extends React.Component {
     if (this.props.nearest === undefined || this.props.frequent === undefined) {
       return <div>loading...</div>;
     }
-    const nearest = _.map(this.props.nearest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
+    let nearest;
+    if (this.props.userLocation === null) {
+      nearest = <span>Sijainti ei saatavilla.</span>;
+    }
+    else {
+      nearest = _.map(this.props.nearest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
+    }
     const frequent = _.map(this.props.frequent, (u) => { return <UnitListElement key={u.id} {...u}/>; });
     return (
       <div className="row">
@@ -46,7 +52,8 @@ function mapStateToProps(state) {
       nearest: _.map(state.data.unitsByDistance, (u) => {
         return state.data.unit[u.id];
       }),
-      frequent: topUnits(20, state.data.unit, state.unitsByUpdateCount)
+      frequent: topUnits(20, state.data.unit, state.unitsByUpdateCount),
+      userLocation: state.userLocation
     };
   }
   return {};

@@ -6,7 +6,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { fetchUnitsWithServices, fetchResource } from '../actions/index';
+import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits } from '../actions/index';
+import { getInitialLocation } from '../lib/geolocation';
+import * as constants from '../constants/index';
 
 require('process');
 const { SERVICES } = process.env;
@@ -21,6 +23,14 @@ class AppComponent extends React.Component {
       [SERVICES], this.props.maintenanceOrganization, {
         selected: ['id', 'name', 'services', 'location', 'extensions'],
         embedded: ['observations']});
+    getInitialLocation((position) => {
+      const services = constants.SERVICE_GROUPS[this.props.serviceGroup];
+      this.props.setUserLocation(position);
+      if (services) {
+        this.props.getNearestUnits(position, services, this.props.maintenanceOrganization);
+      }
+    });
+
   }
   render() {
     let queueClassName = `glyphicon glyphicon-transfer`;
@@ -53,10 +63,12 @@ class AppComponent extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
     unsentUpdateCount: _.size(state.updateQueue),
-    maintenanceOrganization: state.auth.maintenance_organization
+    maintenanceOrganization: state.auth.maintenance_organization,
+    serviceGroup: state.serviceGroup
   };
 };
 
@@ -67,6 +79,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchResource: (resourceType, filters, selected, embedded) => {
       dispatch(fetchResource(resourceType, filters, selected, embedded));
+    },
+    setUserLocation: (position) => {
+      dispatch(setUserLocation(position));
+    },
+    getNearestUnits: (...args) => {
+      dispatch(getNearestUnits(...args));
     }
   };
 };

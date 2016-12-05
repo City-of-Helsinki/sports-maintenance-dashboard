@@ -12,7 +12,6 @@ import 'bootstrap-sass';
 
 import * as clientLib from './lib/municipal-services-client';
 import * as constants from './constants/index';
-import { getInitialLocation } from './lib/geolocation';
 import queueHandler from './actions/queueHandler';
 
 import { setUserLocation, getNearestUnits } from './actions/index';
@@ -78,10 +77,3 @@ const handler = queueHandler(store);
 store.subscribe(handler);
 handler({initial: true});
 
-getInitialLocation((position) => {
-  const services = constants.SERVICE_GROUPS[store.getState().serviceGroup];
-  store.dispatch(setUserLocation(position));
-  if (services) {
-    store.dispatch(getNearestUnits(position, services));
-  }
-});

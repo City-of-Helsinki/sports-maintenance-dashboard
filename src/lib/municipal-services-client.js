@@ -131,12 +131,13 @@ export function unitObservableProperties(unit, services, qualityObservationsOnly
   return _.reduce(unitServices, reducer, []);
 }
 
-export function getNearestUnits(position, services) {
+export function getNearestUnits(position, services, maintenance_organization) {
   const serviceParameter = services.join(',');
   return fetchResource(
     'unit',
     {lat: position.coords.latitude,
      lon: position.coords.longitude,
-     service: serviceParameter}, ['id', 'name'], null, 5,
+     service: serviceParameter,
+     maintenance_organization}, ['id', 'name'], null, 5,
     {preprocess: false});
 }

@@ -38,7 +38,6 @@ function createSuccessCallback(callback) {
     currentStage++;
     var crd = position.coords;
     if (currentStage < _.size(POSITION_OPTIONS) - 1) {
-      console.log('RECALLING');
       getInitialLocation(callback);
     }
     callback(position);
