@@ -14,7 +14,8 @@ const initialDataState = {
 const initialAuthState = {
   maintenance_organization: null,
   token: null,
-  error: null
+  error: null,
+  login_id: null
 };
 
 const initialPendingObservationsState = {};
@@ -47,21 +48,24 @@ function authReducer(state = initialAuthState, action) {
         return {
           error: action.payload,
           token: null,
-          maintenance_organization: null
+          maintenance_organization: null,
+          login_id: null
         };
       }
-    const {maintenance_organization, token} = action.payload;
+    const {maintenance_organization, token, login_identifier} = action.payload;
     if (!maintenance_organization || !token) {
       return {
         error: action.payload,
         maintenance_organization,
-        token
+        token,
+        login_id: login_identifier
       };
     }
     return {
       error: null,
       maintenance_organization,
-      token
+      token,
+      login_id: login_identifier
     };
   }
   return state;

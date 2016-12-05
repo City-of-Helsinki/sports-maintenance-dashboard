@@ -23,12 +23,17 @@ function LatestUpdates({units}) {
 }
 
 class UpdateQueue extends React.Component {
+  logout() {
+    if (window.confirm("Haluatko varmasti kirjautua ulos?")) {
+      window.localStorage.clear();
+      window.location = '/';
+    }
+  }
   render() {
     const items = _.map(this.props.items, (i) => {
       const js = JSON.stringify(i);
       return (<Link className="list-group-item" to={`/unit/${i.unitId}`} key={i.unitId}>{ this.props.units[i.unitId].name.fi }</Link>);
     });
-    console.log(this.props.retryImmediately);
     return (
       <div>
           <div className="row">
@@ -51,6 +56,12 @@ class UpdateQueue extends React.Component {
               </div>
           </div>
           <LatestUpdates units={this.props.latest} />
+          <div className="row">
+              <div className="col-xs-12">
+                  <p>Kirjautuminen {this.props.loginId}<br/>
+                  <a href="#!" onClick={this.logout}>kirjaudu ulos</a></p>
+              </div>
+          </div>
       </div>
     );
   }
@@ -62,7 +73,8 @@ function mapStateToProps(state) {
     units: state.data.unit,
     latest: _.map(state.unitsByUpdateTime, (id) => {
       return state.data.unit[id];
-    })
+    }),
+    loginId: state.auth.login_id
   };
 }
 
