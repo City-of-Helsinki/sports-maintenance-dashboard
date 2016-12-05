@@ -71,13 +71,13 @@ class LoginScreen extends React.Component {
                                                     <label htmlFor="ice-skate">
                                                           Luistelukentät
                                                       </label>
-                                              </div>
+                                              </div>{/*
                                               <div className="checkbox">
                                                     <input id="swimming" type="radio" value="swimming" name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === 'swimming'} />
                                                       <label htmlFor="swimming">
                                                             Uimarannat
-                                                        </label>
-                                                </div>
+                                                      </label>
+                                              </div>*/}
                                     </div>
                                   }
                                   <button className="btn btn-lg btn-primary btn-block" type="submit">Kirjaudu</button>
