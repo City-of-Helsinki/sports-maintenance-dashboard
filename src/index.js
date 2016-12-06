@@ -1,7 +1,7 @@
 import 'core-js/fn/object/assign';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory, IndexRoute, applyRouterMiddleware } from 'react-router';
+import { Router, Route, createMemoryHistory, IndexRoute, applyRouterMiddleware } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -58,7 +58,7 @@ function requireAuth(nextState, replace) {
 // Render the main component into the dom
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}
+    <Router history={createMemoryHistory()}
             render={applyRouterMiddleware(useScroll())}>
         <Route path="/login" component={LoginScreen} />
         <Route path="/" component={App} onEnter={requireAuth}>
