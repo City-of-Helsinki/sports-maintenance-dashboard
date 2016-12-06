@@ -30,12 +30,6 @@ export function statusBarClassName(observation) {
   return 'unit-status';
 }
 
-export function backLink(component) {
-  return () => {
-    component.props.history.goBack();
-  };
-}
-
 export function getQualityObservation(unit) {
   if (unit === undefined) {
     return undefined;

@@ -8,7 +8,7 @@ import UnitStatusSummary from './UnitStatusSummary';
 
 // Todettu - Viimeksi kunnostettu
 
-import { COLORS, ICONS, QUALITIES, backLink } from './utils';
+import { COLORS, ICONS, QUALITIES } from './utils';
 
 function ObservableProperty ({quality, property, identifier, name, unitId}) {
   const url = `/unit/${unitId}/update/${property}/${identifier}`;
@@ -36,7 +36,7 @@ class UnitDetails extends React.Component {
       });});
     return (
       <div className="facility-status">
-        <UnitStatusSummary unit={this.props.unit} backLink={backLink(this)} />
+        <UnitStatusSummary unit={this.props.unit} />
         <div className="panel panel-default">
           <div className="panel-heading">Päivitä paikan kuntotieto</div>
           <div className="panel-body">
