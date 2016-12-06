@@ -45,7 +45,6 @@ function createSuccessCallback(callback) {
 }
 
 function error(positionError) {
-  console.log(positionError);
 }
 
 export function getInitialLocation(callback) {
