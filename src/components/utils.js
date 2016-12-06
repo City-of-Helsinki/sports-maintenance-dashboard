@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 export const QUALITIES = [
   'good', 'satisfactory', 'unusable'
@@ -23,7 +24,10 @@ export const ICONS = {
 
 export function statusBarClassName(observation) {
     // TODO is label- class usage ok for non-label
-  return `unit-status unit-status--${observation.quality} label-${COLORS[observation.quality]}`;
+  if (observation) {
+    return `unit-status unit-status--${observation.quality} label-${COLORS[observation.quality]}`;
+  }
+  return 'unit-status';
 }
 
 export function backLink(component) {
@@ -41,3 +45,13 @@ export function getQualityObservation(unit) {
     return (obs.quality !== null && obs.quality !== undefined && obs.quality !== 'unknown');
   });
 }
+
+export function calculateGroups(units) {
+  let result = {};
+  _.each(units, (u) => {
+    const group = result[u.extensions.maintenance_group] || [];
+    result[u.extensions.maintenance_group] = group.concat(u.id);
+  });
+  return result;
+}
+

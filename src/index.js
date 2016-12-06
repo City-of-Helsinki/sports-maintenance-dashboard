@@ -11,8 +11,10 @@ import 'bootstrap-sass';
 
 
 import * as clientLib from './lib/municipal-services-client';
+import * as constants from './constants/index';
 import queueHandler from './actions/queueHandler';
-window.clientLib = clientLib;
+
+import { setUserLocation, getNearestUnits } from './actions/index';
 
 import rootReducer from './reducers/index';
 
@@ -36,14 +38,14 @@ moment.locale('fi');
 
 const finalCreateStore = compose(
   applyMiddleware(promiseMiddleware),
-  persistState(['data', 'auth', 'updateQueue']))(createStore);
+  persistState(['data', 'auth', 'updateQueue', 'unitsByUpdateTime', 'unitsByUpdateCount', 'serviceGroup']))(createStore);
 
 const store = finalCreateStore(rootReducer);
 window.store = store;
 
 function hasAuth(state) {
-  const { apiToken } = state.auth;
-  return !(apiToken === null || apiToken === undefined);
+  const { token } = state.auth;
+  return !(token === null || token === undefined);
 }
 
 function requireAuth(nextState, replace) {
@@ -74,3 +76,4 @@ ReactDOM.render(
 const handler = queueHandler(store);
 store.subscribe(handler);
 handler({initial: true});
+

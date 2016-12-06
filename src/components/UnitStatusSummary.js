@@ -19,6 +19,10 @@ export default function UnitStatusSummary(props) {
     (obs) => { return <Observation key={obs.id} {...obs} />; }
   );
   const qualityObservation = getQualityObservation(props.unit);
+  let qualityElement = null;
+  if (qualityObservation) {
+    qualityElement = <div className={statusBarClassName(qualityObservation)}> { qualityObservation.name.fi } </div>;
+  }
   return (
     <div className="row">
         <div className="col-xs-12">
@@ -30,7 +34,7 @@ export default function UnitStatusSummary(props) {
             </div>
             <div className="well">
                 <h4>{ props.unit.name.fi }</h4>
-                <div className={statusBarClassName(qualityObservation)}> { qualityObservation.name.fi } </div>
+                { qualityElement }
                 <h5>
                     { observations }
                 </h5>

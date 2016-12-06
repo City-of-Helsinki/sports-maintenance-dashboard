@@ -15,6 +15,16 @@ export const fetchResource = createAction(
   }
 );
 
+export const getNearestUnits = createAction(
+  'GET_NEAREST_UNITS',
+  ApiClient.getNearestUnits
+);
+
+export const login = createAction(
+  'LOGIN',
+  ApiClient.login
+);
+
 export const enqueueObservation = createAction(
   'ENQUEUE_OBSERVATION',
   (property, value, unitId, addServicedObservation=false) => {
@@ -32,9 +42,8 @@ export const markObservationResent = createAction('MARK_OBSERVATION_RESENT');
 export const retryImmediately = createAction('FLUSH_UPDATE_QUEUE');
 export const finishRetryImmediately = createAction('FLUSH_UPDATE_QUEUE_DISABLED');
 export const selectServiceGroup = createAction('SELECT_SERVICE_GROUP');
-export const login = createAction('LOGIN_SUCCESS', (userName, password) => {
-  return {userName, apiToken: 'fooBar'};
-});
+
+export const setUserLocation = createAction('SET_USER_LOCATION');
 
 export const sendObservation = createAction(
   'POST_OBSERVATION',

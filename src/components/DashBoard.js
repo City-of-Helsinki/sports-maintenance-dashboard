@@ -1,4 +1,8 @@
+import _ from 'lodash';
 import React from 'react';
+
+require('process');
+const { SERVICES } = process.env;
 
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -8,11 +12,17 @@ import { UnitListElement } from './UnitList';
 class DashBoard extends React.Component {
   
   render() {
-    if (this.props.nearest === undefined || this.props.latest === undefined) {
+    if (this.props.nearest === undefined || this.props.frequent === undefined) {
       return <div>loading...</div>;
     }
-    const nearest = _.map(this.props.nearest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
-    const latest = _.map(this.props.latest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
+    let nearest;
+    if (this.props.userLocation === null) {
+      nearest = <span>Sijainti ei saatavilla.</span>;
+    }
+    else {
+      nearest = _.map(this.props.nearest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
+    }
+    const frequent = _.map(this.props.frequent, (u) => { return <UnitListElement key={u.id} {...u}/>; });
     return (
       <div className="row">
           <div className="col-xs-12">
@@ -20,9 +30,9 @@ class DashBoard extends React.Component {
               <div className="list-group facility-drilldown">
                   { nearest }
               </div>
-              <h5>Viimeisimmät</h5>
+              <h5>Yleisimmät</h5>
               <div className="list-group facility-drilldown">
-                  { latest }
+                  { frequent }
               </div>
           </div>
       </div>
@@ -30,18 +40,20 @@ class DashBoard extends React.Component {
   }
 }
 
+function topUnits(n, units, unitsByUpdateCount) {
+  return _.reverse(_.map(_.sortBy(unitsByUpdateCount, ['count']), (u) => {
+    return units[u.id];
+  }).slice(0, n));
+}
+
 function mapStateToProps(state) {
   if (_.keys(state.data.unit).length > 0) {
     return {
-      // TODO repla
-      nearest: [
-        state.data.unit[2147483616],
-        state.data.unit[2147483637],
-        state.data.unit[2147483612]],
-      latest: [
-        state.data.unit[2147483623],
-        state.data.unit[2147483639],
-        state.data.unit[2147483620]]
+      nearest: _.map(state.data.unitsByDistance, (u) => {
+        return state.data.unit[u.id];
+      }),
+      frequent: topUnits(20, state.data.unit, state.unitsByUpdateCount),
+      userLocation: state.userLocation
     };
   }
   return {};

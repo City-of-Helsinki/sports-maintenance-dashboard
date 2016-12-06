@@ -6,21 +6,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { fetchUnitsWithServices, fetchResource } from '../actions/index';
-
-require('process');
-const { SERVICES } = process.env;
+import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits } from '../actions/index';
+import { getInitialLocation } from '../lib/geolocation';
+import * as constants from '../constants/index';
 
 class AppComponent extends React.Component {
   componentWillMount() {
+    const services = constants.SERVICE_GROUPS[this.props.serviceGroup];
     this.props.fetchResource(
-      'service', { id: SERVICES },
+      'service', { id: services.join(',') },
       ['id', 'name'], ['observable_properties']
     );
     this.props.fetchUnitsWithServices(
-      [SERVICES], {
-        selected: ['id', 'name', 'services'],
+      services, this.props.maintenanceOrganization, {
+        selected: ['id', 'name', 'services', 'location', 'extensions'],
         embedded: ['observations']});
+    getInitialLocation((position) => {
+      this.props.setUserLocation(position);
+      if (services) {
+        this.props.getNearestUnits(position, services, this.props.maintenanceOrganization);
+      }
+    });
+
   }
   render() {
     let queueClassName = `glyphicon glyphicon-transfer`;
@@ -53,19 +60,28 @@ class AppComponent extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
-    unsentUpdateCount: _.size(state.updateQueue)
+    unsentUpdateCount: _.size(state.updateQueue),
+    maintenanceOrganization: state.auth.maintenance_organization,
+    serviceGroup: state.serviceGroup
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUnitsWithServices: (services, fieldSpecs) => {
-      dispatch(fetchUnitsWithServices(services, fieldSpecs));
+    fetchUnitsWithServices: (services, maintenanceOrganization, fieldSpecs) => {
+      dispatch(fetchUnitsWithServices(services, maintenanceOrganization, fieldSpecs));
     },
     fetchResource: (resourceType, filters, selected, embedded) => {
       dispatch(fetchResource(resourceType, filters, selected, embedded));
+    },
+    setUserLocation: (position) => {
+      dispatch(setUserLocation(position));
+    },
+    getNearestUnits: (...args) => {
+      dispatch(getNearestUnits(...args));
     }
   };
 };

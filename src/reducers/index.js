@@ -5,15 +5,17 @@ import MOCK_GROUPS from './mock_groups.js';
 
 const initialDataState = {
   unit: {},
-  group: MOCK_GROUPS,
+  unitsByDistance: [],
   observable_property: {},
   observation: {},
   service: {}
 };
 
 const initialAuthState = {
-  userName: null,
-  apiToken: null
+  maintenance_organization: null,
+  token: null,
+  error: null,
+  login_id: null
 };
 
 const initialPendingObservationsState = {};
@@ -31,14 +33,40 @@ function dataReducer(state = initialDataState, action) {
         {[resourceType]: Object.assign(
           state[resourceType],
           action.payload[resourceType])});
+    case 'GET_NEAREST_UNITS':
+      return Object.assign(
+        {}, state,
+        {unitsByDistance: action.payload});
   }
   return state;
 }
 
 function authReducer(state = initialAuthState, action) {
   switch (action.type) {
-    case 'LOGIN_SUCCESS':
-      return action.payload;
+    case 'LOGIN':
+      if (action.error) {
+        return {
+          error: action.payload,
+          token: null,
+          maintenance_organization: null,
+          login_id: null
+        };
+      }
+    const {maintenance_organization, token, login_identifier} = action.payload;
+    if (!maintenance_organization || !token) {
+      return {
+        error: action.payload,
+        maintenance_organization,
+        token,
+        login_id: login_identifier
+      };
+    }
+    return {
+      error: null,
+      maintenance_organization,
+      token,
+      login_id: login_identifier
+    };
   }
   return state;
 }
@@ -108,9 +136,44 @@ function serviceGroupReducer(state = serviceGroup, action) {
   return state;
 }
 
+const userLocation = null;
+
+function userLocationReducer(state = userLocation, action) {
+  if (action.type === 'SET_USER_LOCATION') {
+    return action.payload;
+  }
+  return state;
+}
+
+
+const unitsByUpdateTime = [];
+function unitsByUpdateTimeReducer(state = unitsByUpdateTime, action) {
+  if (action.type === 'POST_OBSERVATION') {
+    if (action.error === true) return state;
+    return _.uniq([].concat(action.meta.unitId, state)).slice(0, 20);
+  }
+  return state;
+}
+
+const unitsByUpdateCount = {};
+function unitsByUpdateCountReducer(state = unitsByUpdateCount, action) {
+  if (action.type === 'POST_OBSERVATION') {
+    if (action.error === true) return state;
+    const { unitId } = action.meta;
+    const existingCount = (state[unitId] || {}).count || 0;
+    const result = Object.assign({}, state, {[unitId]: {count: existingCount + 1, id: unitId}});
+    return result;
+  }
+  return state;
+}
+
 export default combineReducers({
   data: dataReducer,
   auth: authReducer,
   updateQueue: pendingObservationsReducer,
   updateFlush: updateFlushReducer,
-  serviceGroup: serviceGroupReducer});
+  serviceGroup: serviceGroupReducer,
+  userLocation: userLocationReducer,
+  unitsByUpdateTime: unitsByUpdateTimeReducer,
+  unitsByUpdateCount: unitsByUpdateCountReducer
+});

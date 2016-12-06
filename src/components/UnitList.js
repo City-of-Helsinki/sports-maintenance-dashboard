@@ -2,19 +2,27 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
+import { calculateGroups } from './utils';
 
 import { getQualityObservation, COLORS, ICONS } from './utils';
 
 export function UnitListElement (props) {
   const url = `/unit/${props.id}`;
+  let className;
   const qualityObservation = getQualityObservation(props);
-  const iconClass = ICONS[qualityObservation.value];
-  let colorClass = COLORS[qualityObservation.quality];
-  const condition = qualityObservation.quality;
-  if (qualityObservation.value === 'snowless') {
-    colorClass = 'info';
+  if (qualityObservation) {
+    const iconClass = ICONS[qualityObservation.value];
+    let colorClass = COLORS[qualityObservation.quality];
+    const condition = qualityObservation.quality;
+    if (qualityObservation.value === 'snowless') {
+      colorClass = 'info';
+    }
+    className = `condition condition-${condition} fa text-${colorClass} fa-${iconClass}`;
   }
-  const className = `condition condition-${condition} icon text-${colorClass} ${iconClass}`;
+  else {
+    className = 'condition';
+  }
+
   return (
     <Link to={url} className="list-group-item">
         <span className="action-icon glyphicon glyphicon-pencil" />
@@ -70,11 +78,11 @@ function unitsForGroup(allUnits, group) {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log('mapStateToProps');
   return {
-    units: unitsForGroup(
-      state.data.unit,
-      state.data.group[ownProps.params.groupId])
+    units: _.filter(state.data.unit, (u) => {
+      return (u.extensions.maintenance_group
+              === ownProps.params.groupId);
+    })
   };
 }
 

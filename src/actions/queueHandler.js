@@ -8,7 +8,7 @@ import {
   finishRetryImmediately } from './index';
 
 function send(store, item) {
-  store.dispatch(sendObservation(item));
+  store.dispatch(sendObservation(item, store.getState().auth.token));
 }
 
 function markAndSendObservation(store, item) {
