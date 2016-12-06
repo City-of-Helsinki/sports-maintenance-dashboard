@@ -1,7 +1,8 @@
 import _ from 'lodash';
 
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
+
 import { connect } from 'react-redux';
 
 import { selectServiceGroup, login } from '../actions/index';
@@ -21,7 +22,7 @@ class LoginScreen extends React.Component {
   }
   redirectIfLoggedIn(auth) {
     if (auth.token !== null && auth.token !== undefined) {
-      this.props.history.push('/');
+      this.props.router.push('/');
     }
   }
   componentWillMount() {
@@ -103,4 +104,4 @@ function mapDispatchToProps(dispatch) {
          login: (userName, password) => { dispatch(login(userName, password)); }};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginScreen));

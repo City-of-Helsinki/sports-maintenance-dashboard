@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { Link } from 'react-router';
 
 import { statusBarClassName, getQualityObservation } from './utils';
 
@@ -27,10 +28,10 @@ export default function UnitStatusSummary(props) {
     <div className="row">
         <div className="col-xs-12">
             <div className="list-group facility-return clearfix">
-                <a onClick={props.backLink} href="#!" className="list-group-item">
+                <Link to="/" className="list-group-item">
                     <span className="action-icon glyphicon glyphicon-chevron-left"></span>
                     Takaisin
-                </a>
+                </Link>
             </div>
             <div className="well">
                 <h4>{ props.unit.name.fi }</h4>

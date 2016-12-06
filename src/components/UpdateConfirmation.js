@@ -4,7 +4,7 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
 import UnitStatusSummary from './UnitStatusSummary';
-import { COLORS, ICONS, backLink } from './utils';
+import { COLORS, ICONS } from './utils';
 import { unitObservableProperties } from '../lib/municipal-services-client';
 
 import * as actions from '../actions/index';
@@ -72,7 +72,7 @@ class UpdateConfirmation extends React.Component {
     const unitUrl = `/unit/${this.props.unit.id}`;
     return (
       <div className="facility-status">
-          <UnitStatusSummary unit={this.props.unit} backLink={backLink(this)} />
+          <UnitStatusSummary unit={this.props.unit} />
           <div className="panel panel-warning">
               <div className="panel-heading">
                   <h6>Oletko varma että haluat päivittää paikan kuntotiedon?</h6>
