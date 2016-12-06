@@ -73,7 +73,7 @@ body {
 
 .facility-drilldown {
   .list-group-item {
-    .glyphicon {
+    .action-icon {
       float: right;
     }
     text-transform: capitalize;
@@ -88,12 +88,8 @@ body {
 }
 
 .facility-status {
-  .btn {
-    border: 3px solid #fff;
-  }
-  .btn.active {
-    border: 3px solid $brand-primary;
-  }
+  .btn { font-size: 14px; }
+  .icon { font-size: 24px; }
 }
 
 .unit-status {
@@ -103,20 +99,35 @@ body {
   padding: 3px 6px;
 }
 
+.unit-name {
+  margin-left: 48px;
+  margin-right: 32px;
+}
+
 .condition {
-  margin-right: $padding-base-horizontal;
+  border-radius: 6px;
+  padding: 6px;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  float: left;
+  .icon {
+    font-size: 20px;
+    line-height: 20px;
+    color: #fff;
+  }
 }
 
-.condition-ok {
-  //@extend .fa;
-  //@extend .fa-meh-o;
-  color: $brand-success;
+.condition-good {
+  background-color: $brand-success;
 }
 
-.condition-nosnow {
-  //@extend .fa;
-  //@extend .fa-tint;
-  color: $brand-danger;
+.condition-unusable {
+  background-color: $brand-danger;
+}
+
+.condition-satisfactory {
+  background-color: $brand-warning;
 }
 
 .action-icon {

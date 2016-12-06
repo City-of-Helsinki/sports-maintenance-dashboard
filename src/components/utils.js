@@ -11,15 +11,15 @@ export const COLORS = {
 };
 
 export const ICONS = {
-  good: 'smile-o',
-  satisfactory: 'meh-o',
-  poor: 'frown-o',
-  groomed: 'road',
-  littered: 'pagelines',
-  closed: 'forbidden',
-  snowless: 'water',
-  event: 'trophy',
-  snowmaking: 'spinner'
+  good: 'icon-smile-o',
+  satisfactory: 'icon-meh-o',
+  poor: 'icon-frown-o',
+  groomed: 'icon-road',
+  littered: 'icon-pagelines',
+  closed: 'icon-forbidden',
+  snowless: 'icon-water',
+  event: 'icon-trophy',
+  snowmaking: 'icon-spinner'
 };
 
 export function statusBarClassName(observation) {
