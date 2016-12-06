@@ -43,20 +43,24 @@ class LoginScreen extends React.Component {
     const { error } = this.props.auth;
     let errorMessage = null;
     if (error) {
-      errorMessage = <span className="label label-danger">{ error.non_field_errors[0] }</span>;
+      errorMessage = <div className="alert alert-danger">{ error.non_field_errors[0] }</div>;
     }
     return (
           <div className="row">
-              <div className="col-xs-8 col-xs-offset-2">
-                  <div className="panel panel-default">
+              <div className="col-xs-10 col-xs-offset-1">
+                  <div className="panel panel-default login-panel">
                       <div className="panel-heading">
-                          <h3 className="form-login-heading">Kirjaudu sisään</h3>
+                        <img src="./img/pulkka-icon.png" className="app-icon"/>
+                        <h3 className="form-login-heading">PULKKA</h3>
                       </div>
                       <div className="panel-body">
                           {errorMessage}
+                          Kirjaudu sisään
                           <form className="form-login" onSubmit={_.bind(this.onSubmit, this)}>
-                              <input type="text" id="inputUsername" value={this.state.username} onChange={this.handleChange('username')} className="form-control input-lg" placeholder="käyttäjätunnus" required="" autoFocus="" />
-                              <input type="password" id="inputPassword" value={this.state.password} onChange={this.handleChange('password')} className="form-control input-lg" placeholder="salasana" required="" />
+                            <div className="input-group input-group-lg">
+                                <input type="text" id="inputUsername" value={this.state.username} onChange={this.handleChange('username')} className="form-control" placeholder="käyttäjätunnus" required="" autoFocus=""/>
+                                <input type="password" id="inputPassword" value={this.state.password} onChange={this.handleChange('password')} className="form-control" placeholder="salasana" required="" />
+                            </div>
                               {
                                   <div className="well">
                                         <h5>Vastuualue</h5>
