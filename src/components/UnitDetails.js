@@ -51,14 +51,15 @@ class UnitDetails extends React.Component {
             </div>
           </div>
         </div>
-        <div className="panel panel-default">
-          <div className="panel-heading">Päivitä paikan kuntokuvaus</div>
-          <div className="panel-body">
-            <textarea className="form-control" rows="3" placeholder="Varokaa metsätöitä.">
-            </textarea>
-            <Link to="/unit/1" className="btn btn-primary btn-block">Päivitä kuvaus</Link>
-          </div>
-        </div>
+        {/*<div className="panel panel-default">
+            <div className="panel-heading">Päivitä paikan kuntokuvaus</div>
+            <div className="panel-body">
+              <textarea className="form-control" rows="3" placeholder="Varokaa metsätöitä.">
+              </textarea>
+              <Link to="/unit/1" className="btn btn-primary btn-block">Päivitä kuvaus</Link>
+            </div>
+           </div>
+        */}
       </div>
     );
   }
