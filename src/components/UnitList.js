@@ -8,7 +8,7 @@ import { getQualityObservation, COLORS, ICONS } from './utils';
 
 export function UnitListElement (props) {
   const url = `/unit/${props.id}`;
-  let className;
+  let iconClassName, badgeClassName;
   const qualityObservation = getQualityObservation(props);
   if (qualityObservation) {
     const iconClass = ICONS[qualityObservation.value];
@@ -17,16 +17,23 @@ export function UnitListElement (props) {
     if (qualityObservation.value === 'snowless') {
       colorClass = 'info';
     }
-    className = `condition condition-${condition} fa text-${colorClass} fa-${iconClass}`;
+    iconClassName = `icon ${iconClass}`;
+    badgeClassName = `condition condition-${condition}`;
   }
   else {
-    className = 'condition';
+    iconClassName = 'icon icon-question';
+    badgeClassName = 'condition condition-unknown';
   }
+
   return (
     <Link to={url} className="list-group-item">
-        <span className="action-icon glyphicon glyphicon-pencil" />
-        <span className={className} />
-        { props.name.fi }
+      <div className="unit-list-item clearfix">
+        <div className={badgeClassName}><span className={iconClassName} /></div>
+        <span className="action-icon icon icon-pencil-square" />
+        <div className="unit-name">
+          { props.name.fi }
+        </div>
+      </div>
     </Link>
   );
 }
