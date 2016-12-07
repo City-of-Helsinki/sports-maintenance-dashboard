@@ -62,7 +62,7 @@ export default function queueHandler(store) {
         fetchResource(
           'unit',
           {id: item.unitId},
-          ['id', 'name', 'services'],
+          ['id', 'name', 'services', 'extensions'],
           ['observations'],
           {observation: item})
       );
