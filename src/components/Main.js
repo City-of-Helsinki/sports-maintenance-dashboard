@@ -31,8 +31,12 @@ class AppComponent extends React.Component {
   }
   render() {
     let queueClassName = `glyphicon glyphicon-transfer`;
+    let notificationCount;
     if (this.props.unsentUpdateCount > 0) {
-      queueClassName += ' has-notifications';
+      notificationCount = <span className="notification-count">{this.props.unsentUpdateCount}</span>;
+    }
+    else {
+      notificationCount = null;
     }
     return (
       <div className="index">
@@ -45,7 +49,7 @@ class AppComponent extends React.Component {
                   <Link to="/queue">
                       <div className="btn-lg">
                           <span className={queueClassName}>
-                              <span className="notification-count">{this.props.unsentUpdateCount}</span>
+                              { notificationCount }
                           </span>
                       </div>
                   </Link>
