@@ -108,8 +108,27 @@ body {
 }
 
 .facility-status {
-  .btn { font-size: 14px; }
-  .icon { font-size: 24px; }
+  .btn {
+    font-size: 14px;
+    white-space: normal;
+    line-height: 1;
+    padding: 6px;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+  }
+
+  .btn__newstatus {
+    height: 14px * 5;
+  }
+
+  .icon { font-size: 24px; };
+
+  h6 {
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+
 }
 
 .unit-status {
@@ -120,8 +139,9 @@ body {
 }
 
 .unit-name {
-  margin-left: 48px;
-  margin-right: 32px;
+  margin-left: 42px;
+  margin-right: 20px;
+  line-height: 1;
 }
 
 .condition {
@@ -150,8 +170,18 @@ body {
   background-color: $brand-warning;
 }
 
+.condition-unknown {
+  background-color: darken($gray-lighter, 10%);
+}
+
 .action-icon {
   color: $brand-primary;
+}
+
+.help-block {
+  margin-top: $line-height-computed;
+  line-height: 1;
+  color: $gray-light;
 }
 
 // Make bootstrap navbar non-collapsible

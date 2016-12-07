@@ -19,7 +19,11 @@ export const ICONS = {
   closed: 'icon-forbidden',
   snowless: 'icon-water',
   event: 'icon-trophy',
-  snowmaking: 'icon-spinner'
+  snowmaking: 'icon-spinner',
+  frozen: 'icon-frozen',
+  plowed: 'icon-plowed',
+  freezing_started: 'icon-started',
+  unknown: 'icon-question'
 };
 
 export function statusBarClassName(observation) {

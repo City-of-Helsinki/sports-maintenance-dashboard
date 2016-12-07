@@ -21,10 +21,10 @@ const HELP_TEXTS = {
 
 function ConfirmButton({unitId, allowedValue, type, enqueueObservation}) {
   const iconClassName = `icon ${ICONS[allowedValue.identifier]}`;
-  const buttonClassName = `btn btn-${COLORS[allowedValue.quality]} btn-block`;
+  const buttonClassName = `btn btn-${COLORS[allowedValue.quality]} btn-block btn__confirmation`;
   return (
         <Link to={`/unit/${unitId}`} className={buttonClassName} onClick={() => { enqueueObservation(allowedValue.property, allowedValue, unitId, (type=='serviced')); }}>
-            <h5>{ ACTION_TYPE[type] }</h5>
+            <h6>{ ACTION_TYPE[type] }</h6>
             <span className={iconClassName}></span><br/>
             { allowedValue.name.fi }
         </Link>

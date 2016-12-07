@@ -21,8 +21,8 @@ export function UnitListElement (props) {
     badgeClassName = `condition condition-${condition}`;
   }
   else {
-    iconClassName = '';
-    badgeClassName = 'condition';
+    iconClassName = 'icon icon-question';
+    badgeClassName = 'condition condition-unknown';
   }
 
   return (

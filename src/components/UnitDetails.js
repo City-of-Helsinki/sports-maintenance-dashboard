@@ -14,7 +14,7 @@ function ObservableProperty ({quality, property, identifier, name, unitId}) {
   const url = `/unit/${unitId}/update/${property}/${identifier}`;
   const color = COLORS[quality];
   const icon = ICONS[identifier];
-  const buttonClassName = `btn btn-${color} btn-block`;
+  const buttonClassName = `btn btn-${color} btn-block btn__newstatus`;
   const iconClassName = `icon ${icon}`;
   return <Link to={url} className={buttonClassName}><span className={iconClassName}></span><br/>{name.fi}</Link>;
 }

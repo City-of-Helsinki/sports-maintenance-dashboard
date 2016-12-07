@@ -83,3 +83,15 @@
 .icon-road:before {
   content: "\6f";
 }
+.icon-started:before {
+  content: "\70";
+}
+.icon-frozen:before {
+  content: "\71";
+}
+.icon-plowed:before {
+  content: "\73";
+}
+.icon-question:before {
+  content: "\72";
+}
