@@ -40,11 +40,18 @@ export function getQualityObservation(unit) {
   });
 }
 
-export function calculateGroups(units) {
+export function calculateGroups(units, maintenanceOrg) {
   let result = {};
   _.each(units, (u) => {
-    const group = result[u.extensions.maintenance_group] || [];
-    result[u.extensions.maintenance_group] = group.concat(u.id);
+    if (u.extensions.maintenance_organization == maintenanceOrg) {
+      const group = result[u.extensions.maintenance_group] || [];
+      result[u.extensions.maintenance_group] = group.concat(u.id);
+    }
+    else {
+      const key = 'muut kaupungit';
+      const group  = result[key] || [];
+      result[key] = group.concat(u.id);
+    }
   });
   return result;
 }

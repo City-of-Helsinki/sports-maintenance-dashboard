@@ -19,7 +19,6 @@ class GroupList extends React.Component {
     return (props.groups && Object.keys(props.groups).length > 0);
   }
   render() {
-    console.log(this.props.groups);
     if (!this.hasRequiredData(this.props)) {
       return <div>loading...</div>;
     }
@@ -41,7 +40,7 @@ class GroupList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    groups: calculateGroups(state.data.unit)
+    groups: calculateGroups(state.data.unit, state.auth.maintenance_organization)
   };
 };
 
