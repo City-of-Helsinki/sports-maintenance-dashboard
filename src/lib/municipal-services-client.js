@@ -11,6 +11,7 @@ function resourceEndpoint(resourceType) {
 function filteredUrl(url, filters, pageSize) {
   let uri = URI(url);
   uri.addSearch({page_size: pageSize || 1000});
+  uri.addSearch({freshen: (new Date()).getTime()});
   if (filters === null || filters === undefined) {
     return uri.toString();
   }
