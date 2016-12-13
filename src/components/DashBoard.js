@@ -20,7 +20,10 @@ class DashBoard extends React.Component {
       nearest = <span>Sijainti ei saatavilla.</span>;
     }
     else {
-      nearest = _.map(this.props.nearest, (u) => { return <UnitListElement key={u.id} {...u}/>; });
+      nearest = _.map(_.filter(this.props.nearest, (u) => {
+        return (u !== undefined && u !== null && u.id);
+      }), (u) => {
+        return <UnitListElement key={u.id} {...u}/>; });
     }
     const frequent = _.map(this.props.frequent, (u) => { return <UnitListElement key={u.id} {...u}/>; });
     return (
