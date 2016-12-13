@@ -5,7 +5,7 @@ import * as ApiClient from '../lib/municipal-services-client.js';
 export const fetchUnitsWithServices = createAction(
   'GET_RESOURCE',
   ApiClient.fetchUnitsWithServices,
-  () => {return { resourceType: 'unit' };});
+  () => {return { resourceType: 'unit', replaceAll: true };});
 
 export const fetchResource = createAction(
   'GET_RESOURCE',

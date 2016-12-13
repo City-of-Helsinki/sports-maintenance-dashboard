@@ -28,10 +28,14 @@ function dataReducer(state = initialDataState, action) {
   switch (action.type) {
     case 'GET_RESOURCE':
       const resourceType = action.meta.resourceType;
+      let existingResources = state[resourceType];
+      if (action.meta.replaceAll === true) {
+        existingResources = {};
+      }
       return Object.assign(
         {}, state,
         {[resourceType]: Object.assign(
-          state[resourceType],
+          existingResources,
           action.payload[resourceType])});
     case 'GET_NEAREST_UNITS':
       return Object.assign(
