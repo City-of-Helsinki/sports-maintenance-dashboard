@@ -59,7 +59,7 @@ class LoginScreen extends React.Component {
                           Kirjaudu sisään
                           <form className="form-login" onSubmit={_.bind(this.onSubmit, this)}>
                             <div className="input-group input-group-lg">
-                                <input type="text" id="inputUsername" value={this.state.username} onChange={this.handleChange('username')} className="form-control" placeholder="käyttäjätunnus" required="" autoFocus=""/>
+                                <input type="text" autoCapitalize="off" id="inputUsername" value={this.state.username} onChange={this.handleChange('username')} className="form-control" placeholder="käyttäjätunnus" required="" autoFocus=""/>
                                 <input type="password" id="inputPassword" value={this.state.password} onChange={this.handleChange('password')} className="form-control" placeholder="salasana" required="" />
                             </div>
                               {
