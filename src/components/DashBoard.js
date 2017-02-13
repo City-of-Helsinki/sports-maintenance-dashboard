@@ -1,9 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 
-require('process');
-const { SERVICES } = process.env;
-
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
