@@ -11,6 +11,12 @@ const SHORT_DESCRIPTIONS = {
 
 function Observation (props) {
   const time = moment(props.time).format('dd l [klo] LTS');
+  if (props.property == 'notice') {
+    return (<div className="unit-observation-text">
+            <small>Tekstitiedote julkaistu { time }</small><br/>
+            <div className="notice-small"><small>"{ props.value.fi }"</small></div>
+            </div>);
+  }
   return <div className="unit-observation-text" ><small>{ SHORT_DESCRIPTIONS[props.property] } { time }</small></div>;
 }
 

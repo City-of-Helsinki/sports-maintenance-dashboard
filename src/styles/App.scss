@@ -33,6 +33,10 @@ body {
 
 }
 
+#app {
+  max-width: 800px;
+}
+
 .login-panel {
   margin-top: 48px;
 
@@ -156,6 +160,19 @@ body {
     line-height: 20px;
     color: #fff;
   }
+}
+
+.notice-small {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.notice-large {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-style: italic;
 }
 
 .condition-good {

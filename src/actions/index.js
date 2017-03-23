@@ -28,10 +28,13 @@ export const login = createAction(
 export const enqueueObservation = createAction(
   'ENQUEUE_OBSERVATION',
   (property, value, unitId, addServicedObservation=false) => {
+    if (value && value.identifier !== undefined) {
+      value = value.identifier;
+    }
     return {
       addServicedObservation,
       unitId,
-      value: value.identifier,
+      value,
       property
     };
   }

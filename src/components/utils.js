@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import React from 'react';
 
 export const QUALITIES = [
   'good', 'satisfactory', 'unusable'
@@ -59,4 +60,3 @@ export function calculateGroups(units, maintenanceOrg) {
   });
   return result;
 }
-

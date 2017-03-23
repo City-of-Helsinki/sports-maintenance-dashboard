@@ -25,6 +25,7 @@ import GroupList from './components/GroupList';
 import UnitList from './components/UnitList'; 
 import UnitDetails from './components/UnitDetails'; 
 import UpdateConfirmation from './components/UpdateConfirmation'; 
+import DeleteConfirmation from './components/DeleteConfirmation';
 import UpdateQueue from './components/UpdateQueue'; 
 import LoginScreen from './components/LoginScreen';
 
@@ -67,6 +68,7 @@ ReactDOM.render(
             <Route path="/group/:groupId" component={UnitList} />
             <Route path="/unit/:unitId" component={UnitDetails} />
             <Route path="/unit/:unitId/update/:propertyId/:valueId" component={UpdateConfirmation} />
+            <Route path="/unit/:unitId/delete/:propertyId" component={DeleteConfirmation} />
             <Route path="/queue" component={UpdateQueue} />
         </Route>
     </Router>

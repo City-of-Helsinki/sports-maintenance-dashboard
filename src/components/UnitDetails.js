@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { unitObservableProperties } from '../lib/municipal-services-client';
 import UnitStatusSummary from './UnitStatusSummary';
 
+import { enqueueObservation } from '../actions/index';
+
 // Todettu - Viimeksi kunnostettu
 
 import { COLORS, ICONS, QUALITIES } from './utils';
@@ -19,6 +21,45 @@ function ObservableProperty ({quality, property, identifier, name, unitId}) {
   return <Link to={url} className={buttonClassName}><span className={iconClassName}></span><br/>{name.fi}</Link>;
 }
 
+class DescriptiveStatusForm extends React.Component {
+  onSubmit(ev) {
+    this.props.enqueueObservation('notice', this.textarea.value, this.props.unitId);
+    ev.preventDefault();
+  }
+  render() {
+    let textualDescription = null;
+    if (this.props.textualDescription !== undefined &&
+        this.props.textualDescription.value !== undefined) {
+      textualDescription = this.props.textualDescription.value.fi;
+    }
+    let deleteButton = <Link to={`/unit/${this.props.unitId}/delete/notice`} className="btn btn-danger btn-block">Poista kuvausteksti</Link>;
+    if (this.props.textualDescription === undefined ||
+        this.props.textualDescription.value === null) {
+      deleteButton = null;
+    }
+
+    return (
+      <div className="panel panel-default">
+          <div className="panel-heading">Päivitä paikan kuntokuvaus</div>
+          <div className="panel-body">
+              <form id="descriptive-status-form" key={textualDescription} onSubmit={_.bind(this.onSubmit, this)}>
+              <textarea
+                   ref={(textarea) => this.textarea = textarea}
+                   id="notice-value-fi"
+                   className="form-control"
+                   defaultValue={textualDescription}
+                   rows="3"
+                   placeholder="Kirjoita tähän suomen kielellä kuvaus paikan tilanteesta.">
+              </textarea>
+              <button type="submit" id="description-submit" className="btn btn-primary btn-block">Julkaise kuvausteksti</button>
+              { deleteButton }
+              </form>
+          </div>
+      </div>
+    );
+  }
+}
+
 class UnitDetails extends React.Component {
   hasRequiredData(props) {
     return (props.unit !== undefined &&
@@ -28,7 +69,6 @@ class UnitDetails extends React.Component {
     if (!this.hasRequiredData(this.props)) {
       return <div>Loading...</div>;
     }
-    console.log(this.props);
     let allowedValues = { };
     _.each (QUALITIES, (quality) => {
       allowedValues[quality] = _.map(this.props.allowedValues[quality], (v) => {
@@ -51,15 +91,7 @@ class UnitDetails extends React.Component {
             </div>
           </div>
         </div>
-        {/*<div className="panel panel-default">
-            <div className="panel-heading">Päivitä paikan kuntokuvaus</div>
-            <div className="panel-body">
-              <textarea className="form-control" rows="3" placeholder="Varokaa metsätöitä.">
-              </textarea>
-              <Link to="/unit/1" className="btn btn-primary btn-block">Päivitä kuvaus</Link>
-            </div>
-           </div>
-        */}
+        <DescriptiveStatusForm enqueueObservation={ this.props.enqueueObservation } unitId={ this.props.unit.id } textualDescription={this.props.textualDescription} />
       </div>
     );
   }
@@ -77,15 +109,23 @@ function allowedValuesByQuality(observableProperties) {
   return result;
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    enqueueObservation: (property, allowedValue, unitId, addServicedObservation) => {
+      dispatch(enqueueObservation(property, allowedValue, unitId, addServicedObservation));
+    }
+  };
+}
+
 function mapStateToProps(state, ownProps) {
-  console.log('MAPSTATETOPROPS UNIT');
   const unit = state.data.unit[ownProps.params.unitId];
   const observableProperties = unitObservableProperties(unit, state.data.service);
   return {
     unit,
     observableProperties,
-    allowedValues: allowedValuesByQuality(observableProperties)
+    allowedValues: allowedValuesByQuality(observableProperties),
+    textualDescription: _.find(unit.observations, (o) => { return o.property == 'notice'; })
   };
 }
 
-export default connect(mapStateToProps, null)(UnitDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(UnitDetails);
