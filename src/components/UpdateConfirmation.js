@@ -21,7 +21,7 @@ const HELP_TEXTS = {
 
 function ConfirmButton({unitId, allowedValue, type, enqueueObservation}) {
   const iconClassName = `icon ${ICONS[allowedValue.identifier]}`;
-  const buttonClassName = `btn btn-${COLORS[allowedValue.quality]} btn-block btn__confirmation`;
+  const buttonClassName = `btn btn-${COLORS[allowedValue.quality] || 'primary'} btn-block btn__confirmation`;
   return (
         <Link to={`/unit/${unitId}`} className={buttonClassName} onClick={() => { enqueueObservation(allowedValue.property, allowedValue, unitId, (type=='serviced')); }}>
             <h6>{ ACTION_TYPE[type] }</h6>

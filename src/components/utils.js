@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 
 export const QUALITIES = [
-  'good', 'satisfactory', 'unusable'
+  'good', 'satisfactory', 'unusable', 'unknown'
 ];
 
 export const COLORS = {

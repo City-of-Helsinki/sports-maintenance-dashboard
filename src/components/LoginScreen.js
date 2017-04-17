@@ -42,6 +42,7 @@ class LoginScreen extends React.Component {
   }
   render() {
     const { error } = this.props.auth;
+    console.log(error);
     let errorMessage = null;
     if (error) {
       errorMessage = <div className="alert alert-danger">{ error.non_field_errors[0] }</div>;
@@ -76,13 +77,13 @@ class LoginScreen extends React.Component {
                                                     <label htmlFor="ice-skate">
                                                           Luistelukentät
                                                       </label>
-                                              </div>{/*
+                                              </div>{
                                               <div className="checkbox">
-                                                    <input id="swimming" type="radio" value="swimming" name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === 'swimming'} />
+                                                   <input id="swimming" type="radio" value="swimming" name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === 'swimming'} />
                                                       <label htmlFor="swimming">
                                                             Uimarannat
                                                       </label>
-                                              </div>*/}
+                                              </div>}
                                     </div>
                                   }
                                   <button className="btn btn-lg btn-primary btn-block" type="submit">Kirjaudu</button>

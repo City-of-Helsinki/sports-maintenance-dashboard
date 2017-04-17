@@ -104,14 +104,16 @@ export function postObservation(specification, token) {
 
 // utility functions
 
-export function unitObservableProperties(unit, services, qualityObservationsOnly=true) {
+export function unitObservableProperties(unit, services, qualityObservationsOnly=false) {
   if (unit === null || unit === undefined) {
     return [];
   }
   const unitServices = _.map(unit.services, (id) => {
     return services[id]; });
   const reducer = (collection, element) => {
-    let observableProperties = element.observable_properties;
+    let observableProperties = _.filter(element.observable_properties, (property) => {
+      return property.observation_type == 'categorical';
+    });
 
     if (qualityObservationsOnly) {
       observableProperties = _.filter(

@@ -6,7 +6,9 @@ import { statusBarClassName, getQualityObservation } from './utils';
 
 const SHORT_DESCRIPTIONS = {
   ski_trail_maintenance: 'Kunnostettu',
-  ski_trail_condition: 'Kunto todettu'
+  ski_trail_condition: 'Kunto todettu',
+  swimming_water_temperature: 'Lämpötila todettu',
+  swimming_water_algae: 'Levätilanne todettu'
 };
 
 function Observation (props) {
@@ -17,7 +19,12 @@ function Observation (props) {
             <div className="notice-small"><small>"{ props.value.fi }"</small></div>
             </div>);
   }
-  return <div className="unit-observation-text" ><small>{ SHORT_DESCRIPTIONS[props.property] } { time }</small></div>;
+  console.log(props);
+  let name = null;
+  if (props.name.fi) {
+    name = props.name.fi;
+  }
+  return <div className="unit-observation-text" ><small>{ SHORT_DESCRIPTIONS[props.property] }  <strong>{props.name.fi}</strong> { time }</small></div>;
 }
 
 export default function UnitStatusSummary(props) {

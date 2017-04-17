@@ -14,7 +14,7 @@ import { COLORS, ICONS, QUALITIES } from './utils';
 
 function ObservableProperty ({quality, property, identifier, name, unitId}) {
   const url = `/unit/${unitId}/update/${property}/${identifier}`;
-  const color = COLORS[quality];
+  const color = COLORS[quality] || 'primary';
   const icon = ICONS[identifier];
   const buttonClassName = `btn btn-${color} btn-block btn__newstatus`;
   const iconClassName = `icon ${icon}`;
@@ -60,6 +60,28 @@ class DescriptiveStatusForm extends React.Component {
   }
 }
 
+function ObservablePropertyPanel({allowedValues, header}) {
+  const amountOfValues = allowedValues.length;
+  const cutPoint = (amountOfValues / 2) + (amountOfValues % 2);
+  const left = allowedValues.slice(0, cutPoint);
+  const right = allowedValues.slice(cutPoint, amountOfValues);
+  return (
+    <div className="panel panel-default">
+        <div className="panel-heading">{ header }</div>
+        <div className="panel-body">
+            <div className="row">
+                <div className="col-xs-6">
+                    { left }
+                </div>
+                <div className="col-xs-6">
+                    { right }
+                </div>
+            </div>
+        </div>
+    </div>
+  );
+}
+
 class UnitDetails extends React.Component {
   hasRequiredData(props) {
     return (props.unit !== undefined &&
@@ -69,42 +91,36 @@ class UnitDetails extends React.Component {
     if (!this.hasRequiredData(this.props)) {
       return <div>Loading...</div>;
     }
-    let allowedValues = { };
-    _.each (QUALITIES, (quality) => {
-      allowedValues[quality] = _.map(this.props.allowedValues[quality], (v) => {
-        return <ObservableProperty key={v.identifier} {...v} unitId={this.props.unit.id} />;
-      });});
+    console.log(this.props.observableProperties);
+    console.log(this.props.allowedValues);
+
+    const panels = _.map(this.props.observableProperties, (property) => {
+      let allowedValues = [];
+      _.each (QUALITIES, (quality) => {
+        allowedValues = allowedValues.concat(_.map(this.props.allowedValues[property.id][quality], (v) => {
+          return <ObservableProperty key={v.identifier} {...v} unitId={this.props.unit.id} />;
+        }));
+      });
+      const header = property.name ? property.name.fi : 'Kuntotilanne';
+      return <ObservablePropertyPanel key={property.id} allowedValues={allowedValues} header={header}/>;
+    });
+
     return (
       <div className="facility-status">
         <UnitStatusSummary unit={this.props.unit} />
-        <div className="panel panel-default">
-          <div className="panel-heading">Päivitä paikan kuntotieto</div>
-          <div className="panel-body">
-            <div className="row">
-              <div className="col-xs-6">
-                { allowedValues.good }
-                { allowedValues.satisfactory }
-              </div>
-              <div className="col-xs-6">
-                { allowedValues.unusable }
-              </div>
-            </div>
-          </div>
-        </div>
-        <DescriptiveStatusForm enqueueObservation={ this.props.enqueueObservation } unitId={ this.props.unit.id } textualDescription={this.props.textualDescription} />
+        { panels }
+        <DescriptiveStatusForm enqueueObservation={this.props.enqueueObservation} unitId={this.props.unit.id} textualDescription={this.props.textualDescription} />
       </div>
     );
   }
 }
 
-function allowedValuesByQuality(observableProperties) {
+function allowedValuesByQuality(property) {
   let result = {};
-  _.each(observableProperties, (property) => {
-    _.each(property.allowed_values, (value) => {
-      value.property = property.id;
-      result[value.quality] = result[value.quality] || [];
-      result[value.quality].push(value);
-    });
+  _.each(property.allowed_values, (value) => {
+    value.property = property.id;
+    result[value.quality] = result[value.quality] || [];
+    result[value.quality].push(value);
   });
   return result;
 }
@@ -123,7 +139,7 @@ function mapStateToProps(state, ownProps) {
   return {
     unit,
     observableProperties,
-    allowedValues: allowedValuesByQuality(observableProperties),
+    allowedValues: _.fromPairs(_.map(observableProperties, (p) => { return [p.id, allowedValuesByQuality(p)]; })),
     textualDescription: _.find(unit.observations, (o) => { return o.property == 'notice'; })
   };
 }
