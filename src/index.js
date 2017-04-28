@@ -9,12 +9,7 @@ import promiseMiddleware from 'redux-promise';
 import persistState from 'redux-localstorage';
 import 'bootstrap-sass';
 
-
-import * as clientLib from './lib/municipal-services-client';
-import * as constants from './constants/index';
 import queueHandler from './actions/queueHandler';
-
-import { setUserLocation, getNearestUnits } from './actions/index';
 
 import rootReducer from './reducers/index';
 
@@ -22,11 +17,11 @@ import App from './components/Main';
 
 import DashBoard from './components/DashBoard';
 import GroupList from './components/GroupList';
-import UnitList from './components/UnitList'; 
-import UnitDetails from './components/UnitDetails'; 
-import UpdateConfirmation from './components/UpdateConfirmation'; 
+import UnitList from './components/UnitList';
+import UnitDetails from './components/UnitDetails';
+import UpdateConfirmation from './components/UpdateConfirmation';
 import DeleteConfirmation from './components/DeleteConfirmation';
-import UpdateQueue from './components/UpdateQueue'; 
+import UpdateQueue from './components/UpdateQueue';
 import LoginScreen from './components/LoginScreen';
 
 import moment from 'moment';
@@ -34,12 +29,14 @@ import moment from 'moment';
 import ES6Promise from 'es6-promise';
 ES6Promise.polyfill();
 import isomorphicFetch from 'isomorphic-fetch';
-
+isomorphicFetch;
 moment.locale('fi');
+
+const stateToPersist = ['data', 'auth', 'updateQueue', 'unitsByUpdateTime', 'unitsByUpdateCount', 'serviceGroup'];
 
 const finalCreateStore = compose(
   applyMiddleware(promiseMiddleware),
-  persistState(['data', 'auth', 'updateQueue', 'unitsByUpdateTime', 'unitsByUpdateCount', 'serviceGroup']))(createStore);
+  persistState(stateToPersist))(createStore);
 
 const store = finalCreateStore(rootReducer);
 window.store = store;

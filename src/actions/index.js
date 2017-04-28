@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { createAction, createActions } from 'redux-actions';
+import { createAction } from 'redux-actions';
 import * as ApiClient from '../lib/municipal-services-client.js';
 
 export const fetchUnitsWithServices = createAction(

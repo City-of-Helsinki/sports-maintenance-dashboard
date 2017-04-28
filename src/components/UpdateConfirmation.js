@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import UnitStatusSummary from './UnitStatusSummary';
@@ -29,7 +29,7 @@ function ConfirmButton({unitId, allowedValue, type, enqueueObservation}) {
             { allowedValue.name.fi }
         </Link>
   );
-};
+}
 
 class UpdateConfirmation extends React.Component {
   render () {

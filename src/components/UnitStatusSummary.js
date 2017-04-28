@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import _ from 'lodash';
 import { Link } from 'react-router';
 
 import { statusBarClassName, getQualityObservation } from './utils';
@@ -20,10 +21,6 @@ function Observation (props) {
             </div>);
   }
   console.log(props);
-  let name = null;
-  if (props.name.fi) {
-    name = props.name.fi;
-  }
   return <div className="unit-observation-text" ><small>{ SHORT_DESCRIPTIONS[props.property] }  <strong>{props.name.fi}</strong> { time }</small></div>;
 }
 

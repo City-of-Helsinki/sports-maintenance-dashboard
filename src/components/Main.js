@@ -30,7 +30,7 @@ class AppComponent extends React.Component {
 
   }
   render() {
-    let queueClassName = `glyphicon glyphicon-transfer`;
+    let queueClassName = 'glyphicon glyphicon-transfer';
     let notificationCount;
     if (this.props.unsentUpdateCount > 0) {
       notificationCount = <span className="notification-count">{this.props.unsentUpdateCount}</span>;

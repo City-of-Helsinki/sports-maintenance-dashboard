@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import { UnitListElement } from './UnitList';
@@ -59,7 +58,7 @@ function mapStateToProps(state) {
   return {};
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps() {
   return {};
 }
 

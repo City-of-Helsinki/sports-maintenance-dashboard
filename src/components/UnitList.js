@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import { calculateGroups } from './utils';
 
-import { getQualityObservation, COLORS, ICONS } from './utils';
+import { getQualityObservation, ICONS } from './utils';
 
 export function UnitListElement (props) {
   const url = `/unit/${props.id}`;
@@ -12,11 +11,7 @@ export function UnitListElement (props) {
   const qualityObservation = getQualityObservation(props);
   if (qualityObservation) {
     const iconClass = ICONS[qualityObservation.value];
-    let colorClass = COLORS[qualityObservation.quality];
     const condition = qualityObservation.quality;
-    if (qualityObservation.value === 'snowless') {
-      colorClass = 'info';
-    }
     iconClassName = `icon ${iconClass}`;
     badgeClassName = `condition condition-${condition}`;
   }
@@ -68,19 +63,6 @@ class UnitList extends React.Component {
       </div>
     );
   }
-}
-
-function unitsForGroup(allUnits, group) {
-  if (group === undefined) {
-    return undefined;
-  }
-  return _.reduce(group.units, (obj, id) => {
-    if (allUnits[id] === undefined) {
-      return {};
-    }
-    obj[id] = allUnits[id];
-    return obj;
-  }, {});
 }
 
 function mapStateToProps(state, ownProps) {

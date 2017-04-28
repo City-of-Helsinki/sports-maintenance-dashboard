@@ -91,8 +91,6 @@ class UnitDetails extends React.Component {
     if (!this.hasRequiredData(this.props)) {
       return <div>Loading...</div>;
     }
-    console.log(this.props.observableProperties);
-    console.log(this.props.allowedValues);
 
     const panels = _.map(this.props.observableProperties, (property) => {
       let allowedValues = [];

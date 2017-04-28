@@ -24,14 +24,13 @@ function LatestUpdates({units}) {
 
 class UpdateQueue extends React.Component {
   logout() {
-    if (window.confirm("Haluatko varmasti kirjautua ulos?")) {
+    if (window.confirm('Haluatko varmasti kirjautua ulos?')) {
       window.localStorage.clear();
       window.location = '/';
     }
   }
   render() {
     const items = _.map(this.props.items, (i) => {
-      const js = JSON.stringify(i);
       return (<Link className="list-group-item" to={`/unit/${i.unitId}`} key={i.unitId}>{ this.props.units[i.unitId].name.fi }</Link>);
     });
     return (

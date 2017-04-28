@@ -36,7 +36,6 @@ let currentStage = 0;
 function createSuccessCallback(callback) {
   return (position) => {
     currentStage++;
-    var crd = position.coords;
     if (currentStage < _.size(POSITION_OPTIONS) - 1) {
       getInitialLocation(callback);
     }
@@ -44,7 +43,7 @@ function createSuccessCallback(callback) {
   };
 }
 
-function error(positionError) {
+function error() {
 }
 
 export function getInitialLocation(callback) {
@@ -55,8 +54,4 @@ export function getInitialLocation(callback) {
   if (options) {
     navigator.geolocation.getCurrentPosition(createSuccessCallback(callback), error, options);
   }
-}
-
-export function updateLocation(callback) {
-
 }
