@@ -1,6 +1,8 @@
 import URI from 'urijs';
 import _ from 'lodash';
 
+import { CredentialError } from '../util/error';
+
 require('process');
 const API_BASE_URL = process.env.API_URL;
 
@@ -27,7 +29,7 @@ function selectFields(url, selected, embedded) {
     uri = uri.addSearch({include: embedded.join(',')});
   }
   return uri.toString();
-};
+}
 
 function preProcessResponse(resourceType, preprocess) {
   if (preprocess) {
@@ -37,7 +39,7 @@ function preProcessResponse(resourceType, preprocess) {
   }
   return (obj) => {
     return obj.results; };
-};
+}
 
 export function fetchResource(resourceType, filters=null, selected=null, embedded=null, pageSize=null, options={preprocess: true}) {
   const url = resourceEndpoint(resourceType);
@@ -74,7 +76,7 @@ export function postResource(resourceType, payload, token) {
 export function login(username, password) {
   if (!username || username === '' ||
       !password || password === '') {
-    throw new Error('Credentials needed for API login.');
+    return new RangeError('Credentials needed for API login.');
   }
   return fetch(resourceEndpoint('api-token-auth'), {
     method: 'POST',
@@ -85,6 +87,9 @@ export function login(username, password) {
       'Content-Type': 'application/json'
     }
   }).then((response) => {
+    if (!response.ok) {
+      throw new CredentialError('Authentication failed. Please check the username and password.');
+    }
     return response.json();
   });
 }

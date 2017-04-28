@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import _ from 'lodash';
 
-import MOCK_GROUPS from './mock_groups.js';
+import { CredentialError } from '../util/error';
 
 const initialDataState = {
   unit: {},
@@ -14,9 +14,10 @@ const initialDataState = {
 const initialAuthState = {
   maintenance_organization: null,
   token: null,
-  error: null,
   login_id: null
 };
+
+const initialAuthErrorState = null;
 
 const initialPendingObservationsState = {};
 
@@ -45,28 +46,48 @@ function dataReducer(state = initialDataState, action) {
   return state;
 }
 
+function authErrorReducer(state = initialAuthErrorState, action) {
+  if (action.type === 'LOGIN' && action.error) {
+    let payload = null;
+
+    if (action.payload !== undefined) {
+      if (action.payload.constructor === Object && Object.keys(action.payload).length > 0) {
+        payload = action.payload;
+      }
+      else if (action.payload instanceof RangeError) {
+        payload = {message: 'Kirjautuminen vaatii tunnuksen ja salasanan.'};
+      }
+      else if (action.payload instanceof CredentialError) {
+        payload = {message: 'Kirjautuminen epäonnistui. Tarkista tunnus ja salasana.'};
+      }
+      else {
+        payload = {message: 'Palvelimeen ei saatu yhteyttä tai tapahtui virhe.'};
+      }
+    }
+    return payload;
+  }
+  return state;
+}
+
 function authReducer(state = initialAuthState, action) {
   switch (action.type) {
     case 'LOGIN':
-      if (action.error) {
-        return {
-          error: action.payload,
-          token: null,
-          maintenance_organization: null,
-          login_id: null
-        };
-      }
+    if (action.error) {
+      return {
+        token: null,
+        maintenance_organization: null,
+        login_id: null
+      };
+    }
     const {maintenance_organization, token, login_identifier} = action.payload;
     if (!maintenance_organization || !token) {
       return {
-        error: action.payload,
         maintenance_organization,
         token,
         login_id: login_identifier
       };
     }
     return {
-      error: null,
       maintenance_organization,
       token,
       login_id: login_identifier
@@ -174,6 +195,7 @@ function unitsByUpdateCountReducer(state = unitsByUpdateCount, action) {
 export default combineReducers({
   data: dataReducer,
   auth: authReducer,
+  authError: authErrorReducer,
   updateQueue: pendingObservationsReducer,
   updateFlush: updateFlushReducer,
   serviceGroup: serviceGroupReducer,
