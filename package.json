@@ -1,7 +1,7 @@
 {
   "private": true,
   "version": "0.0.1",
-  "description": "Helpt UI - A user interface for logging tasks in projects",
+  "description": "Pulkka UI - A user interface for storing observations with timestamps",
   "main": "",
   "scripts": {
     "clean": "rimraf dist/*",
