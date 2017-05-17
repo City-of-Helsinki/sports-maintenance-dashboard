@@ -122,7 +122,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  console.log(actions);
   return {
     enqueueObservation: (property, allowedValue, unitId, addServicedObservation) => {
       dispatch(actions.enqueueObservation(property, allowedValue, unitId, addServicedObservation));
