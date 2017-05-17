@@ -20,7 +20,6 @@ function Observation (props) {
             <div className="notice-small"><small>"{ props.value.fi }"</small></div>
             </div>);
   }
-  console.log(props);
   return <div className="unit-observation-text" ><small>{ SHORT_DESCRIPTIONS[props.property] }  <strong>{props.name.fi}</strong> { time }</small></div>;
 }
 
