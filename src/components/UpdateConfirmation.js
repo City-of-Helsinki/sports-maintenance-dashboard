@@ -31,6 +31,10 @@ function ConfirmButton({unitId, allowedValue, type, enqueueObservation}) {
   );
 }
 
+function canPropertyBeMaintained(property) {
+  return property !== 'swimming_water_cyanobacteria';
+}
+
 class UpdateConfirmation extends React.Component {
   render () {
     if (this.props.unit === undefined || this.props.allowedValue === null) {
@@ -38,7 +42,10 @@ class UpdateConfirmation extends React.Component {
     }
     const quality = this.props.allowedValue.quality;
     let buttonRow, helpRow;
-    if (quality === 'good' || quality == 'satisfactory' || this.props.allowedValue.identifier == 'event') {
+    if (canPropertyBeMaintained(this.props.allowedValue.property) &&
+        (quality === 'good' ||
+         quality == 'satisfactory' ||
+         this.props.allowedValue.identifier == 'event')) {
       buttonRow = (
         <div className="row">
             <div className="col-xs-6">
