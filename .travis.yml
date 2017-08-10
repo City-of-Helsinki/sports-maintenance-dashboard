@@ -1,0 +1,17 @@
+sudo: false
+language: node_js
+node_js:
+  - "4.2"
+  - "lts/*"
+  - "node"
+
+cache:
+  directories:
+    - node_modules
+
+script:
+  - npm run lint
+  - npm test
+
+after_success:
+  - codecov < coverage/lcov.info
