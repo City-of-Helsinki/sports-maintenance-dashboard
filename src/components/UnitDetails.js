@@ -133,7 +133,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state, ownProps) {
   const unit = state.data.unit[ownProps.params.unitId];
-  const observableProperties = unitObservableProperties(unit, state.data.service);
+  const onlyQualityProperties = state.serviceGroup !== 'swimming';
+  const observableProperties = unitObservableProperties(unit, state.data.service, onlyQualityProperties);
   return {
     unit,
     observableProperties,
