@@ -21,5 +21,6 @@ Run `npm start`
 
 # Production build #
 
-1. Run `npm run build`.
-2. Deploy the contents of the dist folder as static files.
+1. Important! Update the version in `src/pulkka.appcache`
+2. Run `npm run build`.
+3. Deploy the contents of the dist folder as static files.
