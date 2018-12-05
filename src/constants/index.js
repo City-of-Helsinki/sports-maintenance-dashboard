@@ -1,6 +1,6 @@
 
 export const SERVICE_GROUPS = {
-  skiing: [33483, 33492],
-  iceSkating: [33420,33418,33419,33417,33421],
-  swimming: [33467,33468]
+  skiing: [191, 318],
+  iceSkating: [514,406,235,695,407],
+  swimming: [731,730]
 };
