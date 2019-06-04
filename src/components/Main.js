@@ -58,6 +58,11 @@ class AppComponent extends React.Component {
           </div>
         </nav>
           <div className="view-content container-fluid">
+              <div className="row">
+                  <div className="col-xs-12">
+                      <p className="text-right">Pulkka 2019</p>
+                  </div>
+              </div>
               {this.props.children}
           </div>
       </div>
