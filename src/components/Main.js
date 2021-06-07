@@ -60,7 +60,7 @@ class AppComponent extends React.Component {
           <div className="view-content container-fluid">
               <div className="row">
                   <div className="col-xs-12">
-                      <p className="text-right">Pulkka 2019</p>
+                      <p className="text-right">Pulkka 2021</p>
                   </div>
               </div>
               {this.props.children}
