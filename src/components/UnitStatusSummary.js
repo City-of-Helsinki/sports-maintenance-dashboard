@@ -9,7 +9,8 @@ const SHORT_DESCRIPTIONS = {
   ski_trail_maintenance: 'Kunnostettu',
   ski_trail_condition: 'Kunto todettu',
   swimming_water_temperature: 'Lämpötila todettu',
-  swimming_water_algae: 'Levätilanne todettu'
+  swimming_water_algae: 'Levätilanne todettu',
+  live_swimming_water_temperature: 'Automaattinen lämpötilamittaus'
 };
 
 function Observation (props) {
@@ -20,7 +21,7 @@ function Observation (props) {
             <div className="notice-small"><small>"{ props.value.fi }"</small></div>
             </div>);
   }
-  return <div className="unit-observation-text" ><small>{ SHORT_DESCRIPTIONS[props.property] }  <strong>{props.name.fi}</strong> { time }</small></div>;
+  return <div className="unit-observation-text" ><small>{ SHORT_DESCRIPTIONS[props.property] }  <strong>{props.name ? props.name.fi : props.value.fi}</strong> { time }</small></div>;
 }
 
 export default function UnitStatusSummary(props) {
