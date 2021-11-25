@@ -113,8 +113,8 @@ export function unitObservableProperties(unit, services, qualityObservationsOnly
   if (unit === null || unit === undefined) {
     return [];
   }
-  const unitServices = _.map(unit.services, (id) => {
-    return services[id]; });
+  const unitServices = _.compact(_.map(unit.services, (id) => {
+    return services[id]; }));
   const reducer = (collection, element) => {
     let observableProperties = _.filter(element.observable_properties, (property) => {
       return property.observation_type == 'categorical';
