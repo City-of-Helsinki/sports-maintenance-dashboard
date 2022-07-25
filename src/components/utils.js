@@ -6,7 +6,7 @@ export const QUALITIES = [
 
 export const COLORS = {
   satisfactory: 'warning',
-  unusable: 'danger',
+  unusable: 'unusable',
   good: 'success'
 };
 
