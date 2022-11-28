@@ -7,29 +7,19 @@ let baseConfig = require('./base');
 let defaultSettings = require('./defaults');
 
 // Add needed plugins here
-let BowerWebpackPlugin = require('bower-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const DotenvPlugin = require('webpack-dotenv-plugin');
 
 let config = Object.assign({}, baseConfig, {
   entry: path.join(__dirname, '../src/index'),
   cache: false,
-  devtool: 'sourcemap',
+  devtool: 'source-map',
   plugins: [
-    new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
-    new BowerWebpackPlugin({
-      searchResolveModulesDirectories: false
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            drop_console: true,
-        }
-    }),
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
@@ -39,15 +29,18 @@ let config = Object.assign({}, baseConfig, {
       path: './.env'
     })
   ],
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  },
   module: defaultSettings.getDefaultModules()
 });
 
-// Add needed loaders to the defaults here
-config.module.loaders.push({
+// Add needed rules to the defaults here
+config.module.rules.push({
   test: /\.(js|jsx)$/,
-  loader: 'babel',
+  loader: 'babel-loader',
   include: [].concat(
-    config.additionalPaths,
     [ path.join(__dirname, '/../src') ]
   )
 });

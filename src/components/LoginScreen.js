@@ -1,11 +1,12 @@
 import _ from 'lodash';
 
 import React from 'react';
-import { withRouter } from 'react-router';
 
 import { connect } from 'react-redux';
 
 import { selectServiceGroup, login } from '../actions/index';
+
+import { withRouter } from '../hooks';
 
 class LoginScreen extends React.Component {
   constructor(props) {

@@ -1,17 +1,35 @@
 require('normalize.css/normalize.css');
 require('styles/App.scss');
 
-import _ from 'lodash';
+import { withRouter } from '../hooks/index';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits } from '../actions/index';
 import { getInitialLocation } from '../lib/geolocation';
 import * as constants from '../constants/index';
 
+
+function hasAuth(auth) {
+  const { token } = auth;
+  return !(token === null || token === undefined);
+}
+
+function requireAuth(navigate, auth) {
+  if (!hasAuth(auth)) {
+    return setTimeout(() => navigate('/login'), 1);
+  }
+  return true;
+}
+
 class AppComponent extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
+    let { navigate, auth } = this.props;
+    requireAuth(navigate, auth);
+  }
+
+  UNSAFE_componentWillMount() {
     const services = constants.SERVICE_GROUPS[this.props.serviceGroup];
     this.props.fetchResource(
       'service', { id: services.join(',') },
@@ -29,6 +47,7 @@ class AppComponent extends React.Component {
     });
 
   }
+
   render() {
     let queueClassName = 'glyphicon glyphicon-transfer';
     let notificationCount;
@@ -72,6 +91,7 @@ class AppComponent extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    auth: state.auth,
     unsentUpdateCount: _.size(state.updateQueue),
     maintenanceOrganization: state.auth.maintenance_organization,
     serviceGroup: state.serviceGroup
@@ -98,4 +118,4 @@ const mapDispatchToProps = (dispatch) => {
 AppComponent.defaultProps = {
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppComponent));

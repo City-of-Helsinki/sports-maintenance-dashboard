@@ -1,8 +1,8 @@
-import 'core-js/fn/object/assign';
+import 'core-js/internals/object-assign.js';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Router, Route, createMemoryHistory, IndexRoute, applyRouterMiddleware } from 'react-router';
-import { useScroll } from 'react-router-scroll';
+import { createRoot } from 'react-dom/client';
+import { Route, Routes, BrowserRouter, redirect } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
@@ -41,35 +41,27 @@ const finalCreateStore = compose(
 const store = finalCreateStore(rootReducer);
 window.store = store;
 
-function hasAuth(state) {
-  const { token } = state.auth;
-  return !(token === null || token === undefined);
-}
-
-function requireAuth(nextState, replace) {
-  if (!hasAuth(store.getState())) {
-    return replace('/login');
-  }
-  return true;
-}
+const rootElement = document.getElementById('app');
+const root = createRoot(rootElement);
 
 // Render the main component into the dom
-ReactDOM.render(
+root.render(
   <Provider store={store}>
-    <Router history={createMemoryHistory()}
-            render={applyRouterMiddleware(useScroll())}>
-        <Route path="/login" component={LoginScreen} />
-        <Route path="/" component={App} onEnter={requireAuth}>
-            <IndexRoute component={DashBoard} />
-            <Route path="/group" component={GroupList} />
-            <Route path="/group/:groupId" component={UnitList} />
-            <Route path="/unit/:unitId" component={UnitDetails} />
-            <Route path="/unit/:unitId/update/:propertyId/:valueId" component={UpdateConfirmation} />
-            <Route path="/unit/:unitId/delete/:propertyId" component={DeleteConfirmation} />
-            <Route path="/queue" component={UpdateQueue} />
+    <BrowserRouter history={createMemoryHistory()}>
+      <Routes>
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/" element={<App />}>
+            <Route exact path="/" element={<DashBoard />} />
+            <Route path="/group" element={<GroupList />} />
+            <Route path="/group/:groupId" element={<UnitList />} />
+            <Route path="/unit/:unitId" element={<UnitDetails />} />
+            <Route path="/unit/:unitId/update/:propertyId/:valueId" element={<UpdateConfirmation />} />
+            <Route path="/unit/:unitId/delete/:propertyId" element={<DeleteConfirmation />} />
+            <Route path="/queue" element={<UpdateQueue />} />
         </Route>
-    </Router>
-  </Provider>, document.getElementById('app')
+      </Routes>
+    </BrowserRouter>
+  </Provider>
 );
 
 const handler = queueHandler(store);

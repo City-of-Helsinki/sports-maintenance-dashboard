@@ -1,5 +1,7 @@
 'use strict';
 let path = require('path');
+let webpack = require('webpack');
+let ESLintPlugin = require('eslint-webpack-plugin');
 let defaultSettings = require('./defaults');
 // Additional npm or bower modules to include in builds
 // Add all foreign plugins you may need into this array
@@ -9,31 +11,41 @@ let defaultSettings = require('./defaults');
 let additionalPaths = [];
 
 module.exports = {
-  additionalPaths: additionalPaths,
-  port: defaultSettings.port,
-  debug: true,
+  mode: 'development',
   devtool: 'eval',
   output: {
     path: path.join(__dirname, '/../dist/assets'),
     filename: 'app.js',
     publicPath: defaultSettings.publicPath
   },
-  postcss: () => {
-    return [
-      require('autoprefixer')({
-        browsers: ['last 2 versions', 'ie >= 8']
-      })];
-  },
+  plugins: [
+    require('autoprefixer')({
+      browsers: ['last 2 versions', 'ie >= 8']
+    }),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        port: defaultSettings.port,
+        additionalPaths: additionalPaths,
+      }
+    }),
+    new ESLintPlugin({
+      files: ['../src/']
+    })
+  ],
   devServer: {
-    contentBase: './src/',
+    static: './src/',
     historyApiFallback: true,
     hot: true,
     port: defaultSettings.port,
-    publicPath: defaultSettings.publicPath,
-    noInfo: false
+    devMiddleware: {
+      publicPath: defaultSettings.publicPath,
+    }
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
+    fallback: {
+      "process": require.resolve("process/browser")
+    },
     alias: {
       actions: `${defaultSettings.srcPath}/actions/`,
       components: `${defaultSettings.srcPath}/components/`,
