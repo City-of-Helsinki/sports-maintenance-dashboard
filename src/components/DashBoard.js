@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { UnitListElement } from './UnitList';
 
 class DashBoard extends React.Component {
-  
+
   render() {
     if (this.props.nearest === undefined || this.props.frequent === undefined) {
       return <div>loading...</div>;

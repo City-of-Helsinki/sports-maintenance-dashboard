@@ -6,7 +6,7 @@ let baseConfig = require('./base');
 let defaultSettings = require('./defaults');
 
 // Add needed plugins here
-let BowerWebpackPlugin = require('bower-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const DotenvPlugin = require('webpack-dotenv-plugin');
 
 let config = Object.assign({}, baseConfig, {
@@ -19,28 +19,35 @@ let config = Object.assign({}, baseConfig, {
   devtool: 'eval-source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
       new webpack.ProvidePlugin({
           $: "jquery",
           jQuery: "jquery"
       }),
-    new BowerWebpackPlugin({
-      searchResolveModulesDirectories: false
-    }),
     new DotenvPlugin({
       sample: './.env.example',
       path: './.env'
-    })
+    }),
+    new webpack.LoaderOptionsPlugin({
+      debug: true
+    }),
+    new ReactRefreshWebpackPlugin()
   ],
   module: defaultSettings.getDefaultModules()
 });
 
 // Add needed loaders to the defaults here
-config.module.loaders.push({
+config.module.rules.push({
   test: /\.(js|jsx)$/,
-  loader: 'react-hot!babel-loader',
+  use: [
+    {
+      loader: require.resolve('babel-loader'),
+      options: {
+        plugins: [require.resolve('react-refresh/babel')],
+      }
+    }
+  ],
   include: [].concat(
-    config.additionalPaths,
     [ path.join(__dirname, '/../src') ]
   )
 });
