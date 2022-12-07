@@ -23,7 +23,7 @@ class LoginScreen extends React.Component {
   }
   redirectIfLoggedIn(auth) {
     if (auth.token !== null && auth.token !== undefined) {
-      this.props.router.push('/');
+      this.props.navigate('/');
     }
   }
   componentWillMount() {
