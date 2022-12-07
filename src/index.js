@@ -38,7 +38,9 @@ const finalCreateStore = compose(
   applyMiddleware(promiseMiddleware),
   persistState(stateToPersist))(createStore);
 
-const store = finalCreateStore(rootReducer);
+const enableReduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+
+const store = finalCreateStore(rootReducer, enableReduxDevTools);
 window.store = store;
 
 const rootElement = document.getElementById('app');
@@ -67,4 +69,3 @@ root.render(
 const handler = queueHandler(store);
 store.subscribe(handler);
 handler({initial: true});
-
