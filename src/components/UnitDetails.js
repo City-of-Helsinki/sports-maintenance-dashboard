@@ -3,9 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { unitObservableProperties } from '../lib/municipal-services-client';
 import UnitStatusSummary from './UnitStatusSummary';
-
+import { unitObservableProperties } from '../lib/municipal-services-client';
+import { withRouter } from '../hooks';
 import { enqueueObservation } from '../actions/index';
 
 // Todettu - Viimeksi kunnostettu
@@ -143,4 +143,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UnitDetails);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UnitDetails));

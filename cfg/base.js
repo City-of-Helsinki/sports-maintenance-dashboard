@@ -19,9 +19,7 @@ module.exports = {
     publicPath: defaultSettings.publicPath
   },
   plugins: [
-    require('autoprefixer')({
-      browsers: ['last 2 versions', 'ie >= 8']
-    }),
+    require('autoprefixer'),
     new webpack.LoaderOptionsPlugin({
       options: {
         port: defaultSettings.port,

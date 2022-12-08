@@ -1,13 +1,14 @@
 require('normalize.css/normalize.css');
 require('styles/App.scss');
 
-import { withRouter } from '../hooks/index';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
+import _ from 'lodash';
 
 import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits } from '../actions/index';
 import { getInitialLocation } from '../lib/geolocation';
+import { withRouter } from '../hooks/index';
 import * as constants from '../constants/index';
 
 
@@ -45,7 +46,6 @@ class AppComponent extends React.Component {
         this.props.getNearestUnits(position, services, this.props.maintenanceOrganization);
       }
     });
-
   }
 
   render() {
@@ -82,7 +82,7 @@ class AppComponent extends React.Component {
                       <p className="text-right">Pulkka 2021-2022</p>
                   </div>
               </div>
-              {this.props.children}
+              <Outlet />
           </div>
       </div>
     );
