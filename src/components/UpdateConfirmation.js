@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import UnitStatusSummary from './UnitStatusSummary';
 import { COLORS, ICONS } from './utils';
 import { unitObservableProperties } from '../lib/municipal-services-client';
+import { withRouter } from '../hooks';
 
 import * as actions from '../actions/index';
 
@@ -129,4 +130,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateConfirmation);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UpdateConfirmation));

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
 import { getQualityObservation, ICONS } from './utils';
+import { withRouter } from '../hooks';
 
 export function UnitListElement (props) {
   const url = `/unit/${props.id}`;
@@ -74,4 +75,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, null)(UnitList);
+export default withRouter(connect(mapStateToProps, null)(UnitList));
