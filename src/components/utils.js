@@ -1,3 +1,4 @@
+import moment from 'moment';
 import _ from 'lodash';
 
 export const QUALITIES = [
@@ -58,4 +59,28 @@ export function calculateGroups(units, maintenanceOrg) {
     }
   });
   return result;
+}
+
+export function getCurrentSeason() {
+  // New season starts 1st of october
+  const newSeasonStartDate = {
+    day: 1,
+    month: 10
+  };
+
+  const today = {
+    day: moment().date(),
+    month: moment().month() + 1, // months are zero based
+    year: moment().year()
+  };
+
+  const getStartYear = () => {
+    const isPastSeasonStartDate = today.month > newSeasonStartDate.month || (today.month === newSeasonStartDate.month && today.day >= newSeasonStartDate.day);
+    // if today is past season start date, then start value is this year, otherwise start value is last year
+    return isPastSeasonStartDate ? today.year : (today.year - 1);
+  }
+
+  const getEndYear = () => getStartYear() + 1;
+
+  return `${getStartYear()}-${getEndYear()}`;
 }

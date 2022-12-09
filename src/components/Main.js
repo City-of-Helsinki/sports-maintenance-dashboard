@@ -7,6 +7,7 @@ import { Link, Outlet } from 'react-router-dom';
 import _ from 'lodash';
 
 import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits } from '../actions/index';
+import { getCurrentSeason } from './utils';
 import { getInitialLocation } from '../lib/geolocation';
 import { withRouter } from '../hooks/index';
 import * as constants from '../constants/index';
@@ -57,6 +58,9 @@ class AppComponent extends React.Component {
     else {
       notificationCount = null;
     }
+    const serviceGroupTitle = constants.SERVICE_GROUPS[this.props.serviceGroup].title || '';
+    const appTitle = `Pulkka ${getCurrentSeason()}`;
+
     return (
       <div className="index">
         <nav className="navbar navbar-inverse navbar-fixed-top">
@@ -65,25 +69,26 @@ class AppComponent extends React.Component {
               <li><Link to="/"><div className="btn-lg"><span className="icon icon-home"></span></div></Link></li>
               <li><Link to="/group"><div className="btn-lg"><span className="icon icon-list"></span></div></Link></li>
               <li>
-                  <Link to="/queue">
-                      <div className="btn-lg">
-                          <span className={queueClassName}>
-                              { notificationCount }
-                          </span>
-                      </div>
-                  </Link>
+                <Link to="/queue">
+                  <div className="btn-lg">
+                    <span className={queueClassName}>
+                      {notificationCount}
+                    </span>
+                  </div>
+                </Link>
               </li>
             </ul>
           </div>
         </nav>
-          <div className="view-content container-fluid">
-              <div className="row">
-                  <div className="col-xs-12">
-                      <p className="text-right">Pulkka 2021-2022</p>
-                  </div>
-              </div>
-              <Outlet />
+        <div className="view-content container-fluid">
+          <div className="secondary-nav">
+            <div className="row">
+              <div className="col-xs-6"><p className="pulkka-title">{serviceGroupTitle}</p></div>
+              <div className="col-xs-6"><p className="pulkka-title text-right">{appTitle}</p></div>
+            </div>
           </div>
+          <Outlet />
+        </div>
       </div>
     );
   }
