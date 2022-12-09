@@ -31,7 +31,7 @@ class AppComponent extends React.Component {
   }
 
   UNSAFE_componentWillMount() {
-    const services = constants.SERVICE_GROUPS[this.props.serviceGroup];
+    const services = constants.SERVICE_GROUPS[this.props.serviceGroup].services;
     this.props.fetchResource(
       'service', { id: services.join(',') },
       ['id', 'name'], ['observable_properties']
