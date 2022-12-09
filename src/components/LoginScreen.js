@@ -1,12 +1,10 @@
+import React from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import React from 'react';
-
-import { connect } from 'react-redux';
-
 import { selectServiceGroup, login } from '../actions/index';
-
 import { withRouter } from '../hooks';
+import * as constants from '../constants/index';
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -73,21 +71,21 @@ class LoginScreen extends React.Component {
                           <div className="well">
                               <h5>Vastuualue</h5>
                               <div className="checkbox">
-                                  <input id="ski" type="radio" value="skiing" name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === 'skiing'} />
+                                  <input id="ski" type="radio" value={constants.SERVICE_GROUPS.skiing.id} name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === constants.SERVICE_GROUPS.skiing.id} />
                                   <label htmlFor="ski">
-                                      Hiihtoladut
+                                      {constants.SERVICE_GROUPS.skiing.title}
                                   </label>
                               </div>
                               <div className="checkbox">
-                                  <input id="ice-skate" type="radio" value="iceSkating" name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === 'iceSkating'} />
+                                  <input id="ice-skate" type="radio" value={constants.SERVICE_GROUPS.iceSkating.id} name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === constants.SERVICE_GROUPS.iceSkating.id} />
                                   <label htmlFor="ice-skate">
-                                      Luistelukentät
+                                      {constants.SERVICE_GROUPS.iceSkating.title}
                                   </label>
                               </div>
                               <div className="checkbox">
-                                  <input id="swimming" type="radio" value="swimming" name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === 'swimming'} />
+                                  <input id="swimming" type="radio" value={constants.SERVICE_GROUPS.swimming.id} name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === constants.SERVICE_GROUPS.swimming.id} />
                                   <label htmlFor="swimming">
-                                      Uimarannat
+                                      {constants.SERVICE_GROUPS.swimming.title}
                                   </label>
                               </div>
                           </div>
