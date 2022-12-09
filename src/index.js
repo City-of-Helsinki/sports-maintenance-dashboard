@@ -23,6 +23,7 @@ import UpdateConfirmation from './components/UpdateConfirmation';
 import DeleteConfirmation from './components/DeleteConfirmation';
 import UpdateQueue from './components/UpdateQueue';
 import LoginScreen from './components/LoginScreen';
+import NotFound from './components/NotFound';
 
 import moment from 'moment';
 
@@ -60,6 +61,7 @@ root.render(
             <Route path="/unit/:unitId/update/:propertyId/:valueId" element={<UpdateConfirmation />} />
             <Route path="/unit/:unitId/delete/:propertyId" element={<DeleteConfirmation />} />
             <Route path="/queue" element={<UpdateQueue />} />
+            <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
