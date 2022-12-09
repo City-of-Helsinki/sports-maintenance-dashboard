@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "clean": "rimraf dist/*",
-    "copy": "copyfiles -f ./src/index.html ./src/pulkka.appcache ./src/favicon.ico ./src/manifest.json ./src/favicons/* ./dist && copyfiles -u 1 ./src/img/* ./dist",
+    "copy": "copyfiles -f ./src/index.html ./src/pulkka.appcache ./dist && copyfiles -u 1 ./src/favicons/* ./src/img/* ./dist",
     "dist": "npm run copy & webpack --env=dist",
     "lint": "eslint ./src",
     "posttest": "npm run lint",
