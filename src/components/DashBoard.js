@@ -9,7 +9,7 @@ class DashBoard extends React.Component {
 
   render() {
     if (this.props.nearest === undefined || this.props.frequent === undefined) {
-      return <div>loading...</div>;
+      return <div>Ladataan...</div>;
     }
     let nearest;
     if (this.props.userLocation === null) {

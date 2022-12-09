@@ -89,7 +89,7 @@ class UnitDetails extends React.Component {
   }
   render() {
     if (!this.hasRequiredData(this.props)) {
-      return <div>Loading...</div>;
+      return <div>Ladataan...</div>;
     }
 
     const panels = _.map(this.props.observableProperties, (property) => {

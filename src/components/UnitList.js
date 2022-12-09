@@ -42,7 +42,7 @@ class UnitList extends React.Component {
   render () {
     console.log(this.props);
     if (!this.hasRequiredData(this.props)) {
-      return <div>loading...</div>;
+      return <div>Ladataan...</div>;
     }
     const elements = _.map(_.sortBy(this.props.units, [(u) => { return u.name.fi }]), (unit) => {
       return <UnitListElement key={unit.id} {...unit} />;
