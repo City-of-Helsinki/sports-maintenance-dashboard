@@ -23,12 +23,12 @@ export function UnitListElement (props) {
 
   return (
     <Link to={url} className="list-group-item">
-      <div className="unit-list-item clearfix">
+      <div className="unit-list-item">
         <div className={badgeClassName}><span className={iconClassName} /></div>
-        <span className="action-icon icon icon-pencil-square" />
         <div className="unit-name">
           { props.name.fi }
         </div>
+        <span className="action-icon icon icon-pencil-square" />
       </div>
     </Link>
   );
