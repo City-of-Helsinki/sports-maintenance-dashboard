@@ -84,8 +84,7 @@ function ObservablePropertyPanel({allowedValues, header}) {
 
 class UnitDetails extends React.Component {
   hasRequiredData(props) {
-    return (props.unit !== undefined &&
-            props.observableProperties.length > 0);
+    return (props.unit !== undefined);
   }
   render() {
     if (!this.hasRequiredData(this.props)) {
@@ -106,7 +105,7 @@ class UnitDetails extends React.Component {
     return (
       <div className="facility-status">
         <UnitStatusSummary unit={this.props.unit} />
-        { panels }
+        {this.props.observableProperties.length > 0 && panels}
         <DescriptiveStatusForm enqueueObservation={this.props.enqueueObservation} unitId={this.props.unit.id} textualDescription={this.props.textualDescription} />
       </div>
     );
