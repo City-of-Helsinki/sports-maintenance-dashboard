@@ -37,6 +37,13 @@ class UpdateQueue extends React.Component {
       <div>
           <div className="row">
               <div className="col-xs-12">
+                  <p>Kirjautuminen <span className="text-muted">(ID: {this.props.loginId})</span></p>
+                  <a href="#!" className="btn btn-default" onClick={this.logout}>Kirjaudu ulos</a>
+              </div>
+          </div>
+          <hr />
+          <div className="row">
+              <div className="col-xs-12">
                   <h5>Verkkoyhteyttä odottavat päivitykset<br/>
                       <small>Näitä päivityksiä ei ole vielä julkaistu. Niitä yritetään julkaista uudestaan
                           automaattisesti 15 sekunnin välein sekä "Yritä uudelleen"-nappia painettaessa.</small>
@@ -55,12 +62,6 @@ class UpdateQueue extends React.Component {
               </div>
           </div>
           <LatestUpdates units={this.props.latest} />
-          <div className="row">
-              <div className="col-xs-12">
-                  <p>Kirjautuminen {this.props.loginId}<br/>
-                  <a href="#!" onClick={this.logout}>kirjaudu ulos</a></p>
-              </div>
-          </div>
       </div>
     );
   }
