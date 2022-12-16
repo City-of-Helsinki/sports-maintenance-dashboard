@@ -7,6 +7,7 @@ import UnitStatusSummary from './UnitStatusSummary';
 import UnitDescriptiveStatusForm from './UnitDescriptiveStatusForm';
 import { unitObservableProperties } from '../lib/municipal-services-client';
 import { withRouter } from '../hooks';
+import * as constants from '../constants/index';
 
 import { COLORS, ICONS, QUALITIES } from './utils';
 
@@ -82,7 +83,7 @@ function allowedValuesByQuality(property) {
 
 function mapStateToProps(state, ownProps) {
   const unit = state.data.unit[ownProps.params.unitId];
-  const onlyQualityProperties = state.serviceGroup !== 'swimming';
+  const onlyQualityProperties = state.serviceGroup !== constants.SERVICE_GROUPS.swimming.id;
   const observableProperties = unitObservableProperties(unit, state.data.service, onlyQualityProperties);
   return {
     unit,
