@@ -25,7 +25,7 @@ function TextualDescription({text}) {
 class UpdateConfirmation extends React.Component {
   render () {
     if (this.props.unit === undefined || this.props.allowedValue === null) {
-      return <div>loading...</div>;
+      return <div>Ladataan...</div>;
     }
     let buttonRow, helpRow;
       buttonRow = (

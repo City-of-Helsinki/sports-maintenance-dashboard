@@ -23,6 +23,9 @@ import UpdateConfirmation from './components/UpdateConfirmation';
 import DeleteConfirmation from './components/DeleteConfirmation';
 import UpdateQueue from './components/UpdateQueue';
 import LoginScreen from './components/LoginScreen';
+import NotFound from './components/NotFound';
+import UnitMassEdit from './components/UnitMassEdit';
+import UnitMassEditPropertySelect from './components/UnitMassEditPropertySelect';
 
 import moment from 'moment';
 
@@ -56,10 +59,13 @@ root.render(
             <Route exact path="/" element={<DashBoard />} />
             <Route path="/group" element={<GroupList />} />
             <Route path="/group/:groupId" element={<UnitList />} />
+            <Route path="/group/:groupId/mass-edit" element={<UnitMassEditPropertySelect />} />
+            <Route path="/group/:groupId/mass-edit/:propertyId" element={<UnitMassEdit />} />
             <Route path="/unit/:unitId" element={<UnitDetails />} />
             <Route path="/unit/:unitId/update/:propertyId/:valueId" element={<UpdateConfirmation />} />
             <Route path="/unit/:unitId/delete/:propertyId" element={<DeleteConfirmation />} />
             <Route path="/queue" element={<UpdateQueue />} />
+            <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

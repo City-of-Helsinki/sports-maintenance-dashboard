@@ -6,7 +6,7 @@ compatible observations REST API.
 
 # Requirements #
 
-Note: on Linux, node-sass currently needs node v. 7.
+Node.js version 18
 
 # Setup #
 

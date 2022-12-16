@@ -6,8 +6,8 @@ import { retryImmediately } from '../actions/index';
 import { UnitListElement } from './UnitList';
 
 function LatestUpdates({units}) {
-  const elements = _.map(units, (u) => {
-    return <UnitListElement key={u.id} {...u} />;
+  const elements = _.map(units, (u, index) => {
+    return <UnitListElement key={`${u.id}-${index}`} {...u} />;
   });
   return (
     <div className="row">
@@ -30,11 +30,22 @@ class UpdateQueue extends React.Component {
     }
   }
   render() {
-    const items = _.map(this.props.items, (i) => {
-      return (<Link className="list-group-item" to={`/unit/${i.unitId}`} key={i.unitId}>{ this.props.units[i.unitId].name.fi }</Link>);
+    const items = _.map(this.props.items, (i, index) => {
+      return (
+        <Link className="list-group-item" to={`/unit/${i.unitId}`} key={`${i.unitId}-${index}`}>
+          { this.props.units[i.unitId].name.fi }
+        </Link>
+      );
     });
     return (
       <div>
+          <div className="row">
+              <div className="col-xs-12">
+                  <p>Kirjautuminen <span className="text-muted">(ID: {this.props.loginId})</span></p>
+                  <a href="#!" className="btn btn-default" onClick={this.logout}>Kirjaudu ulos</a>
+              </div>
+          </div>
+          <hr />
           <div className="row">
               <div className="col-xs-12">
                   <h5>Verkkoyhteyttä odottavat päivitykset<br/>
@@ -55,12 +66,6 @@ class UpdateQueue extends React.Component {
               </div>
           </div>
           <LatestUpdates units={this.props.latest} />
-          <div className="row">
-              <div className="col-xs-12">
-                  <p>Kirjautuminen {this.props.loginId}<br/>
-                  <a href="#!" onClick={this.logout}>kirjaudu ulos</a></p>
-              </div>
-          </div>
       </div>
     );
   }
@@ -81,7 +86,6 @@ function mapDispatchToProps(dispatch) {
   return {
     retryImmediately: () => {
       const action = retryImmediately();
-      console.log(action);
       dispatch(action);
     }
   };

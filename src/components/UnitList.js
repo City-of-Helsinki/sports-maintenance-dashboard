@@ -23,12 +23,12 @@ export function UnitListElement (props) {
 
   return (
     <Link to={url} className="list-group-item">
-      <div className="unit-list-item clearfix">
+      <div className="unit-list-item">
         <div className={badgeClassName}><span className={iconClassName} /></div>
-        <span className="action-icon icon icon-pencil-square" />
         <div className="unit-name">
           { props.name.fi }
         </div>
+        <span className="action-icon icon icon-pencil-square" />
       </div>
     </Link>
   );
@@ -36,42 +36,43 @@ export function UnitListElement (props) {
 
 class UnitList extends React.Component {
   hasRequiredData(props) {
-    console.log(props.units);
     return (props.units && Object.keys(props.units).length > 0);
   }
   render () {
-    console.log(this.props);
     if (!this.hasRequiredData(this.props)) {
-      return <div>loading...</div>;
+      return <div>Ladataan...</div>;
     }
     const elements = _.map(_.sortBy(this.props.units, [(u) => { return u.name.fi }]), (unit) => {
       return <UnitListElement key={unit.id} {...unit} />;
     });
+    const urlMassEdit = `/group/${this.props.groupId}/mass-edit`;
     return (
       <div className="row">
-          <div className="col-xs-12">
-              <div className="list-group facility-return">
-                  <Link to="/group" className="list-group-item">
-                      <span className="action-icon glyphicon glyphicon-chevron-left"></span>
-                      Takaisin
-                  </Link>
-              </div>
-              <h5>{this.props.name}</h5>
-              <div className="list-group facility-drilldown">
-                  { elements }
-              </div>
+        <div className="col-xs-12">
+          <div className="list-group facility-return">
+            <Link to="/group" className="list-group-item">
+              <span className="action-icon glyphicon glyphicon-chevron-left"></span>
+              Takaisin
+            </Link>
           </div>
+          <h5>{this.props.name}</h5>
+          <p className="text-right">
+            <Link to={urlMassEdit} className="btn btn-primary">Luo massapäivitys</Link>
+          </p>
+          <div className="list-group facility-drilldown">
+            {elements}
+          </div>
+        </div>
       </div>
     );
   }
 }
 
 function mapStateToProps(state, ownProps) {
+  const { groupId } = ownProps.params;
   return {
-    units: _.filter(state.data.unit, (u) => {
-      return (u.extensions.maintenance_group
-              === ownProps.params.groupId);
-    })
+    groupId,
+    units: _.filter(state.data.unit, (u) => u.extensions.maintenance_group === groupId)
   };
 }
 

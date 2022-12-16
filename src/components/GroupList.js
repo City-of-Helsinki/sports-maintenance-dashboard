@@ -20,7 +20,7 @@ class GroupList extends React.Component {
   }
   render() {
     if (!this.hasRequiredData(this.props)) {
-      return <div>loading...</div>;
+      return <div>Ladataan...</div>;
     }
     const elements = _.map(this.props.groups, (group, groupId) => {
       return <GroupListElement key={groupId} id={groupId} name={groupId} />;
