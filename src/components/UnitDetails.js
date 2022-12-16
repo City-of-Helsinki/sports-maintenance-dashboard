@@ -11,7 +11,7 @@ import * as constants from '../constants/index';
 
 import { COLORS, ICONS, QUALITIES } from './utils';
 
-function ObservableProperty ({quality, property, identifier, name, unitId}) {
+export function ObservableProperty({ quality, property, identifier, name, unitId }) {
   const url = `/unit/${unitId}/update/${property}/${identifier}`;
   const color = COLORS[quality] || 'primary';
   const icon = ICONS[identifier];
@@ -20,7 +20,7 @@ function ObservableProperty ({quality, property, identifier, name, unitId}) {
   return <Link to={url} className={buttonClassName}><span className={iconClassName}></span><br />{name.fi}</Link>;
 }
 
-function ObservablePropertyPanel({allowedValues, header}) {
+export function ObservablePropertyPanel({allowedValues, header}) {
   const amountOfValues = allowedValues.length;
   const cutPoint = (amountOfValues / 2) + (amountOfValues % 2);
   const left = allowedValues.slice(0, cutPoint);
@@ -71,7 +71,7 @@ class UnitDetails extends React.Component {
   }
 }
 
-function allowedValuesByQuality(property) {
+export function allowedValuesByQuality(property) {
   let result = {};
   _.each(property.allowed_values, (value) => {
     value.property = property.id;

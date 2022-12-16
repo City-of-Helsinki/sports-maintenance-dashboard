@@ -10,12 +10,12 @@ import { withRouter } from '../hooks';
 
 import * as actions from '../actions/index';
 
-const ACTION_TYPE = {
+export const ACTION_TYPE = {
   observed: 'Todettu',
   serviced: 'Kunnostettu'
 };
 
-const HELP_TEXTS = {
+export const HELP_TEXTS = {
   observed: `Valitse "${ACTION_TYPE.observed}" jos liikuntapaikkaa ei ole juuri nyt kunnostettu, mutta haluat merkitä sen tilaksi`,
   serviced: `Valitse "${ACTION_TYPE.serviced}" jos liikuntapaikka on juuri kunnostettu, ja haluat samalla merkitä sen tilaksi`
 };
@@ -32,7 +32,7 @@ function ConfirmButton({unitId, allowedValue, type, enqueueObservation}) {
   );
 }
 
-function canPropertyBeMaintained(property) {
+export function canPropertyBeMaintained(property) {
   return property !== 'swimming_water_cyanobacteria';
 }
 

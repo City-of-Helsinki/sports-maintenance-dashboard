@@ -13,7 +13,7 @@ const SHORT_DESCRIPTIONS = {
   live_swimming_water_temperature: 'Automaattinen lämpötilamittaus'
 };
 
-function Observation (props) {
+export function Observation (props) {
   const time = moment(props.time).format('dd l [klo] LTS');
   if (props.property == 'notice') {
     return (<div className="unit-observation-text">
