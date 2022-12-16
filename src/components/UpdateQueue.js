@@ -82,7 +82,6 @@ function mapDispatchToProps(dispatch) {
   return {
     retryImmediately: () => {
       const action = retryImmediately();
-      console.log(action);
       dispatch(action);
     }
   };

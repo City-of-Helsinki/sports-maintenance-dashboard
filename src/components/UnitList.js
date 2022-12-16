@@ -36,11 +36,9 @@ export function UnitListElement (props) {
 
 class UnitList extends React.Component {
   hasRequiredData(props) {
-    console.log(props.units);
     return (props.units && Object.keys(props.units).length > 0);
   }
   render () {
-    console.log(this.props);
     if (!this.hasRequiredData(this.props)) {
       return <div>Ladataan...</div>;
     }

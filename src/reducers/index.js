@@ -125,11 +125,9 @@ function pendingObservationsReducer(state = initialPendingObservationsState, act
       return Object.assign({}, state, {[path]: createObservationData(action.payload, 'retrying')});
     case 'POST_OBSERVATION':
       if (action.error) {
-        console.log(action);
         path = observationPath(action.meta);
         return Object.assign({}, state, {[path]: createObservationData(action.meta, 'failed')});
       }
-      console.log(action);
       path = observationPath({unitId: action.payload.unit, property: action.payload.property});
       return Object.assign({}, state, {[path]: createObservationData({unitId: action.payload.unit, property: action.payload.property}, 'success')});
     case 'GET_RESOURCE':
