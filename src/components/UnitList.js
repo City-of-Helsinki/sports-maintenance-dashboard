@@ -45,31 +45,34 @@ class UnitList extends React.Component {
     const elements = _.map(_.sortBy(this.props.units, [(u) => { return u.name.fi }]), (unit) => {
       return <UnitListElement key={unit.id} {...unit} />;
     });
+    const urlMassEdit = `/group/${this.props.groupId}/mass-edit`;
     return (
       <div className="row">
-          <div className="col-xs-12">
-              <div className="list-group facility-return">
-                  <Link to="/group" className="list-group-item">
-                      <span className="action-icon glyphicon glyphicon-chevron-left"></span>
-                      Takaisin
-                  </Link>
-              </div>
-              <h5>{this.props.name}</h5>
-              <div className="list-group facility-drilldown">
-                  { elements }
-              </div>
+        <div className="col-xs-12">
+          <div className="list-group facility-return">
+            <Link to="/group" className="list-group-item">
+              <span className="action-icon glyphicon glyphicon-chevron-left"></span>
+              Takaisin
+            </Link>
           </div>
+          <h5>{this.props.name}</h5>
+          <p className="text-right">
+            <Link to={urlMassEdit} className="btn btn-primary">Luo massapäivitys</Link>
+          </p>
+          <div className="list-group facility-drilldown">
+            {elements}
+          </div>
+        </div>
       </div>
     );
   }
 }
 
 function mapStateToProps(state, ownProps) {
+  const { groupId } = ownProps.params;
   return {
-    units: _.filter(state.data.unit, (u) => {
-      return (u.extensions.maintenance_group
-              === ownProps.params.groupId);
-    })
+    groupId,
+    units: _.filter(state.data.unit, (u) => u.extensions.maintenance_group === groupId)
   };
 }
 
