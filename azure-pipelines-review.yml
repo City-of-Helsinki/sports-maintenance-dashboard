@@ -30,7 +30,6 @@ resources:
   # Azure DevOps repository
   - repository: ulkoliikuntakartta-pipelines
     type: git
-    ref: refs/heads/pulkka
     # Azure DevOps project/repository
     name: ulkoliikuntakartta/ulkoliikuntakartta-pipelines
 
