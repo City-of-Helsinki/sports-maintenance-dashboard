@@ -42,7 +42,8 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx'],
     fallback: {
-      "process": require.resolve("process/browser")
+      "process": require.resolve("process/browser"),
+      "crypto": false
     },
     alias: {
       actions: `${defaultSettings.srcPath}/actions/`,

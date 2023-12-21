@@ -26,6 +26,7 @@ import LoginScreen from './components/LoginScreen';
 import NotFound from './components/NotFound';
 import UnitMassEdit from './components/UnitMassEdit';
 import UnitMassEditPropertySelect from './components/UnitMassEditPropertySelect';
+import CookieConsent from './components/CookieConsent';
 
 import moment from 'moment';
 
@@ -52,6 +53,7 @@ const root = createRoot(rootElement);
 // Render the main component into the dom
 root.render(
   <Provider store={store}>
+    <CookieConsent />
     <BrowserRouter history={createMemoryHistory()}>
       <Routes>
         <Route path="/login" element={<LoginScreen />} />
