@@ -40,6 +40,7 @@ class LoginScreen extends React.Component {
     };
   }
   render() {
+    localStorage.clear();
     const error = this.props.authError;
     let errorMessage = null;
     if (error) {
