@@ -13,6 +13,13 @@ const SHORT_DESCRIPTIONS = {
   live_swimming_water_temperature: 'Automaattinen lämpötilamittaus'
 };
 
+function getUnitObservationText(observationName, observationProperty) {
+  if (observationProperty === 'live_swimming_water_temperature') {
+    return observationName + '°C';
+  }
+  return observationName;
+}
+
 export function Observation (props) {
   const time = moment(props.time).format('dd l [klo] LTS');
   if (props.property == 'notice') {
@@ -21,7 +28,13 @@ export function Observation (props) {
             <div className="notice-small"><small>"{ props.value.fi }"</small></div>
             </div>);
   }
-  return <div className="unit-observation-text" ><small>{ SHORT_DESCRIPTIONS[props.property] }  <strong>{props.name ? props.name.fi : props.value.fi}</strong> { time }</small></div>;
+  return <div className="unit-observation-text">
+    <small>
+      { SHORT_DESCRIPTIONS[props.property] }  <strong>
+        {getUnitObservationText(props.name ? props.name.fi : props.value.fi, props.property)}
+      </strong> { time }
+    </small
+  ></div>;
 }
 
 export default function UnitStatusSummary(props) {
