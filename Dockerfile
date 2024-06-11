@@ -1,5 +1,5 @@
 # =======================================================
-FROM node:18.12.1-bullseye-slim AS appbase
+FROM node:22.2.0-bookworm-slim AS appbase
 # =======================================================
 
 WORKDIR /app
