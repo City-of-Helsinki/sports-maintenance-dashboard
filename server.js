@@ -4,7 +4,6 @@ require('core-js/internals/object-assign.js');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const config = require('./webpack.config');
-const open = require('open');
 
 new WebpackDevServer(webpack(config), config.devServer)
 .listen(config.port, '0.0.0.0', (err) => {
