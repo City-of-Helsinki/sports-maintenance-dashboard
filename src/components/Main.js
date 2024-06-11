@@ -29,9 +29,6 @@ class AppComponent extends React.Component {
   componentDidMount() {
     let { navigate, auth } = this.props;
     requireAuth(navigate, auth);
-  }
-
-  UNSAFE_componentWillMount() {
     const services = constants.SERVICE_GROUPS[this.props.serviceGroup].services;
     this.props.fetchResource(
       'service', { id: services.join(',') },

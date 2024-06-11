@@ -5,12 +5,14 @@ import _ from 'lodash';
 import { selectServiceGroup, login } from '../actions/index';
 import { withRouter } from '../hooks';
 import * as constants from '../constants/index';
+import PropTypes from 'prop-types';
 
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {username: '', password: ''};
     this.handleChange = this.handleChange.bind(this);
+    this.redirectIfLoggedIn(this.props.auth);
   }
   onSelectGroup(e) {
     this.props.selectServiceGroup(e.target.value);
@@ -20,16 +22,16 @@ class LoginScreen extends React.Component {
     this.props.login(this.state.username, this.state.password);
   }
   redirectIfLoggedIn(auth) {
-    if (auth.token !== null && auth.token !== undefined) {
+    if (auth?.token) {
       this.props.navigate('/');
     }
   }
-  componentWillMount() {
-    this.redirectIfLoggedIn(this.props.auth);
-  }
-  componentWillReceiveProps(props) {
-    this.redirectIfLoggedIn(props.auth);
-  }
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps?.auth?.token) {
+      nextProps?.navigate('/');
+    }
+    return null;
+ }
   handleChange(field) {
     return (event) => {
       this.setState(
@@ -108,5 +110,14 @@ function mapDispatchToProps(dispatch) {
   return { selectServiceGroup: (group) => { dispatch(selectServiceGroup(group)); },
          login: (userName, password) => { dispatch(login(userName, password)); }};
 }
+
+LoginScreen.propTypes = {
+  serviceGroup: PropTypes.string,
+  auth: PropTypes.object,
+  authError: PropTypes.object,
+  navigate: PropTypes.func,
+  selectServiceGroup: PropTypes.func,
+  login: PropTypes.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginScreen));
