@@ -2,7 +2,7 @@ import moment from 'moment';
 import _ from 'lodash';
 
 export const QUALITIES = [
-  'good', 'satisfactory', 'unusable', 'unknown'
+  'good', 'satisfactory', 'unusable', 'unknown', 'warning'
 ];
 
 export const COLORS = {

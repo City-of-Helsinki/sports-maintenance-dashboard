@@ -198,6 +198,10 @@ body {
   background-color: $brand-warning;
 }
 
+.condition-warning {
+  background-color: #B600C7;
+}
+
 .condition-unknown {
   background-color: darken($gray-lighter, 10%);
 }
