@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { statusBarClassName, getQualityObservation } from './utils';
 
-const SHORT_DESCRIPTIONS = {
+export const SHORT_DESCRIPTIONS = {
   ski_trail_maintenance: 'Kunnostettu',
   ski_trail_condition: 'Kunto todettu',
   swimming_water_temperature: 'Lämpötila todettu',
@@ -13,7 +13,7 @@ const SHORT_DESCRIPTIONS = {
   live_swimming_water_temperature: 'Automaattinen lämpötilamittaus'
 };
 
-function getUnitObservationText(observationName, observationProperty) {
+export function getUnitObservationText(observationName, observationProperty) {
   if (observationProperty === 'live_swimming_water_temperature') {
     return observationName + '°C';
   }
@@ -62,6 +62,7 @@ export default function UnitStatusSummary(props) {
                 <h5>
                     { observations }
                 </h5>
+                <Link to={`/unit/${props.unit.id}/history`} className="btn btn-default">Näytä historia</Link>
             </div>
         </div>
     </div>);

@@ -19,6 +19,7 @@ import DashBoard from './components/DashBoard';
 import GroupList from './components/GroupList';
 import UnitList from './components/UnitList';
 import UnitDetails from './components/UnitDetails';
+import UnitHistory from './components/UnitHistory';
 import UpdateConfirmation from './components/UpdateConfirmation';
 import DeleteConfirmation from './components/DeleteConfirmation';
 import UpdateQueue from './components/UpdateQueue';
@@ -62,6 +63,7 @@ root.render(
             <Route path="/group/:groupId/mass-edit" element={<UnitMassEditPropertySelect />} />
             <Route path="/group/:groupId/mass-edit/:propertyId" element={<UnitMassEdit />} />
             <Route path="/unit/:unitId" element={<UnitDetails />} />
+            <Route path="/unit/:unitId/history" element={<UnitHistory />} />
             <Route path="/unit/:unitId/update/:propertyId/:valueId" element={<UpdateConfirmation />} />
             <Route path="/unit/:unitId/delete/:propertyId" element={<DeleteConfirmation />} />
             <Route path="/queue" element={<UpdateQueue />} />
