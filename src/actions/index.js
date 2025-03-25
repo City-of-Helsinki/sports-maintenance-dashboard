@@ -15,6 +15,14 @@ export const fetchResource = createAction(
   }
 );
 
+export const fetchUnitObservations = createAction(
+  'GET_RESOURCE',
+  ApiClient.fetchUnitObservations,
+  (unitId) => {
+    return { resourceType: 'observation', filters: { unit: unitId } };
+  }
+);
+
 export const getNearestUnits = createAction(
   'GET_NEAREST_UNITS',
   ApiClient.getNearestUnits
