@@ -99,6 +99,10 @@ export function fetchUnitsWithServices(services, maintenance_organization, {sele
   return fetchResource('unit', {service: serviceParameter, maintenance_organization }, selected, embedded);
 }
 
+export function fetchUnitObservations(unitId, selected, embedded) {
+  return fetchResource('observation', {unit: unitId}, selected, embedded);
+}
+
 export function postObservation(specification, token) {
   return postResource(
     'observation',
