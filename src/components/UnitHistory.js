@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
 import { withRouter } from '../hooks';
 import * as actions from '../actions/index';
-import { SHORT_DESCRIPTIONS, getUnitObservationText } from './UnitStatusSummary';
+import ObservationItem from './ObservationItem';
 
 class UnitHistory extends React.Component {
   componentDidMount() {
@@ -18,33 +17,11 @@ class UnitHistory extends React.Component {
   }
 
   renderObservations(observations) {
-    return observations.map(obs => {
-      const time = moment(obs.time).format('dd l [klo] LTS');
-      if (obs.property === 'notice') {
-        return (
-          <div key={obs.id} className="list-group-item unit-observation-text">
-            <small>Tekstitiedote julkaistu {time}</small><br />
-            <div className="notice-small">
-              <small>"{obs.value?.fi}"</small>
-            </div>
-          </div>
-        );
-      }
-      return (
-        <div key={obs.id} className="list-group-item unit-observation-text">
-          <small>
-            {SHORT_DESCRIPTIONS[obs.property]}{' '}
-            <strong>
-              {getUnitObservationText(
-                obs.name?.fi || obs.value?.fi,
-                obs.property
-              )}
-            </strong>{' '}
-            {time}
-          </small>
-        </div>
-      );
-    });
+    return observations.map(obs => (
+      <div key={obs.id} className="list-group-item">
+        <ObservationItem observation={obs} />
+      </div>
+    ));
   }
 
   render() {
