@@ -1,46 +1,19 @@
 import React from 'react';
-import moment from 'moment';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 
 import { statusBarClassName, getQualityObservation } from './utils';
+import ObservationItem from './ObservationItem';
 
-export const SHORT_DESCRIPTIONS = {
-  ski_trail_maintenance: 'Kunnostettu',
-  ski_trail_condition: 'Kunto todettu',
-  swimming_water_temperature: 'Lämpötila todettu',
-  swimming_water_algae: 'Levätilanne todettu',
-  live_swimming_water_temperature: 'Automaattinen lämpötilamittaus'
-};
 
-export function getUnitObservationText(observationName, observationProperty) {
-  if (observationProperty === 'live_swimming_water_temperature') {
-    return observationName + '°C';
-  }
-  return observationName;
-}
-
-export function Observation (props) {
-  const time = moment(props.time).format('dd l [klo] LTS');
-  if (props.property == 'notice') {
-    return (<div className="unit-observation-text">
-            <small>Tekstitiedote julkaistu { time }</small><br/>
-            <div className="notice-small"><small>"{ props.value.fi }"</small></div>
-            </div>);
-  }
-  return <div className="unit-observation-text">
-    <small>
-      { SHORT_DESCRIPTIONS[props.property] }  <strong>
-        {getUnitObservationText(props.name ? props.name.fi : props.value.fi, props.property)}
-      </strong> { time }
-    </small
-  ></div>;
+export function Observation(props) {
+  return <ObservationItem observation={props} />;
 }
 
 export default function UnitStatusSummary(props) {
   const observations = _.map(
     props.unit.observations,
-    (obs) => { return <Observation key={obs.id} {...obs} />; }
+    (obs) => <Observation key={obs.id} {...obs} />
   );
   const qualityObservation = getQualityObservation(props.unit);
   let qualityElement = null;
