@@ -91,6 +91,12 @@ class LoginScreen extends React.Component {
                                       {constants.SERVICE_GROUPS.swimming.title}
                                   </label>
                               </div>
+                              <div className="checkbox">
+                                  <input id="sledding" type="radio" value={constants.SERVICE_GROUPS.sledding.id} name="service" onChange={_.bind(this.onSelectGroup, this)} checked={this.props.serviceGroup === constants.SERVICE_GROUPS.sledding.id} />
+                                  <label htmlFor="sledding">
+                                      {constants.SERVICE_GROUPS.sledding.title}
+                                  </label>
+                              </div>
                           </div>
                           <button className="btn btn-lg btn-primary btn-block" type="submit">Kirjaudu</button>
                       </form>

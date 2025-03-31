@@ -13,5 +13,10 @@ export const SERVICE_GROUPS = {
     services: [731, 730, 426],
     id: 'swimming',
     title: 'Uimarannat'
+  },
+  sledding: {
+    services: [1083],
+    id: 'sledding',
+    title: 'Pulkkamäet'
   }
 };
