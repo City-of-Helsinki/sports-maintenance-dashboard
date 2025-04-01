@@ -1,10 +1,16 @@
 # =======================================================
-FROM node:22.2.0-bookworm-slim AS appbase
+FROM registry.access.redhat.com/ubi9/nodejs-22 AS appbase
 # =======================================================
+
+USER root
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends bzip2
+RUN yum update -y && yum install -y bzip2 && yum clean all
+
+RUN chown -R default:root /app
+
+USER default
 
 COPY package.json .
 
