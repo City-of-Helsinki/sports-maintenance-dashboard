@@ -41,7 +41,7 @@ COPY . .
 RUN npm install -D webpack-cli && npm run dist
 
 # =======================================================
-FROM nginx:1.26.1-alpine AS production
+FROM registry.access.redhat.com/ubi9/nginx-122 AS production
 # =======================================================
 
 COPY --from=staticbuilder --chown=nginx:nginx /app/dist /usr/share/nginx/html
