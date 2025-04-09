@@ -37,7 +37,7 @@ COPY --chown=root:root . .
 RUN npm install -D webpack-cli && npm run dist
 
 # =======================================================
-FROM nginx:1.26.1-alpine AS production
+FROM registry.access.redhat.com/ubi9/nginx-122 AS production
 # =======================================================
 # Add application sources to a directory that the assemble script expects them
 # and set permissions so that the container runs without root access
@@ -48,8 +48,11 @@ RUN chgrp -R 0 /usr/share/nginx/html && \
 
 COPY --from=staticbuilder /app/dist /usr/share/nginx/html
 
+COPY nginx.conf /opt/app-root/etc/nginx.default.d/default.conf
+
 USER 1001
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 EXPOSE 8080
+
+# Run script uses standard ways to run the application
+CMD ["/bin/bash", "-c", "nginx -g \"daemon off;\""]
