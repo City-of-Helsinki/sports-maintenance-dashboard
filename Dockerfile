@@ -8,10 +8,6 @@ WORKDIR /app
 
 RUN yum update -y && yum install -y bzip2 && yum clean all
 
-RUN chown -R default:root /app
-
-USER default
-
 COPY package.json .
 
 RUN npm install
@@ -36,15 +32,23 @@ FROM appbase AS staticbuilder
 ARG API_URL=https://api.hel.fi/servicemap/v2
 ENV API_URL $API_URL
 
-COPY . .
+COPY --chown=root:root . .
 
 RUN npm install -D webpack-cli && npm run dist
 
 # =======================================================
 FROM nginx:1.26.1-alpine AS production
 # =======================================================
+# Add application sources to a directory that the assemble script expects them
+# and set permissions so that the container runs without root access
+USER root
 
-COPY --from=staticbuilder --chown=nginx:nginx /app/dist /usr/share/nginx/html
+RUN chgrp -R 0 /usr/share/nginx/html && \
+    chmod -R g=u /usr/share/nginx/html
+
+COPY --from=staticbuilder /app/dist /usr/share/nginx/html
+
+USER 1001
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
