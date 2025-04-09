@@ -6,13 +6,7 @@ USER root
 
 WORKDIR /app
 
-COPY --chown=root:root --chmod=755 . /app/
-
 RUN yum update -y && yum install -y bzip2 && yum clean all
-
-RUN chown -R default:root /app
-
-USER default
 
 COPY package.json .
 
@@ -25,7 +19,7 @@ FROM appbase AS development
 ARG API_URL=https://palvelukartta-api-test.agw.arodevtest.hel.fi/v2
 ENV API_URL $API_URL
 
-COPY --chown=default:root . .
+COPY . .
 
 EXPOSE 8001
 
@@ -38,21 +32,23 @@ FROM appbase AS staticbuilder
 ARG API_URL=https://api.hel.fi/servicemap/v2
 ENV API_URL $API_URL
 
-USER root
-
 COPY . .
-
-RUN chown -R default:root /app
-
-USER default
 
 RUN npm install -D webpack-cli && npm run dist
 
 # =======================================================
 FROM registry.access.redhat.com/ubi9/nginx-122 AS production
 # =======================================================
+# Add application sources to a directory that the assemble script expects them
+# and set permissions so that the container runs without root access
+USER root
 
-COPY --from=staticbuilder --chown=nginx:nginx /app/dist /usr/share/nginx/html
+RUN chgrp -R 0 /usr/share/nginx/html && \
+    chmod -R g=u /usr/share/nginx/html
+
+COPY --from=staticbuilder /app/dist /usr/share/nginx/html
+
+USER 1001
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
