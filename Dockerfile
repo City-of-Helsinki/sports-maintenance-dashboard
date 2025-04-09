@@ -32,7 +32,7 @@ FROM appbase AS staticbuilder
 ARG API_URL=https://api.hel.fi/servicemap/v2
 ENV API_URL $API_URL
 
-COPY . .
+COPY --chown=root:root . .
 
 RUN npm install -D webpack-cli && npm run dist
 
