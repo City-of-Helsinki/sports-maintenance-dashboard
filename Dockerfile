@@ -48,7 +48,7 @@ RUN chgrp -R 0 /usr/share/nginx/html && \
 
 COPY --from=staticbuilder /app/dist /usr/share/nginx/html
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /opt/app-root/etc/nginx.d/default.conf
 
 USER 1001
 
