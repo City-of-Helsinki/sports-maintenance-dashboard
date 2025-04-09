@@ -48,8 +48,11 @@ RUN chgrp -R 0 /usr/share/nginx/html && \
 
 COPY --from=staticbuilder /app/dist /usr/share/nginx/html
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 USER 1001
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Run script uses standard ways to run the application
+CMD ["/bin/bash", "-c", "nginx -g \"daemon off;\""]
 
 EXPOSE 8080
