@@ -13,3 +13,5 @@ jobs:
     secrets: inherit
     with:
       node-version: 22
+      extra-commands: |
+        cp .env.example .env
