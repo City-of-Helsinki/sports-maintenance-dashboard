@@ -4,6 +4,7 @@
   "description": "Pulkka UI - A user interface for storing observations with timestamps",
   "main": "",
   "scripts": {
+    "build": "yarn dist",
     "clean": "rimraf dist/*",
     "copy": "copyfiles -f ./src/index.html ./src/pulkka.appcache ./dist && copyfiles -u 1 ./src/favicons/* ./src/img/* ./dist",
     "dist": "npm run copy & webpack --env=dist",
@@ -16,6 +17,7 @@
     "serve:dist": "node server.js --env=dist",
     "start": "npm run copy && cp -n .env.example .env; node server.js --env=dev",
     "test": "karma start",
+    "test:coverage": "echo 'No tests'",
     "test:watch": "karma start --autoWatch=true --singleRun=false"
   },
   "repository": "",
