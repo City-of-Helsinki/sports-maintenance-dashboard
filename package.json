@@ -16,6 +16,7 @@
     "serve:dist": "node server.js --env=dist",
     "start": "npm run copy && cp -n .env.example .env; node server.js --env=dev",
     "test": "karma start",
+    "test:coverage": "karma start",
     "test:watch": "karma start --autoWatch=true --singleRun=false"
   },
   "repository": "",
