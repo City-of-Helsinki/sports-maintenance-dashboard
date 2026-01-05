@@ -37,7 +37,7 @@ function createSuccessCallback(callback) {
   return (position) => {
     currentStage++;
     if (currentStage < _.size(POSITION_OPTIONS) - 1) {
-      getInitialLocation(callback);
+      getInitialLocation(callback, false); // Don't reset on subsequent calls
     }
     callback(position);
   };
@@ -46,10 +46,15 @@ function createSuccessCallback(callback) {
 function error() {
 }
 
-export function getInitialLocation(callback) {
+export function getInitialLocation(callback, reset = true) {
   if (DISABLED) {
     return;
   }
+  // Reset stage for new geolocation session
+  if (reset) {
+    currentStage = 0;
+  }
+  
   const options = POSITION_OPTIONS[STAGES[currentStage]];
   if (options) {
     navigator.geolocation.getCurrentPosition(createSuccessCallback(callback), error, options);

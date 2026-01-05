@@ -45,7 +45,7 @@ class AppComponent extends React.Component {
       if (services) {
         this.props.getNearestUnits(position, services, this.props.maintenanceOrganization);
       }
-    });
+    }, true);
   }
 
   render() {
