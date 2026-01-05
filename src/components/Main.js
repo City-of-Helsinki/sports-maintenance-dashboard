@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link, Outlet } from 'react-router-dom';
 import _ from 'lodash';
 
-import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits, setResourceFetchStart, getResourceError } from '../actions/index';
+import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits, setResourceFetchStart } from '../actions/index';
 import { getCurrentSeason } from './utils';
 import { getInitialLocation } from '../lib/geolocation';
 import { withRouter } from '../hooks/index';
