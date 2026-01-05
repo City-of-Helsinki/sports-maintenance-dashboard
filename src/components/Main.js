@@ -28,7 +28,13 @@ function requireAuth(navigate, auth) {
 class AppComponent extends React.Component {
   componentDidMount() {
     let { navigate, auth } = this.props;
-    requireAuth(navigate, auth);
+    
+    // Only proceed with data fetching if user is authenticated
+    if (!hasAuth(auth)) {
+      requireAuth(navigate, auth);
+      return;
+    }
+    
     const services = constants.SERVICE_GROUPS[this.props.serviceGroup].services;
     this.props.setResourceFetchStart('service');
     this.props.fetchResource(
