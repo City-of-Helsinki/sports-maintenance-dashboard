@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link, Outlet } from 'react-router-dom';
 import _ from 'lodash';
 
-import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits } from '../actions/index';
+import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits, setResourceFetchStart } from '../actions/index';
 import { getCurrentSeason } from './utils';
 import { getInitialLocation } from '../lib/geolocation';
 import { withRouter } from '../hooks/index';
@@ -28,12 +28,20 @@ function requireAuth(navigate, auth) {
 class AppComponent extends React.Component {
   componentDidMount() {
     let { navigate, auth } = this.props;
-    requireAuth(navigate, auth);
+    
+    // Only proceed with data fetching if user is authenticated
+    if (!hasAuth(auth)) {
+      requireAuth(navigate, auth);
+      return;
+    }
+    
     const services = constants.SERVICE_GROUPS[this.props.serviceGroup].services;
+    this.props.setResourceFetchStart('service');
     this.props.fetchResource(
       'service', { id: services.join(',') },
       ['id', 'name'], ['observable_properties']
     );
+    this.props.setResourceFetchStart('unit');
     this.props.fetchUnitsWithServices(
       services, this.props.maintenanceOrganization, {
         selected: ['id', 'name', 'services', 'location', 'extensions'],
@@ -43,7 +51,7 @@ class AppComponent extends React.Component {
       if (services) {
         this.props.getNearestUnits(position, services, this.props.maintenanceOrganization);
       }
-    });
+    }, true);
   }
 
   render() {
@@ -113,6 +121,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getNearestUnits: (...args) => {
       dispatch(getNearestUnits(...args));
+    },
+    setResourceFetchStart: (resourceType) => {
+      dispatch(setResourceFetchStart(resourceType));
     }
   };
 };

@@ -8,7 +8,7 @@ import { UnitListElement } from './UnitList';
 class DashBoard extends React.Component {
 
   render() {
-    if (this.props.nearest === undefined || this.props.frequent === undefined) {
+    if (this.props.loading) {
       return <div>Ladataan...</div>;
     }
     let nearest;
@@ -48,6 +48,7 @@ function topUnits(n, units, unitsByUpdateCount) {
 function mapStateToProps(state) {
   if (_.keys(state.data.unit).length > 0) {
     return {
+      loading: state.data.loading.unit,
       nearest: _.map(state.data.unitsByDistance, (u) => {
         return state.data.unit[u.id];
       }),
@@ -55,7 +56,10 @@ function mapStateToProps(state) {
       userLocation: state.userLocation
     };
   }
-  return {};
+  return {
+    loading: state.data.loading.unit,
+    userLocation: state.userLocation
+  };
 }
 
 function mapDispatchToProps() {
