@@ -2,6 +2,12 @@ import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import * as ApiClient from '../lib/municipal-services-client.js';
 
+export const setResourceFetchStart = createAction(
+  'GET_RESOURCE_START',
+  (resourceType) => resourceType,
+  (resourceType) => ({ resourceType })
+);
+
 export const fetchUnitsWithServices = createAction(
   'GET_RESOURCE',
   ApiClient.fetchUnitsWithServices,

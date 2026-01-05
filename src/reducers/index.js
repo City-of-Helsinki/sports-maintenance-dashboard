@@ -8,7 +8,8 @@ const initialDataState = {
   unitsByDistance: [],
   observable_property: {},
   observation: {},
-  service: {}
+  service: {},
+  loading: {}
 };
 
 const initialAuthState = {
@@ -27,21 +28,37 @@ const serviceGroup = 'skiing';
 
 function dataReducer(state = initialDataState, action) {
   switch (action.type) {
+    case 'GET_RESOURCE_START':
+      const startResourceType = action.meta.resourceType;
+      return {
+        ...state,
+          loading: {
+            ...state.loading,
+            [startResourceType]: true
+          }
+      };
     case 'GET_RESOURCE':
       const resourceType = action.meta.resourceType;
       let existingResources = state[resourceType];
       if (action.meta.replaceAll === true) {
         existingResources = {};
       }
-      return Object.assign(
-        {}, state,
-        {[resourceType]: Object.assign(
-          existingResources,
-          action.payload[resourceType])});
+      return {
+        ...state,
+        [resourceType]: {
+          ...existingResources,
+          ...action.payload[resourceType]
+        },
+        loading: {
+          ...state.loading,
+          [resourceType]: false
+        }
+      };
     case 'GET_NEAREST_UNITS':
-      return Object.assign(
-        {}, state,
-        {unitsByDistance: action.payload});
+      return {
+        ...state,
+        unitsByDistance: action.payload
+      };
   }
   return state;
 }
