@@ -32,10 +32,6 @@ import UnitMassEditPropertySelect from './components/UnitMassEditPropertySelect'
 
 import moment from 'moment';
 
-import ES6Promise from 'es6-promise';
-ES6Promise.polyfill();
-import isomorphicFetch from 'isomorphic-fetch';
-isomorphicFetch;
 moment.locale('fi');
 
 const persistConfig = {
