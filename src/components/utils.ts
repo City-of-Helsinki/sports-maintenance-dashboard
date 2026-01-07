@@ -1,17 +1,18 @@
 import moment from 'moment';
 import _ from 'lodash';
+import { Unit, UnitObservation } from '../reducers/types';
 
-export const QUALITIES = [
+export const QUALITIES: readonly string[] = [
   'good', 'satisfactory', 'unusable', 'unknown', 'warning'
 ];
 
-export const COLORS = {
+export const COLORS: Record<string, string> = {
   satisfactory: 'warning',
   unusable: 'danger',
   good: 'success'
 };
 
-export const ICONS = {
+export const ICONS: Record<string, string> = {
   good: 'icon-smile-o',
   satisfactory: 'icon-meh-o',
   poor: 'icon-frown-o',
@@ -27,15 +28,15 @@ export const ICONS = {
   unknown: 'icon-question'
 };
 
-export function statusBarClassName(observation) {
-    // TODO is label- class usage ok for non-label
+export function statusBarClassName(observation?: UnitObservation): string {
+  // TODO is label- class usage ok for non-label
   if (observation) {
     return `unit-status unit-status--${observation.quality} label-${COLORS[observation.quality]}`;
   }
   return 'unit-status';
 }
 
-export function getQualityObservation(unit) {
+export function getQualityObservation(unit?: Unit): UnitObservation | undefined {
   if (unit === undefined) {
     return undefined;
   }
@@ -45,8 +46,8 @@ export function getQualityObservation(unit) {
   });
 }
 
-export function calculateGroups(units, maintenanceOrg) {
-  let result = {};
+export function calculateGroups(units: Unit[], maintenanceOrg: string): Record<string, number[]> {
+  let result: Record<string, number[]> = {};
   _.each(units, (u) => {
     if (u.extensions.maintenance_organization == maintenanceOrg) {
       const group = result[u.extensions.maintenance_group] || [];
@@ -61,7 +62,7 @@ export function calculateGroups(units, maintenanceOrg) {
   return result;
 }
 
-export function getCurrentSeason() {
+export function getCurrentSeason(): string {
   // New season starts 1st of october
   const newSeasonStartDate = {
     day: 1,
@@ -74,13 +75,13 @@ export function getCurrentSeason() {
     year: moment().year()
   };
 
-  const getStartYear = () => {
+  const getStartYear = (): number => {
     const isPastSeasonStartDate = today.month > newSeasonStartDate.month || (today.month === newSeasonStartDate.month && today.day >= newSeasonStartDate.day);
     // if today is past season start date, then start value is this year, otherwise start value is last year
     return isPastSeasonStartDate ? today.year : (today.year - 1);
   }
 
-  const getEndYear = () => getStartYear() + 1;
+  const getEndYear = (): number => getStartYear() + 1;
 
   return `${getStartYear()}-${getEndYear()}`;
 }
