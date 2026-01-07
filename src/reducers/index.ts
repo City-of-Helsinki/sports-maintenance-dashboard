@@ -205,7 +205,7 @@ const authReducer: Reducer<AuthState, ReduxAction> = (state = initialAuthState, 
     }
   }
   return state;
-}
+};
 
 function observationPath({unitId, property}: {unitId: string; property: string}): string {
   return `${unitId}.${property}`;

@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { BrowserRouter } from 'react-router-dom';
-import { RootState } from '../../reducers/types';
+import { RootState } from '../src/reducers/types';
 
 // Create a default mock store for testing
 const createMockStore = (initialState: Partial<RootState> = {}) => {
