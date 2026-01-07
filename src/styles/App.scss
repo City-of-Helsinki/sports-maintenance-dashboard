@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 @font-face {
   font-family: 'helsinki-avoin';
   src: url('../fonts/helsinkiavoinsans-bold-webfont.woff2') format('woff2'), url('../fonts/helsinkiavoinsans-bold-webfont.woff') format('woff');
@@ -203,7 +205,7 @@ body {
 }
 
 .condition-unknown {
-  background-color: darken($gray-lighter, 10%);
+  background-color: color.adjust($gray-lighter, $lightness: -10%);
 }
 
 .action-icon {

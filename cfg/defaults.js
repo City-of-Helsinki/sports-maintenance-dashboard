@@ -26,9 +26,11 @@ function getDefaultModules() {
         use: ['style-loader', 'css-loader', {
           loader: 'sass-loader',
           options: {
+            api: 'modern-compiler',
             sassOptions: {
               outputStyle: 'expanded',
-
+              quietDeps: true,
+              silenceDeprecations: ['import']
             }
           }
         }
@@ -39,9 +41,11 @@ function getDefaultModules() {
         use: ['style-loader', 'css-loader',  {
           loader: 'sass-loader',
           options: {
+            api: 'modern-compiler',
             sassOptions: {
               outputStyle: 'expanded',
-
+              quietDeps: true,
+              silenceDeprecations: ['import']
             }
           }
         }
