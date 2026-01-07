@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 let path = require('path');
@@ -8,7 +9,7 @@ let defaultSettings = require('./defaults');
 
 // Add needed plugins here
 const TerserPlugin = require("terser-webpack-plugin");
-const DotenvPlugin = require('webpack-dotenv-plugin');
+const Dotenv = require('dotenv-webpack');
 
 let config = Object.assign({}, baseConfig, {
   entry: path.join(__dirname, '../src/index'),
@@ -24,9 +25,9 @@ let config = Object.assign({}, baseConfig, {
       $: "jquery",
       jQuery: "jquery"
     }),
-    new DotenvPlugin({
-      sample: './.env.example',
-      path: './.env'
+    new Dotenv({
+      path: './.env',
+      safe: './.env.example'
     })
   ],
   optimization: {

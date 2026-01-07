@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * Function that returns default values.
  * Used because Object.assign does a shallow instead of a deep copy.

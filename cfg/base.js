@@ -36,9 +36,14 @@ module.exports = {
     historyApiFallback: true,
     hot: true,
     port: defaultSettings.port,
+    client: {
+      overlay: true
+    },
     devMiddleware: {
       publicPath: defaultSettings.publicPath,
-    }
+    },
+    host: '0.0.0.0',
+    allowedHosts: 'all'
   },
   resolve: {
     extensions: ['.js', '.jsx'],
