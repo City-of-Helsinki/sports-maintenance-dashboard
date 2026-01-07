@@ -19,6 +19,12 @@ module.exports = {
     filename: 'app.js',
     publicPath: defaultSettings.publicPath
   },
+  ignoreWarnings: [
+    {
+      module: /\.scss$/,
+      message: /Future import deprecation is not yet active, so silencing it is unnecessary/,
+    },
+  ],
   plugins: [
     require('autoprefixer'),
     new webpack.LoaderOptionsPlugin({

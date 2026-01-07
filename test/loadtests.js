@@ -1,6 +1,6 @@
 'use strict';
 
-require('@babel/polyfill');
+require('core-js/stable');
 require('core-js/internals/object-assign.js');
 
 // Add support for all files in the test directory
