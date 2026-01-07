@@ -4,22 +4,20 @@ import { Link } from 'react-router-dom';
 
 import { statusBarClassName, getQualityObservation } from './utils';
 import ObservationItem from './ObservationItem';
+import { Unit } from '../reducers/types';
 
-
-export function Observation(props) {
-  return <ObservationItem observation={props} />;
+interface UnitStatusSummaryProps {
+  unit: Unit;
 }
 
-export default function UnitStatusSummary(props) {
+export default function UnitStatusSummary({ unit }: UnitStatusSummaryProps): React.ReactElement {
   const observations = _.map(
-    props.unit.observations,
-    (obs) => <Observation key={obs.id} {...obs} />
+    unit.observations,
+    (obs) => <ObservationItem key={obs.id} observation={obs} />
   );
-  const qualityObservation = getQualityObservation(props.unit);
-  let qualityElement = null;
-  if (qualityObservation) {
-    qualityElement = <div className={statusBarClassName(qualityObservation)}> { qualityObservation.name.fi } </div>;
-  }
+
+  const qualityObservation = getQualityObservation(unit);
+  
   return (
     <div className="row">
         <div className="col-xs-12">
@@ -30,12 +28,14 @@ export default function UnitStatusSummary(props) {
                 </Link>
             </div>
             <div className="well">
-                <h4>{ props.unit.name.fi }</h4>
-                { qualityElement }
+                <h4>{ unit.name.fi }</h4>
+                {qualityObservation && (
+                  <div className={statusBarClassName(qualityObservation)}> { qualityObservation.name.fi } </div>
+                )}
                 <h5>
                     { observations }
                 </h5>
-                <Link to={`/unit/${props.unit.id}/history`} className="btn btn-default">Näytä historia</Link>
+                <Link to={`/unit/${unit.id}/history`} className="btn btn-default">Näytä historia</Link>
             </div>
         </div>
     </div>);

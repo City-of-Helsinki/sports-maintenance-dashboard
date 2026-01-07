@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import { ACTION_TYPE, canPropertyBeMaintained, HELP_TEXTS } from './UpdateConfirmation';
 import { allowedValuesByQuality } from './UnitDetails';
-import { Observation } from './UnitStatusSummary';
+import ObservationItem from './ObservationItem';
 import { unitObservableProperties } from '../lib/municipal-services-client';
 import { withRouter } from '../hooks';
 import * as constants from '../constants/index';
@@ -93,7 +93,7 @@ const UnitMassEdit = (props) => {
   const renderUnitInputs = _.map(_.sortBy(units, [(u) => u.name.fi]), (unit) => {
     const observations = _.map(
       unit.observations,
-      (obs) => { return <Observation key={obs.id} {...obs} />; }
+      (obs) => { return <ObservationItem key={obs.id} observation={obs} />; }
     );
     return (
       <div key={unit.id} className="mass-edit-checkbox">
