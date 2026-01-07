@@ -16,7 +16,7 @@ RUN npm install
 FROM appbase AS development
 # =======================================================
 
-ARG API_URL=https://palvelukartta-api-test.agw.arodevtest.hel.fi/v2
+ARG API_URL=https://palvelukartta.api.test.hel.ninja/v2
 ENV API_URL $API_URL
 
 COPY . .
