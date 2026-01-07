@@ -26,7 +26,8 @@ let config = Object.assign({}, baseConfig, {
     }),
     new Dotenv({
       path: './.env',
-      safe: './.env.example'
+      safe: './.env.example',
+      ignoreStub: true
     }),
     new ReactRefreshWebpackPlugin()
   ],
