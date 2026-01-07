@@ -1,4 +1,4 @@
-/*eslint-env node, mocha */
+/*eslint-env node, jest */
 /*eslint no-console: 0*/
 'use strict';
 
@@ -28,7 +28,7 @@ const mockStore = createStore(() => ({
 const renderWithProviders = (component, store = mockStore) => {
   return render(
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         {component}
       </BrowserRouter>
     </Provider>
@@ -38,14 +38,14 @@ const renderWithProviders = (component, store = mockStore) => {
 describe('MainComponent', () => {
 
   it('should be importable', () => {
-    expect(Main).to.exist;
-    expect(Main).to.be.an('object');
+    expect(Main).toBeDefined();
+    expect(typeof Main).toBe('object');
   });
 
   it('should have its component name as default className', () => {
     const { container } = renderWithProviders(<Main />);
     
     const mainElement = container.querySelector('.index');
-    expect(mainElement).to.exist;
+    expect(mainElement).toBeInTheDocument();
   });
 });
