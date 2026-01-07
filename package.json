@@ -77,5 +77,8 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "resolutions": {
+    "@babel/runtime": "^7.26.10"
+  }
 }
