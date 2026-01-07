@@ -1,7 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 
-const SHORT_DESCRIPTIONS = {
+import { UnitObservation } from '../reducers/types';
+
+const SHORT_DESCRIPTIONS: Record<string, string> = {
     ski_trail_maintenance: 'Kunnostettu',
     ski_trail_condition: 'Kunto todettu',
     swimming_water_temperature: 'Lämpötila todettu',
@@ -9,14 +11,19 @@ const SHORT_DESCRIPTIONS = {
     live_swimming_water_temperature: 'Automaattinen lämpötilamittaus'
 };
 
-function getUnitObservationText(observationName, observationProperty) {
+function getUnitObservationText(observationName: string, observationProperty: string): string {
     if (observationProperty === 'live_swimming_water_temperature') {
         return observationName + '°C';
     }
     return observationName;
 }
 
-export default function ObservationItem({ observation, className = 'unit-observation-text' }) {
+interface ObservationItemProps {
+    observation: UnitObservation;
+    className?: string;
+}
+
+const ObservationItem: React.FC<ObservationItemProps> = ({ observation, className = 'unit-observation-text' }) => {
   const { id, time, property, name, value } = observation;
   const formattedTime = moment(time).format('dd l [klo] LTS');
 
@@ -37,7 +44,7 @@ export default function ObservationItem({ observation, className = 'unit-observa
         {SHORT_DESCRIPTIONS[property]}{' '}
         <strong>
           {getUnitObservationText(
-            name?.fi || value?.fi,
+            name?.fi || value?.fi || '',
             property
           )}
         </strong>{' '}
@@ -45,4 +52,6 @@ export default function ObservationItem({ observation, className = 'unit-observa
       </small>
     </div>
   );
-}
+};
+
+export default ObservationItem;
