@@ -44,7 +44,12 @@ config.module.rules.push({
         plugins: [require.resolve('react-refresh/babel')],
       }
     },
-    'ts-loader'
+    {
+      loader: 'ts-loader',
+      options: {
+        transpileOnly: true
+      }
+    }
   ],
   include: [].concat(
     [ path.join(__dirname, '/../src') ]
