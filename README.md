@@ -19,6 +19,29 @@ Run `npm install`
 
 Run `npm start`
 
+## TypeScript Support ##
+
+This project supports incremental TypeScript migration alongside JavaScript. You can create new components as `.tsx` files or gradually convert existing `.js` files to TypeScript.
+
+### Type Checking ###
+
+Run `npm run type-check` to check TypeScript types without emitting files.
+
+### File Extensions ###
+
+- Use `.tsx` for React components with TypeScript
+- Use `.ts` for utility files, actions, reducers with TypeScript  
+- Existing `.js` and `.jsx` files continue to work unchanged
+
+### Migration Strategy ###
+
+1. Start with simple components that have no props
+2. Convert components that already have PropTypes defined
+3. Add type definitions for Redux state and actions
+4. Gradually convert remaining components
+
+The build system automatically handles both JavaScript and TypeScript files.
+
 # Production build #
 
 1. Important! Update the version in `src/pulkka.appcache`

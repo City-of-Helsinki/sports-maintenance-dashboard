@@ -3,10 +3,11 @@ module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/test/setupTests.js'],
   testMatch: [
-    '<rootDir>/{test,src}/**/__tests__/*.test.{js,jsx}'
+    '<rootDir>/{test,src}/**/__tests__/*.test.{js,jsx,ts,tsx}'
   ],
-  moduleFileExtensions: ['js', 'jsx'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   transform: {
+    '^.+\\.(ts|tsx)$': ['babel-jest', { presets: ['@babel/preset-typescript'] }],
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
   moduleNameMapper: {
@@ -23,7 +24,7 @@ module.exports = {
   moduleDirectories: ['node_modules', 'src'],
   collectCoverage: true,
   collectCoverageFrom: [
-    'src/**/*.{js,jsx}',
+    'src/**/*.{js,jsx,ts,tsx}',
     '!src/index.js',
     '!src/config/**',
   ],

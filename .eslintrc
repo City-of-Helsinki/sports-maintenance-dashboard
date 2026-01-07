@@ -3,6 +3,24 @@
   "plugins": [
     "react"
   ],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint", "react"],
+      "extends": [
+        "eslint:recommended",
+        "@typescript-eslint/recommended"
+      ],
+      "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      }
+    }
+  ],
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
