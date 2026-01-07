@@ -28,7 +28,7 @@ const serviceGroup = 'skiing';
 
 function dataReducer(state = initialDataState, action) {
   switch (action.type) {
-    case 'GET_RESOURCE_START':
+    case 'GET_RESOURCE_START': {
       const startResourceType = action.meta.resourceType;
       return {
         ...state,
@@ -37,7 +37,8 @@ function dataReducer(state = initialDataState, action) {
             [startResourceType]: true
           }
       };
-    case 'GET_RESOURCE':
+    }
+    case 'GET_RESOURCE': {
       const resourceType = action.meta.resourceType;
       let existingResources = state[resourceType];
       if (action.meta.replaceAll === true) {
@@ -54,6 +55,7 @@ function dataReducer(state = initialDataState, action) {
           [resourceType]: false
         }
       };
+    }
     case 'GET_NEAREST_UNITS':
       return {
         ...state,
@@ -88,7 +90,7 @@ function authErrorReducer(state = initialAuthErrorState, action) {
 
 function authReducer(state = initialAuthState, action) {
   switch (action.type) {
-    case 'LOGIN':
+    case 'LOGIN': {
     if (action.error) {
       return {
         token: null,
@@ -109,6 +111,7 @@ function authReducer(state = initialAuthState, action) {
       token,
       login_id: login_identifier
     };
+    }
   }
   return state;
 }
@@ -147,7 +150,7 @@ function pendingObservationsReducer(state = initialPendingObservationsState, act
       }
       path = observationPath({unitId: action.payload.unit, property: action.payload.property});
       return Object.assign({}, state, {[path]: createObservationData({unitId: action.payload.unit, property: action.payload.property}, 'success')});
-    case 'GET_RESOURCE':
+    case 'GET_RESOURCE': {
       const observation = action.meta.observation;
       if (observation !== undefined) {
         path = observationPath({
@@ -155,6 +158,7 @@ function pendingObservationsReducer(state = initialPendingObservationsState, act
           property: observation.property});
         return Object.assign({}, _.omit(state, [path]));
       }
+    }
   }
   return state;
 }

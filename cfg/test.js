@@ -1,21 +1,16 @@
+/* eslint-disable no-undef */
 'use strict';
 
 let path = require('path');
-let srcPath = path.join(__dirname, '/../src/');
+let webpack = require('webpack');
 
 let baseConfig = require('./base');
 
 module.exports = {
+  ...baseConfig,
   devtool: 'eval',
   module: {
     rules: [
-      {
-        test: /\.(js|jsx)$/,
-        loader: 'isparta',
-        include: [
-          path.join(__dirname, '/../src')
-        ]
-      },
       {
         test: /\.(png|jpg|gif|woff|woff2|css|sass|scss|less|styl)$/,
         loader: 'null-loader'
@@ -28,21 +23,24 @@ module.exports = {
             path.join(__dirname, '/../src'),
             path.join(__dirname, '/../test')
           ]
-        )
+        ),
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+          plugins: ['babel-plugin-istanbul']
+        }
       }
     ]
   },
   resolve: {
-    extensions: [ '', '.js', '.jsx' ],
+    ...baseConfig.resolve,
     alias: {
-      actions: srcPath + 'actions/',
-      helpers: path.join(__dirname, '/../test/helpers'),
-      components: srcPath + 'components/',
-      sources: srcPath + 'sources/',
-      stores: srcPath + 'stores/',
-      styles: srcPath + 'styles/',
-      config: srcPath + 'config/' + process.env.REACT_WEBPACK_ENV
+      ...baseConfig.resolve.alias,
+      helpers: path.join(__dirname, '/../test/helpers')
     }
   },
-  plugins: []
+  plugins: [
+    new webpack.ProvidePlugin({
+      process: 'process/browser.js',
+    })
+  ]
 };

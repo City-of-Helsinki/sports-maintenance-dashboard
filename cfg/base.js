@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 let path = require('path');
 let webpack = require('webpack');
@@ -40,9 +41,9 @@ module.exports = {
     }
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
     fallback: {
-      "process": require.resolve("process/browser")
+      "process": require.resolve("process/browser.js")
     },
     alias: {
       actions: `${defaultSettings.srcPath}/actions/`,

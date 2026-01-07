@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 var webpackCfg = require('./webpack.config');
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
@@ -23,7 +24,7 @@ module.exports = function(config) {
       'test/loadtests.js'
     ],
     frameworks: [
-      'chai'
+      'mocha', 'chai'
     ],
     plugins: [
       'karma-webpack',
@@ -36,7 +37,6 @@ module.exports = function(config) {
     ],
     port: 8000,
     captureTimeout: 60000,
-    frameworks: [ 'mocha', 'chai' ],
     client: {
       mocha: {}
     },
