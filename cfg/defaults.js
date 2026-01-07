@@ -62,7 +62,7 @@ function getDefaultModules() {
       },
       {
         test: /\.(mp4|ogg|svg)$/,
-        use: 'file-loader'
+        type: 'asset/resource'
       }
     ]
   };
