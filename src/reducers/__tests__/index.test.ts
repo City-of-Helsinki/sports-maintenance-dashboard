@@ -1,33 +1,21 @@
+import { AnyAction } from 'redux';
 import reducer from '../index';
 import { CredentialError } from '../../util/error';
+import { RootState } from '../types';
+
+type TestAction = AnyAction & {
+  payload?: any;
+  meta?: any;
+  error?: boolean;
+};
 
 describe('Reducers', () => {
-  const initialState = {
-    data: {
-      unit: {},
-      unitsByDistance: [],
-      observable_property: {},
-      observation: {},
-      service: {},
-      loading: {}
-    },
-    auth: {
-      maintenance_organization: null,
-      token: null,
-      login_id: null
-    },
-    authError: null,
-    updateQueue: {},
-    updateFlush: false,
-    serviceGroup: 'skiing',
-    userLocation: null,
-    unitsByUpdateTime: [],
-    unitsByUpdateCount: {}
-  };
+  // Get the actual initial state from the reducer itself
+  const initialState: RootState = reducer(undefined, { type: '@@INIT' });
 
   describe('dataReducer', () => {
     it('should handle GET_RESOURCE_START', () => {
-      const action = {
+      const action: TestAction = {
         type: 'GET_RESOURCE_START',
         meta: { resourceType: 'unit' }
       };
@@ -37,7 +25,7 @@ describe('Reducers', () => {
     });
 
     it('should handle GET_RESOURCE', () => {
-      const action = {
+      const action: TestAction = {
         type: 'GET_RESOURCE',
         meta: { resourceType: 'unit' },
         payload: {
@@ -53,7 +41,7 @@ describe('Reducers', () => {
     });
 
     it('should handle GET_RESOURCE with replaceAll flag', () => {
-      const existingState = {
+      const existingState: RootState = {
         ...initialState,
         data: {
           ...initialState.data,
@@ -61,7 +49,7 @@ describe('Reducers', () => {
         }
       };
 
-      const action = {
+      const action: TestAction = {
         type: 'GET_RESOURCE',
         meta: { resourceType: 'unit', replaceAll: true },
         payload: {
@@ -77,7 +65,7 @@ describe('Reducers', () => {
     });
 
     it('should handle GET_NEAREST_UNITS', () => {
-      const action = {
+      const action: TestAction = {
         type: 'GET_NEAREST_UNITS',
         payload: [{ id: '1', distance: 100 }]
       };
@@ -89,7 +77,7 @@ describe('Reducers', () => {
 
   describe('authReducer', () => {
     it('should handle successful LOGIN', () => {
-      const action = {
+      const action: TestAction = {
         type: 'LOGIN',
         payload: {
           maintenance_organization: 'test-org',
@@ -107,7 +95,7 @@ describe('Reducers', () => {
     });
 
     it('should handle failed LOGIN', () => {
-      const action = {
+      const action: TestAction = {
         type: 'LOGIN',
         error: true,
         payload: new Error('Login failed')
@@ -122,7 +110,7 @@ describe('Reducers', () => {
     });
 
     it('should handle incomplete LOGIN data', () => {
-      const action = {
+      const action: TestAction = {
         type: 'LOGIN',
         payload: {
           maintenance_organization: 'test-org',
@@ -139,7 +127,7 @@ describe('Reducers', () => {
 
   describe('authErrorReducer', () => {
     it('should handle LOGIN error with object payload', () => {
-      const action = {
+      const action: TestAction = {
         type: 'LOGIN',
         error: true,
         payload: { message: 'Custom error message' }
@@ -150,7 +138,7 @@ describe('Reducers', () => {
     });
 
     it('should handle LOGIN error with RangeError', () => {
-      const action = {
+      const action: TestAction = {
         type: 'LOGIN',
         error: true,
         payload: new RangeError('Range error')
@@ -161,7 +149,7 @@ describe('Reducers', () => {
     });
 
     it('should handle LOGIN error with CredentialError', () => {
-      const action = {
+      const action: TestAction = {
         type: 'LOGIN',
         error: true,
         payload: new CredentialError('Invalid credentials')
@@ -172,7 +160,7 @@ describe('Reducers', () => {
     });
 
     it('should handle LOGIN error with generic error', () => {
-      const action = {
+      const action: TestAction = {
         type: 'LOGIN',
         error: true,
         payload: new Error('Generic error')
@@ -183,7 +171,7 @@ describe('Reducers', () => {
     });
 
     it('should clear auth error on successful action', () => {
-      const action = {
+      const action: TestAction = {
         type: 'LOGIN',
         payload: {
           maintenance_organization: 'test-org',
@@ -206,7 +194,7 @@ describe('Reducers', () => {
     };
 
     it('should handle ENQUEUE_OBSERVATION', () => {
-      const action = {
+      const action: TestAction = {
         type: 'ENQUEUE_OBSERVATION',
         payload: observationPayload
       };
@@ -222,7 +210,7 @@ describe('Reducers', () => {
     });
 
     it('should handle MARK_OBSERVATION_SENT', () => {
-      const action = {
+      const action: TestAction = {
         type: 'MARK_OBSERVATION_SENT',
         payload: observationPayload
       };
@@ -232,7 +220,7 @@ describe('Reducers', () => {
     });
 
     it('should handle MARK_OBSERVATION_RESENT', () => {
-      const action = {
+      const action: TestAction = {
         type: 'MARK_OBSERVATION_RESENT',
         payload: observationPayload
       };
@@ -242,7 +230,7 @@ describe('Reducers', () => {
     });
 
     it('should handle successful POST_OBSERVATION', () => {
-      const action = {
+      const action: TestAction = {
         type: 'POST_OBSERVATION',
         payload: {
           unit: 'unit-1',
@@ -258,7 +246,7 @@ describe('Reducers', () => {
     });
 
     it('should handle failed POST_OBSERVATION', () => {
-      const action = {
+      const action: TestAction = {
         type: 'POST_OBSERVATION',
         error: true,
         meta: observationPayload
@@ -269,14 +257,20 @@ describe('Reducers', () => {
     });
 
     it('should handle GET_RESOURCE with observation meta', () => {
-      const stateWithPendingObs = {
+      const stateWithPendingObs: RootState = {
         ...initialState,
         updateQueue: {
-          'unit-1.condition': { status: 'pending' }
+          'unit-1.condition': { 
+            unitId: 'unit-1',
+            status: 'pending',
+            serviced: false,
+            property: 'condition',
+            value: null
+          }
         }
       };
 
-      const action = {
+      const action: TestAction = {
         type: 'GET_RESOURCE',
         meta: {
           resourceType: 'observation',
@@ -295,14 +289,14 @@ describe('Reducers', () => {
 
   describe('updateFlushReducer', () => {
     it('should handle FLUSH_UPDATE_QUEUE', () => {
-      const action = { type: 'FLUSH_UPDATE_QUEUE' };
+      const action: TestAction = { type: 'FLUSH_UPDATE_QUEUE' };
       const state = reducer(initialState, action);
       
       expect(state.updateFlush).toBe(true);
     });
 
     it('should handle FLUSH_UPDATE_QUEUE_DISABLED', () => {
-      const action = { type: 'FLUSH_UPDATE_QUEUE_DISABLED' };
+      const action: TestAction = { type: 'FLUSH_UPDATE_QUEUE_DISABLED' };
       const state = reducer(initialState, action);
       
       expect(state.updateFlush).toBe(false);
@@ -311,7 +305,7 @@ describe('Reducers', () => {
 
   describe('serviceGroupReducer', () => {
     it('should handle SELECT_SERVICE_GROUP', () => {
-      const action = {
+      const action: TestAction = {
         type: 'SELECT_SERVICE_GROUP',
         payload: 'ice-skating'
       };
@@ -328,7 +322,7 @@ describe('Reducers', () => {
   describe('userLocationReducer', () => {
     it('should handle SET_USER_LOCATION', () => {
       const location = { lat: 60.1699, lng: 24.9384 };
-      const action = {
+      const action: TestAction = {
         type: 'SET_USER_LOCATION',
         payload: location
       };
@@ -340,7 +334,7 @@ describe('Reducers', () => {
 
   describe('unitsByUpdateTimeReducer', () => {
     it('should handle successful POST_OBSERVATION', () => {
-      const action = {
+      const action: TestAction = {
         type: 'POST_OBSERVATION',
         meta: { unitId: 'unit-1' },
         payload: { unit: 'unit-1', property: 'condition' }
@@ -351,7 +345,7 @@ describe('Reducers', () => {
     });
 
     it('should not handle failed POST_OBSERVATION', () => {
-      const action = {
+      const action: TestAction = {
         type: 'POST_OBSERVATION',
         error: true,
         meta: { unitId: 'unit-1' }
@@ -362,12 +356,12 @@ describe('Reducers', () => {
     });
 
     it('should maintain unique units and limit to 20', () => {
-      const stateWith19Units = {
+      const stateWith19Units: RootState = {
         ...initialState,
         unitsByUpdateTime: Array.from({ length: 19 }, (_, i) => `unit-${i}`)
       };
 
-      const action = {
+      const action: TestAction = {
         type: 'POST_OBSERVATION',
         meta: { unitId: 'unit-new' },
         payload: { unit: 'unit-new', property: 'condition' }
@@ -379,12 +373,12 @@ describe('Reducers', () => {
     });
 
     it('should not duplicate units', () => {
-      const stateWithUnit = {
+      const stateWithUnit: RootState = {
         ...initialState,
         unitsByUpdateTime: ['unit-1', 'unit-2']
       };
 
-      const action = {
+      const action: TestAction = {
         type: 'POST_OBSERVATION',
         meta: { unitId: 'unit-1' },
         payload: { unit: 'unit-1', property: 'condition' }
@@ -398,7 +392,7 @@ describe('Reducers', () => {
 
   describe('unitsByUpdateCountReducer', () => {
     it('should handle first POST_OBSERVATION for unit', () => {
-      const action = {
+      const action: TestAction = {
         type: 'POST_OBSERVATION',
         meta: { unitId: 'unit-1' },
         payload: { unit: 'unit-1', property: 'condition' }
@@ -412,14 +406,14 @@ describe('Reducers', () => {
     });
 
     it('should increment count for existing unit', () => {
-      const stateWithCount = {
+      const stateWithCount: RootState = {
         ...initialState,
         unitsByUpdateCount: {
           'unit-1': { count: 2, id: 'unit-1' }
         }
       };
 
-      const action = {
+      const action: TestAction = {
         type: 'POST_OBSERVATION',
         meta: { unitId: 'unit-1' },
         payload: { unit: 'unit-1', property: 'condition' }
@@ -433,7 +427,7 @@ describe('Reducers', () => {
     });
 
     it('should not handle failed POST_OBSERVATION', () => {
-      const action = {
+      const action: TestAction = {
         type: 'POST_OBSERVATION',
         error: true,
         meta: { unitId: 'unit-1' }
@@ -446,7 +440,7 @@ describe('Reducers', () => {
 
   describe('combined reducer', () => {
     it('should return initial state for unknown action', () => {
-      const action = { type: 'UNKNOWN_ACTION' };
+      const action: TestAction = { type: 'UNKNOWN_ACTION' };
       const state = reducer(undefined, action);
       
       expect(state).toEqual(initialState);
