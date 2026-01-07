@@ -1,3 +1,6 @@
+@use 'sass:math';
+@use 'sass:color';
+
 $gray-base:              #000 !default;
 $gray-darker:            #333;
 $gray-dark:              #444;
@@ -21,18 +24,18 @@ $link-hover-decoration: none;
 $font-family-sans-serif:  "helsinki-avoin", Helvetica, sans-serif;
 $font-family-serif:       Georgia, Times, "Times New Roman", serif;
 $font-size-base:          18px;
-$font-size-large:         ceil(($font-size-base * 1.25)) !default; // ~18px
-$font-size-small:         ceil(($font-size-base * 0.75)) !default; // ~12px
+$font-size-large:         math.ceil(($font-size-base * 1.25)) !default; // ~18px
+$font-size-small:         math.ceil(($font-size-base * 0.75)) !default; // ~12px
 
-$font-size-h1:            floor(($font-size-base * 3)) !default; // ~36px
-$font-size-h2:            floor(($font-size-base * 2.15)) !default; // ~30px
-$font-size-h3:            ceil(($font-size-base * 1.7)) !default; // ~24px
-$font-size-h4:            ceil(($font-size-base * 1.25)) !default; // ~18px
+$font-size-h1:            math.floor(($font-size-base * 3)) !default; // ~36px
+$font-size-h2:            math.floor(($font-size-base * 2.15)) !default; // ~30px
+$font-size-h3:            math.ceil(($font-size-base * 1.7)) !default; // ~24px
+$font-size-h4:            math.ceil(($font-size-base * 1.25)) !default; // ~18px
 $font-size-h5:            $font-size-base !default;
-$font-size-h6:            ceil(($font-size-base * 0.85)) !default; // ~12px
+$font-size-h6:            math.ceil(($font-size-base * 0.85)) !default; // ~12px
 
 $line-height-base:        1.5;
-$line-height-computed:    floor(($font-size-base * $line-height-base)) !default; // ~20px
+$line-height-computed:    math.floor(($font-size-base * $line-height-base)) !default; // ~20px
 
 $headings-font-weight:    600;
 $headings-line-height:    1;
@@ -72,7 +75,7 @@ $grid-gutter-width:         24px;
 $navbar-height:                    65px;
 $navbar-margin-bottom:             $line-height-computed !default;
 $navbar-border-radius:             0;
-$navbar-padding-horizontal:        floor(calc($grid-gutter-width / 2)) !default;
+$navbar-padding-horizontal:        math.floor(calc($grid-gutter-width / 2)) !default;
 $navbar-padding-vertical:          calc(calc($navbar-height - $line-height-computed) / 2) !default;
 $navbar-collapse-max-height:       340px !default;
 
@@ -87,7 +90,7 @@ $navbar-inverse-link-color:                 #fff;
 $navbar-inverse-link-hover-color:           #05c2de;
 $navbar-inverse-link-hover-bg:              transparent !default;
 $navbar-inverse-link-active-color:          $navbar-inverse-link-hover-color !default;
-$navbar-inverse-link-active-bg:             darken($navbar-inverse-bg, 10%) !default;
+$navbar-inverse-link-active-bg:             color.adjust($navbar-inverse-bg, $lightness: -10%) !default;
 $navbar-inverse-link-disabled-color:        #444 !default;
 $navbar-inverse-link-disabled-bg:           transparent !default;
 

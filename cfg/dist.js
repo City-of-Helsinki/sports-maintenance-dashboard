@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 let path = require('path');
@@ -8,25 +9,27 @@ let defaultSettings = require('./defaults');
 
 // Add needed plugins here
 const TerserPlugin = require("terser-webpack-plugin");
-const DotenvPlugin = require('webpack-dotenv-plugin');
+const Dotenv = require('dotenv-webpack');
 
 let config = Object.assign({}, baseConfig, {
+  mode: 'production',
   entry: path.join(__dirname, '../src/index'),
   cache: false,
   devtool: 'source-map',
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"'
+    new Dotenv({
+      path: './.env',
+      safe: false,
+      systemvars: true,
+      defaults: {
+        'API_URL': 'https://api.hel.fi/servicemap/v2'
+      }
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
-    }),
-    new DotenvPlugin({
-      sample: './.env.example',
-      path: './.env'
     })
   ],
   optimization: {

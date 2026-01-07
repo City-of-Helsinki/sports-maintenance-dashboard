@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * Function that returns default values.
  * Used because Object.assign does a shallow instead of a deep copy.
@@ -26,9 +27,11 @@ function getDefaultModules() {
         use: ['style-loader', 'css-loader', {
           loader: 'sass-loader',
           options: {
+            api: 'modern-compiler',
             sassOptions: {
               outputStyle: 'expanded',
-
+              quietDeps: true,
+              silenceDeprecations: ['import']
             }
           }
         }
@@ -39,9 +42,11 @@ function getDefaultModules() {
         use: ['style-loader', 'css-loader',  {
           loader: 'sass-loader',
           options: {
+            api: 'modern-compiler',
             sassOptions: {
               outputStyle: 'expanded',
-
+              quietDeps: true,
+              silenceDeprecations: ['import']
             }
           }
         }
@@ -57,7 +62,7 @@ function getDefaultModules() {
       },
       {
         test: /\.(mp4|ogg|svg)$/,
-        use: 'file-loader'
+        type: 'asset/resource'
       }
     ]
   };

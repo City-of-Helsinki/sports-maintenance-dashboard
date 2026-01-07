@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 let path = require('path');
@@ -7,29 +8,26 @@ let defaultSettings = require('./defaults');
 
 // Add needed plugins here
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const DotenvPlugin = require('webpack-dotenv-plugin');
+const Dotenv = require('dotenv-webpack');
 
 let config = Object.assign({}, baseConfig, {
   entry: [
-    'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
-    'webpack/hot/only-dev-server',
     './src/index'
   ],
   cache: true,
   devtool: 'eval-source-map',
+  optimization: {
+    emitOnErrors: false
+  },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.ProvidePlugin({
-          $: "jquery",
-          jQuery: "jquery"
-      }),
-    new DotenvPlugin({
-      sample: './.env.example',
-      path: './.env'
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
     }),
-    new webpack.LoaderOptionsPlugin({
-      debug: true
+    new Dotenv({
+      path: './.env',
+      safe: './.env.example',
+      ignoreStub: true
     }),
     new ReactRefreshWebpackPlugin()
   ],

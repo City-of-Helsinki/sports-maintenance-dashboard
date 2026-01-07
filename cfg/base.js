@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 let path = require('path');
 let webpack = require('webpack');
@@ -18,6 +19,12 @@ module.exports = {
     filename: 'app.js',
     publicPath: defaultSettings.publicPath
   },
+  ignoreWarnings: [
+    {
+      module: /\.scss$/,
+      message: /Future import deprecation is not yet active, so silencing it is unnecessary/,
+    },
+  ],
   plugins: [
     require('autoprefixer'),
     new webpack.LoaderOptionsPlugin({
@@ -35,14 +42,19 @@ module.exports = {
     historyApiFallback: true,
     hot: true,
     port: defaultSettings.port,
+    client: {
+      overlay: true
+    },
     devMiddleware: {
       publicPath: defaultSettings.publicPath,
-    }
+    },
+    host: '0.0.0.0',
+    allowedHosts: 'all'
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
     fallback: {
-      "process": require.resolve("process/browser")
+      "process": require.resolve("process/browser.js")
     },
     alias: {
       actions: `${defaultSettings.srcPath}/actions/`,
