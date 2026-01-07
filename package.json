@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "build": "yarn dist",
-    "clean": "rimraf dist/*",
+    "clean": "find dist -mindepth 1 -not -name 'README.md' -delete 2>/dev/null || true",
     "copy": "copyfiles -f ./src/index.html ./src/pulkka.appcache ./dist && copyfiles -u 1 ./src/favicons/* ./src/img/* ./dist",
     "dist": "npm run copy & webpack --env=dist",
     "lint": "eslint ./src",
@@ -68,7 +68,6 @@
     "minimist": "^1.2.8",
     "null-loader": "^4.0.1",
     "react-refresh": "^0.14.2",
-    "rimraf": "^6.1.2",
     "sass-loader": "^14.2.1",
     "style-loader": "^4.0.0",
     "webpack": "^5.91.0",
