@@ -48,10 +48,10 @@ export default function queueHandler(store) {
     }
     else {
       _.each(itemsToRetry, (item) => {
-          store.dispatch(markObservationResent(item));
-          const QUARTER_MINUTE = 15000;
-          let timerId = _.delay(send, QUARTER_MINUTE, store, item);
-          timers[timerId] = true;
+        store.dispatch(markObservationResent(item));
+        const QUARTER_MINUTE = 15000;
+        let timerId = _.delay(send, QUARTER_MINUTE, store, item);
+        timers[timerId] = true;
       });
     }
     if (shouldRetryImmediately) {

@@ -77,7 +77,7 @@ export interface SetUserLocationAction extends Action<typeof ActionTypes.SET_USE
   payload: any;
 }
 
-export type ReduxAction = 
+export type ReduxAction =
   | GetResourceStartAction
   | GetResourceAction
   | GetNearestUnitsAction

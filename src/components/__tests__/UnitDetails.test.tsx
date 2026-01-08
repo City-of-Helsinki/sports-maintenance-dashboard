@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../../../test/testUtils';
 
 import UnitDetails, { ObservableProperty, ObservablePropertyPanel, allowedValuesByQuality } from '../UnitDetails';
-import { Unit, UnitObservation, ObservableProperty as ObservablePropertyType, AllowedValue } from '../../types';
+import { Unit, ObservableProperty as ObservablePropertyType } from '../../types';
 import { RootState } from '../../reducers/types';
 
 // Mock react-router-dom
@@ -66,6 +66,9 @@ describe('UnitDetails Component', () => {
   const baseMockState: Partial<RootState> = {
     data: {
       unit: { '123': baseUnit },
+      unitsByDistance: [],
+      observable_property: {},
+      observation: {},
       service: {
         1: {
           id: 1,

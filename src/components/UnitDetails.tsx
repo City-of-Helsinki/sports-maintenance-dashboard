@@ -7,10 +7,10 @@ import UnitStatusSummary from './UnitStatusSummary';
 import UnitDescriptiveStatusForm from './UnitDescriptiveStatusForm';
 import { unitObservableProperties } from '../lib/municipalServicesClient';
 import * as constants from '../constants/index';
-import { 
-  ObservableProperty as ObservablePropertyType, 
-  AllowedValue, 
-  LocalizedText 
+import {
+  ObservableProperty as ObservablePropertyType,
+  AllowedValue,
+  LocalizedText
 } from '../types';
 
 import { COLORS, ICONS, QUALITIES } from './utils';
@@ -48,17 +48,17 @@ export function ObservablePropertyPanel({ allowedValues, header }: ObservablePro
 
   return (
     <div className="panel panel-default">
-        <div className="panel-heading">{ header }</div>
-        <div className="panel-body">
-            <div className="row">
-                <div className="col-xs-6">
-                    { left }
-                </div>
-                <div className="col-xs-6">
-                    { right }
-                </div>
-            </div>
+      <div className="panel-heading">{ header }</div>
+      <div className="panel-body">
+        <div className="row">
+          <div className="col-xs-6">
+            { left }
+          </div>
+          <div className="col-xs-6">
+            { right }
+          </div>
         </div>
+      </div>
     </div>
   );
 }

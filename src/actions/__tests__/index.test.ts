@@ -194,10 +194,10 @@ describe('Action Creators', () => {
       // Mock successful fetch response
       (fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
-        json: () => Promise.resolve({ 
-          token: 'test-token', 
-          login_identifier: 'validuser', 
-          maintenance_organization: 'test-org' 
+        json: () => Promise.resolve({
+          token: 'test-token',
+          login_identifier: 'validuser',
+          maintenance_organization: 'test-org'
         })
       });
 
@@ -208,10 +208,10 @@ describe('Action Creators', () => {
       
       // Wait for the promise and check the result
       const result = await action.payload;
-      expect(result).toEqual({ 
-        token: 'test-token', 
-        login_identifier: 'validuser', 
-        maintenance_organization: 'test-org' 
+      expect(result).toEqual({
+        token: 'test-token',
+        login_identifier: 'validuser',
+        maintenance_organization: 'test-org'
       });
       
       // Verify fetch was called with login endpoint

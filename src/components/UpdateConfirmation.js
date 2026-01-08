@@ -24,11 +24,11 @@ function ConfirmButton({unitId, allowedValue, type, enqueueObservation}) {
   const iconClassName = `icon ${ICONS[allowedValue.identifier]}`;
   const buttonClassName = `btn btn-${COLORS[allowedValue.quality] || 'primary'} btn-block btn__confirmation`;
   return (
-        <Link to={`/unit/${unitId}`} className={buttonClassName} onClick={() => { enqueueObservation(allowedValue.property, allowedValue, unitId, (type=='serviced')); }}>
-            <h6>{ ACTION_TYPE[type] }</h6>
-            <span className={iconClassName}></span><br/>
-            { allowedValue.name.fi }
-        </Link>
+    <Link to={`/unit/${unitId}`} className={buttonClassName} onClick={() => { enqueueObservation(allowedValue.property, allowedValue, unitId, (type=='serviced')); }}>
+      <h6>{ ACTION_TYPE[type] }</h6>
+      <span className={iconClassName}></span><br/>
+      { allowedValue.name.fi }
+    </Link>
   );
 }
 
@@ -49,53 +49,53 @@ class UpdateConfirmation extends React.Component {
          this.props.allowedValue.identifier == 'event')) {
       buttonRow = (
         <div className="row">
-            <div className="col-xs-6">
-                <ConfirmButton type='observed' unitId={this.props.unit.id} allowedValue={this.props.allowedValue} enqueueObservation={this.props.enqueueObservation} />
-            </div>
-            <div className="col-xs-6">
-                <ConfirmButton type='serviced' unitId={this.props.unit.id} allowedValue={this.props.allowedValue} enqueueObservation={this.props.enqueueObservation} />
-            </div>
+          <div className="col-xs-6">
+            <ConfirmButton type='observed' unitId={this.props.unit.id} allowedValue={this.props.allowedValue} enqueueObservation={this.props.enqueueObservation} />
+          </div>
+          <div className="col-xs-6">
+            <ConfirmButton type='serviced' unitId={this.props.unit.id} allowedValue={this.props.allowedValue} enqueueObservation={this.props.enqueueObservation} />
+          </div>
         </div>
       );
       helpRow = (
         <div className="row">
-            <div className="col-xs-6">
-                <p className="help-block"><small>{ HELP_TEXTS.observed } "{this.props.allowedValue.name.fi}".</small></p>
-            </div>
-            <div className="col-xs-6">
-                <p className="help-block"><small>{ HELP_TEXTS.serviced } "{this.props.allowedValue.name.fi}".</small></p>
-            </div>
+          <div className="col-xs-6">
+            <p className="help-block"><small>{ HELP_TEXTS.observed } "{this.props.allowedValue.name.fi}".</small></p>
+          </div>
+          <div className="col-xs-6">
+            <p className="help-block"><small>{ HELP_TEXTS.serviced } "{this.props.allowedValue.name.fi}".</small></p>
+          </div>
         </div>
       );
     }
     else {
       buttonRow = (
         <div className="row">
-            <div className="col-xs-12">
-                <ConfirmButton type='observed' unitId={this.props.unit.id} allowedValue={this.props.allowedValue} enqueueObservation={this.props.enqueueObservation} />
-            </div>
+          <div className="col-xs-12">
+            <ConfirmButton type='observed' unitId={this.props.unit.id} allowedValue={this.props.allowedValue} enqueueObservation={this.props.enqueueObservation} />
+          </div>
         </div>);
       helpRow = null;
     }
     const unitUrl = `/unit/${this.props.unit.id}`;
     return (
       <div className="facility-status">
-          <UnitStatusSummary unit={this.props.unit} />
-          <div className="panel panel-warning">
-              <div className="panel-heading">
-                  <h6>Oletko varma että haluat päivittää paikan kuntotiedon?</h6>
-              </div>
-              <div className="panel-body">
-                  { buttonRow }
-                  <div className="row">
-                      <div className="col-xs-12">
-                          <br/>
-                          <Link to={unitUrl} className="btn btn-primary btn-block"><h5>Peruuta</h5></Link>
-                      </div>
-                  </div>
-                  { helpRow }
-              </div>
+        <UnitStatusSummary unit={this.props.unit} />
+        <div className="panel panel-warning">
+          <div className="panel-heading">
+            <h6>Oletko varma että haluat päivittää paikan kuntotiedon?</h6>
           </div>
+          <div className="panel-body">
+            { buttonRow }
+            <div className="row">
+              <div className="col-xs-12">
+                <br/>
+                <Link to={unitUrl} className="btn btn-primary btn-block"><h5>Peruuta</h5></Link>
+              </div>
+            </div>
+            { helpRow }
+          </div>
+        </div>
       </div>
     );
   }

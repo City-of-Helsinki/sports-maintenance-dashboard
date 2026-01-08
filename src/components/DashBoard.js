@@ -24,16 +24,16 @@ class DashBoard extends React.Component {
     const frequent = _.map(this.props.frequent, (u) => { return <UnitListElement key={u.id} unit={u}/>; });
     return (
       <div className="row">
-          <div className="col-xs-12">
-              <h5>Lähimmät</h5>
-              <div className="list-group facility-drilldown">
-                  { nearest }
-              </div>
-              <h5>Yleisimmät</h5>
-              <div className="list-group facility-drilldown">
-                  { frequent }
-              </div>
+        <div className="col-xs-12">
+          <h5>Lähimmät</h5>
+          <div className="list-group facility-drilldown">
+            { nearest }
           </div>
+          <h5>Yleisimmät</h5>
+          <div className="list-group facility-drilldown">
+            { frequent }
+          </div>
+        </div>
       </div>
     );
   }

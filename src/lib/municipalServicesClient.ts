@@ -1,16 +1,16 @@
-import URI from "urijs";
-import _ from "lodash";
+import URI from 'urijs';
+import _ from 'lodash';
 
-import { CredentialError } from "../util/error";
+import { CredentialError } from '../util/error';
 import {
   Unit,
   ObservableProperty,
   AllowedValue,
   Service,
-  UnitObservation,
-} from "../types";
+  UnitObservation
+} from '../types';
 
-require("process");
+require('process');
 const API_BASE_URL = process.env.API_URL;
 
 // Type definitions
@@ -62,7 +62,7 @@ function resourceEndpoint(resourceType: string): string {
 function filteredUrl(
   url: string,
   filters: Record<string, any> | null,
-  pageSize?: number | null,
+  pageSize?: number | null
 ): string {
   let uri = URI(url);
   uri.addSearch({ page_size: pageSize || 1000 });
@@ -76,14 +76,14 @@ function filteredUrl(
 function selectFields(
   url: string,
   selected: string[] | null,
-  embedded: string[] | null,
+  embedded: string[] | null
 ): string {
   let uri = URI(url);
   if (selected !== null && selected !== undefined) {
-    uri = uri.addSearch({ only: selected.join(",") });
+    uri = uri.addSearch({ only: selected.join(',') });
   }
   if (embedded !== null && embedded !== undefined) {
-    uri = uri.addSearch({ include: embedded.join(",") });
+    uri = uri.addSearch({ include: embedded.join(',') });
   }
   return uri.toString();
 }
@@ -93,7 +93,7 @@ function preProcessResponse<T>(resourceType: string, preprocess: boolean) {
     return function (obj: { results: T[] }): {
       [key: string]: { [id: string]: T };
     } {
-      return { [resourceType]: _.keyBy(obj.results, "id") };
+      return { [resourceType]: _.keyBy(obj.results, 'id') };
     };
   }
   return (obj: { results: T[] }): T[] => {
@@ -102,36 +102,39 @@ function preProcessResponse<T>(resourceType: string, preprocess: boolean) {
 }
 
 // Function overloads for different preprocessing options
+/* eslint-disable no-redeclare */
 export function fetchResource<T = any>(
-  resourceType: string,
-  filters: Record<string, any> | null,
-  selected: string[] | null,
-  embedded: string[] | null,
-  pageSize: number | null,
-  options: FetchOptions & { preprocess: false },
+  _resourceType: string,
+  _filters: Record<string, any> | null,
+  _selected: string[] | null,
+  _embedded: string[] | null,
+  _pageSize: number | null,
+  _options: FetchOptions & { preprocess: false },
 ): Promise<T[]>;
 
 export function fetchResource<T = any>(
-  resourceType: string,
-  filters: Record<string, any> | null,
-  selected: string[] | null,
-  embedded: string[] | null,
-  pageSize: number | null,
-  options?: FetchOptions & { preprocess?: true },
+  _resourceType: string,
+  _filters: Record<string, any> | null,
+  _selected: string[] | null,
+  _embedded: string[] | null,
+  _pageSize: number | null,
+  _options?: FetchOptions & { preprocess?: true },
 ): Promise<{ [key: string]: { [id: string]: T } }>;
+/* eslint-enable no-redeclare */
 
+// eslint-disable-next-line no-redeclare
 export function fetchResource<T = any>(
   resourceType: string,
   filters: Record<string, any> | null = null,
   selected: string[] | null = null,
   embedded: string[] | null = null,
   pageSize: number | null = null,
-  options: FetchOptions = { preprocess: true },
+  options: FetchOptions = { preprocess: true }
 ): Promise<T[] | { [key: string]: { [id: string]: T } }> {
   const url = resourceEndpoint(resourceType);
   // TODO: pagination
   return fetch(
-    selectFields(filteredUrl(url, filters, pageSize), selected, embedded),
+    selectFields(filteredUrl(url, filters, pageSize), selected, embedded)
   )
     .then((response) => {
       return response.json();
@@ -139,7 +142,7 @@ export function fetchResource<T = any>(
     .then((data) => {
       return preProcessResponse<T>(
         resourceType,
-        options.preprocess ?? true,
+        options.preprocess ?? true
       )(data);
     });
 }
@@ -147,18 +150,18 @@ export function fetchResource<T = any>(
 export function postResource<T = any>(
   resourceType: string,
   payload: Record<string, any>,
-  token: string,
+  token: string
 ): Promise<T> {
   if (token === null || token === undefined) {
-    throw new Error("Token needed for API write access.");
+    throw new Error('Token needed for API write access.');
   }
   return fetch(resourceEndpoint(resourceType), {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(payload),
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${token}`,
-    },
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`
+    }
   }).then((response) => {
     return response.json();
   });
@@ -168,21 +171,21 @@ export function postResource<T = any>(
 
 export function login(
   username: string,
-  password: string,
+  password: string
 ): Promise<LoginResponse> | RangeError {
-  if (!username || username === "" || !password || password === "") {
-    return new RangeError("Credentials needed for API login.");
+  if (!username || username === '' || !password || password === '') {
+    return new RangeError('Credentials needed for API login.');
   }
-  return fetch(resourceEndpoint("api-token-auth"), {
-    method: "POST",
+  return fetch(resourceEndpoint('api-token-auth'), {
+    method: 'POST',
     body: JSON.stringify({ username, password }),
     headers: {
-      "Content-Type": "application/json",
-    },
+      'Content-Type': 'application/json'
+    }
   }).then((response) => {
     if (!response.ok) {
       throw new CredentialError(
-        "Authentication failed. Please check the username and password.",
+        'Authentication failed. Please check the username and password.'
       );
     }
     return response.json();
@@ -192,45 +195,45 @@ export function login(
 export function fetchUnitsWithServices(
   services: number[],
   maintenance_organization: string,
-  options: FetchUnitsOptions,
+  options: FetchUnitsOptions
 ): Promise<UnitMap> {
-  const serviceParameter = services.join(",");
+  const serviceParameter = services.join(',');
   return fetchResource(
-    "unit",
+    'unit',
     { service: serviceParameter, maintenance_organization },
     options.selected,
     options.embedded,
-    null,
+    null
   ) as unknown as Promise<UnitMap>;
 }
 
 export function fetchUnitObservations(
   unitId: string,
   selected?: string[],
-  embedded?: string[],
+  embedded?: string[]
 ): Promise<UnitObservationMap> {
   return fetchResource(
-    "observation",
+    'observation',
     { unit: unitId },
     selected,
     embedded,
-    null,
+    null
   ) as unknown as Promise<UnitObservationMap>;
 }
 
 export function postObservation(
   specification: ObservationSpecification,
-  token: string,
+  token: string
 ): Promise<any> {
   return postResource(
-    "observation",
+    'observation',
     {
       unit: specification.unitId,
       value: specification.value,
       property: specification.property,
-      serviced: specification.serviced,
+      serviced: specification.serviced
     },
-    token,
+    token
   );
 }
 
@@ -239,7 +242,7 @@ export function postObservation(
 export function unitObservableProperties(
   unit: Unit | null | undefined,
   services: ServicesMap,
-  qualityObservationsOnly: boolean = false,
+  qualityObservationsOnly: boolean = false
 ): ObservableProperty[] {
   if (unit === null || unit === undefined) {
     return [];
@@ -247,17 +250,17 @@ export function unitObservableProperties(
   const unitServices = _.compact(
     _.map(unit.services, (id: number) => {
       return services[id];
-    }),
+    })
   );
   const reducer = (
     collection: ObservableProperty[],
-    element: Service,
+    element: Service
   ): ObservableProperty[] => {
     let observableProperties = _.filter(
       element.observable_properties,
       (property: ObservableProperty) => {
-        return property.observation_type === "categorical";
-      },
+        return property.observation_type === 'categorical';
+      }
     );
 
     if (qualityObservationsOnly) {
@@ -265,15 +268,15 @@ export function unitObservableProperties(
         observableProperties,
         (property: ObservableProperty) => {
           return (
-            property.observation_type !== "categorical" ||
+            property.observation_type !== 'categorical' ||
             // There must be at least one allowedValue
             // with a quality specified
             undefined !==
               _.find(property.allowed_values, (value: AllowedValue) => {
-                return value.quality !== "unknown";
+                return value.quality !== 'unknown';
               })
           );
-        },
+        }
       );
     }
     if (observableProperties.length > 0) {
@@ -287,20 +290,20 @@ export function unitObservableProperties(
 export function getNearestUnits(
   position: Position,
   services: number[],
-  maintenance_organization: string,
+  maintenance_organization: string
 ): Promise<Unit[]> {
-  const serviceParameter = services.join(",");
+  const serviceParameter = services.join(',');
   return fetchResource(
-    "unit",
+    'unit',
     {
       lat: position.coords.latitude,
       lon: position.coords.longitude,
       service: serviceParameter,
-      maintenance_organization,
+      maintenance_organization
     },
-    ["id", "name"],
+    ['id', 'name'],
     null,
     5,
-    { preprocess: false },
+    { preprocess: false }
   );
 }

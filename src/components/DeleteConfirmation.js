@@ -11,9 +11,9 @@ import * as actions from '../actions/index';
 function ConfirmButton({unitId, clearObservation}) {
   const buttonClassName = 'btn btn-success btn-block';
   return (
-        <Link to={`/unit/${unitId}`} className={buttonClassName} onClick={() => { clearObservation('notice', unitId); }}>
-            <h5>Poista</h5>
-        </Link>
+    <Link to={`/unit/${unitId}`} className={buttonClassName} onClick={() => { clearObservation('notice', unitId); }}>
+      <h5>Poista</h5>
+    </Link>
   );
 }
 
@@ -28,33 +28,33 @@ class UpdateConfirmation extends React.Component {
       return <div>Ladataan...</div>;
     }
     let buttonRow, helpRow;
-      buttonRow = (
-        <div className="row">
-            <div className="col-xs-12">
-                <ConfirmButton unitId={this.props.unit.id} clearObservation={this.props.clearObservation} />
-            </div>
-        </div>);
-      helpRow = null;
+    buttonRow = (
+      <div className="row">
+        <div className="col-xs-12">
+          <ConfirmButton unitId={this.props.unit.id} clearObservation={this.props.clearObservation} />
+        </div>
+      </div>);
+    helpRow = null;
     const unitUrl = `/unit/${this.props.unit.id}`;
     return (
       <div className="facility-status">
-          <UnitStatusSummary unit={this.props.unit} />
-          <div className="panel panel-warning">
-              <div className="panel-heading">
-                  <h6>Oletko varma että haluat poistaa liikuntapaikalta seuraavan tekstitiedotteen?</h6>
-              </div>
-              <div className="panel-body">
-                  <TextualDescription text={this.props.observation.value.fi}/>
-                  { buttonRow }
-                  <div className="row">
-                      <div className="col-xs-12">
-                          <br/>
-                          <Link to={unitUrl} className="btn btn-primary btn-block"><h5>Peruuta</h5></Link>
-                      </div>
-                  </div>
-                  { helpRow }
-              </div>
+        <UnitStatusSummary unit={this.props.unit} />
+        <div className="panel panel-warning">
+          <div className="panel-heading">
+            <h6>Oletko varma että haluat poistaa liikuntapaikalta seuraavan tekstitiedotteen?</h6>
           </div>
+          <div className="panel-body">
+            <TextualDescription text={this.props.observation.value.fi}/>
+            { buttonRow }
+            <div className="row">
+              <div className="col-xs-12">
+                <br/>
+                <Link to={unitUrl} className="btn btn-primary btn-block"><h5>Peruuta</h5></Link>
+              </div>
+            </div>
+            { helpRow }
+          </div>
+        </div>
       </div>
     );
   }

@@ -34,27 +34,27 @@ class UnitHistory extends React.Component {
     return (
       <div className="row">
         <div className="col-xs-12">
-            <div className="list-group facility-return clearfix">
-                <Link to={`/unit/${unit.id}`} className="list-group-item">
-                    <span className="action-icon glyphicon glyphicon-chevron-left"></span>
+          <div className="list-group facility-return clearfix">
+            <Link to={`/unit/${unit.id}`} className="list-group-item">
+              <span className="action-icon glyphicon glyphicon-chevron-left"></span>
                     Takaisin
-                </Link>
-            </div>
-            <div className="well">
-                <h4>{ unit.name.fi }</h4>
-            </div>
-            <div className="unit-observations">
-              <h4>Historia</h4>
-              {observations && observations.length > 0 ? (
-                <div className="list-group">
-                  {this.renderObservations(observations)}
-                </div>
-              ) : (
-                <p>Ei historiatietoja</p>
-              )}
-            </div>
+            </Link>
+          </div>
+          <div className="well">
+            <h4>{ unit.name.fi }</h4>
+          </div>
+          <div className="unit-observations">
+            <h4>Historia</h4>
+            {observations && observations.length > 0 ? (
+              <div className="list-group">
+                {this.renderObservations(observations)}
+              </div>
+            ) : (
+              <p>Ei historiatietoja</p>
+            )}
+          </div>
         </div>
-    </div>);
+      </div>);
   }
 }
 

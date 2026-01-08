@@ -136,7 +136,7 @@ describe('UnitStatusSummary Component', () => {
     expect(observationElements).toHaveLength(2);
     
     // Should have quality status bar showing the first good quality observation
-    const qualityStatusBar = screen.getAllByText('Test Observation').find(el => 
+    const qualityStatusBar = screen.getAllByText('Test Observation').find(el =>
       el.className.includes('unit-status')
     );
     expect(qualityStatusBar).toBeDefined();
@@ -163,7 +163,7 @@ describe('UnitStatusSummary Component', () => {
     renderWithProviders(<UnitStatusSummary unit={unitWithSatisfactoryQuality} />);
 
     // Get the status bar specifically (the one with unit-status class, not the observation)
-    const statusBar = screen.getAllByText('Satisfactory Quality').find(el => 
+    const statusBar = screen.getAllByText('Satisfactory Quality').find(el =>
       el.className.includes('unit-status')
     );
     expect(statusBar).toBeDefined();

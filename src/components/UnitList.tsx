@@ -11,10 +11,6 @@ interface UnitListElementProps {
   unit: Unit;
 }
 
-interface UnitListParams {
-  groupId: string;
-}
-
 export function UnitListElement(props: UnitListElementProps): React.ReactElement {
   const { unit } = props;
   const url = `/unit/${unit.id}`;
@@ -33,7 +29,7 @@ export function UnitListElement(props: UnitListElementProps): React.ReactElement
   }
 
   return (
-    <Link to={url} className="list-group-item">
+    <Link to={url} className="list-group-item" data-testid="link">
       <div className="unit-list-item">
         <div className={badgeClassName}><span className={iconClassName} /></div>
         <div className="unit-name">
@@ -46,7 +42,7 @@ export function UnitListElement(props: UnitListElementProps): React.ReactElement
 }
 
 const UnitList: React.FC = () => {
-  const { groupId } = useParams<UnitListParams>();
+  const { groupId } = useParams<{ groupId: string }>();
   
   const allUnits = useSelector((state: RootState) => state.data.unit);
   const isLoading = useSelector((state: RootState) => state.data.loading.unit === true);
@@ -64,7 +60,7 @@ const UnitList: React.FC = () => {
   }
   
   const elements = _.map(
-    _.sortBy(units, [(u) => u.name.fi]), 
+    _.sortBy(units, [(u) => u.name.fi]),
     (unit) => <UnitListElement key={unit.id} unit={unit} />
   );
   

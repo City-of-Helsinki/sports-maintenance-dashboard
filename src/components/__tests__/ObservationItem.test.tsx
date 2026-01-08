@@ -25,7 +25,7 @@ describe('ObservationItem Component', () => {
     name: { fi: 'Hyväksi todettu' },
     quality: 'good',
     value: { fi: 'maintained' },
-    primary: true,
+    primary: true
   };
 
   it('renders basic observation item with default className', () => {
@@ -60,7 +60,7 @@ describe('ObservationItem Component', () => {
     const observationWithoutName: UnitObservation = {
       ...mockObservation,
       name: { fi: '' },
-      value: { fi: 'Good condition' },
+      value: { fi: 'Good condition' }
     };
 
     render(<ObservationItem observation={observationWithoutName} />);
@@ -72,7 +72,7 @@ describe('ObservationItem Component', () => {
     const tempObservation: UnitObservation = {
       ...mockObservation,
       property: 'live_swimming_water_temperature',
-      name: { fi: '22' },
+      name: { fi: '22' }
     };
 
     render(<ObservationItem observation={tempObservation} />);
@@ -85,7 +85,7 @@ describe('ObservationItem Component', () => {
     const noticeObservation: UnitObservation = {
       ...mockObservation,
       property: 'notice',
-      value: { fi: 'Important notice text' },
+      value: { fi: 'Important notice text' }
     };
 
     render(<ObservationItem observation={noticeObservation} />);
@@ -101,7 +101,7 @@ describe('ObservationItem Component', () => {
     render(<ObservationItem observation={mockObservation} />);
     
     // Check that Finnish time format is displayed (actual moment.js formatting with Finnish locale)
-    expect(screen.getByText(new RegExp("ma 15.1.2024 klo 16.30.00"))).toBeInTheDocument();
+    expect(screen.getByText(new RegExp('ma 15.1.2024 klo 16.30.00'))).toBeInTheDocument();
   });
 
   describe('Short descriptions mapping', () => {
@@ -109,14 +109,14 @@ describe('ObservationItem Component', () => {
       { property: 'ski_trail_condition', expected: 'Kunto todettu' },
       { property: 'swimming_water_temperature', expected: 'Lämpötila todettu' },
       { property: 'swimming_water_algae', expected: 'Levätilanne todettu' },
-      { property: 'live_swimming_water_temperature', expected: 'Automaattinen lämpötilamittaus' },
+      { property: 'live_swimming_water_temperature', expected: 'Automaattinen lämpötilamittaus' }
     ];
 
     testCases.forEach(({ property, expected }) => {
       it(`displays correct description for ${property}`, () => {
         const observation: UnitObservation = {
           ...mockObservation,
-          property,
+          property
         };
 
         render(<ObservationItem observation={observation} />);
@@ -130,7 +130,7 @@ describe('ObservationItem Component', () => {
     const emptyObservation: UnitObservation = {
       ...mockObservation,
       name: { fi: '' },
-      value: { fi: '' },
+      value: { fi: '' }
     };
 
     render(<ObservationItem observation={emptyObservation} />);

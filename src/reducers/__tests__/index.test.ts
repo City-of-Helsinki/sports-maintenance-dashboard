@@ -45,9 +45,9 @@ describe('Reducers', () => {
         ...initialState,
         data: {
           ...initialState.data,
-          unit: { 
-            '1': { 
-              id: 1, 
+          unit: {
+            '1': {
+              id: 1,
               name: { fi: 'Existing Unit' },
               extensions: { maintenance_group: 'test', maintenance_organization: 'test' },
               services: [],
@@ -61,7 +61,7 @@ describe('Reducers', () => {
               street_address: { fi: 'address' },
               location: { type: 'Point', coordinates: [0, 0] },
               observations: []
-            } 
+            }
           }
         }
       };
@@ -277,7 +277,7 @@ describe('Reducers', () => {
       const stateWithPendingObs: RootState = {
         ...initialState,
         updateQueue: {
-          'unit-1.condition': { 
+          'unit-1.condition': {
             unitId: 'unit-1',
             status: 'pending',
             serviced: false,

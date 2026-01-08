@@ -147,7 +147,7 @@ function createObservationData(
     property: string;
     addServicedObservation?: boolean;
     serviced?: boolean;
-  }, 
+  },
   status: string
 ): PendingObservationData {
   const { unitId, value, property, addServicedObservation, serviced } = payload;
@@ -162,7 +162,7 @@ function createObservationData(
 }
 
 const pendingObservationsReducer: Reducer<PendingObservationsState, ReduxAction> = (
-  state = initialPendingObservationsState, 
+  state = initialPendingObservationsState,
   action
 ) => {
   switch (action.type) {
@@ -272,7 +272,7 @@ const unitsByUpdateTimeReducer: Reducer<string[], ReduxAction> = (state = initia
 
 const initialUnitsByUpdateCount: UnitsByUpdateCountState = {};
 const unitsByUpdateCountReducer: Reducer<UnitsByUpdateCountState, ReduxAction> = (
-  state = initialUnitsByUpdateCount, 
+  state = initialUnitsByUpdateCount,
   action
 ) => {
   switch (action.type) {

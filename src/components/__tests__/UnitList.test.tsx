@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../../../test/testUtils';
 
 import UnitList, { UnitListElement } from '../UnitList';
-import { Unit } from '../../types';
+import { Unit, UnitObservation } from '../../types';
 import { RootState } from '../../reducers/types';
 import * as utils from '../utils';
 
@@ -54,7 +54,7 @@ describe('UnitList Components', () => {
 
   const baseMockState: Partial<RootState> = {
     data: {
-      unit: { 
+      unit: {
         '123': mockUnit,
         '456': {
           ...mockUnit,
@@ -66,6 +66,10 @@ describe('UnitList Components', () => {
           }
         }
       },
+      unitsByDistance: [],
+      observable_property: {},
+      observation: {},
+      service: {},
       loading: { unit: false }
     }
   };
@@ -77,9 +81,16 @@ describe('UnitList Components', () => {
 
   describe('UnitListElement Component', () => {
     it('renders unit element with quality observation', () => {
-      const mockQualityObservation = {
+      const mockQualityObservation: UnitObservation = {
+        id: 1,
+        unit: 123,
+        property: 'test-property',
+        time: '2023-01-01T00:00:00Z',
+        expiration_time: null,
+        name: { fi: 'Test Observation' },
         value: 'good-value',
-        quality: 'good'
+        quality: 'good',
+        primary: true
       };
       mockGetQualityObservation.mockReturnValue(mockQualityObservation);
 
@@ -185,9 +196,9 @@ describe('UnitList Components', () => {
           unit: {
             '123': { ...mockUnit, name: { fi: 'Zebra Unit' } },
             '456': { ...mockUnit, id: 456, name: { fi: 'Alpha Unit' } },
-            '789': { 
-              ...mockUnit, 
-              id: 789, 
+            '789': {
+              ...mockUnit,
+              id: 789,
               name: { fi: 'Beta Unit' },
               extensions: {
                 maintenance_group: 'test-group',
@@ -195,14 +206,18 @@ describe('UnitList Components', () => {
               }
             }
           },
+          unitsByDistance: [],
+          observable_property: {},
+          observation: {},
+          service: {},
           loading: { unit: false }
         }
       };
 
       mockGetQualityObservation.mockReturnValue(null);
 
-      const { container } = renderWithProviders(<UnitList />, { 
-        initialState: stateWithMoreUnits 
+      const { container } = renderWithProviders(<UnitList />, {
+        initialState: stateWithMoreUnits
       });
 
       const unitElements = container.querySelectorAll('.unit-name');
@@ -244,6 +259,10 @@ describe('UnitList Components', () => {
       const emptyState: Partial<RootState> = {
         data: {
           unit: {},
+          unitsByDistance: [],
+          observable_property: {},
+          observation: {},
+          service: {},
           loading: { unit: false }
         }
       };
@@ -273,6 +292,10 @@ describe('UnitList Components', () => {
               }
             }
           },
+          unitsByDistance: [],
+          observable_property: {},
+          observation: {},
+          service: {},
           loading: { unit: false }
         }
       };

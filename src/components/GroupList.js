@@ -27,12 +27,12 @@ class GroupList extends React.Component {
     });
     return (
       <div className="row">
-          <div className="col-xs-12">
-              <h5>Alueet</h5>
-              <div className="list-group facility-drilldown">
-                  { elements }
-              </div>
+        <div className="col-xs-12">
+          <h5>Alueet</h5>
+          <div className="list-group facility-drilldown">
+            { elements }
           </div>
+        </div>
       </div>
     );
   }
