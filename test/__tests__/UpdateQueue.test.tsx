@@ -4,6 +4,8 @@ import { screen, fireEvent } from '@testing-library/react';
 import UpdateQueue from '../../src/components/UpdateQueue';
 import { renderWithProviders } from '../testUtils';
 import * as actions from '../../src/actions/index';
+import { Unit } from 'types';
+import { RootState } from 'reducers/types';
 
 // Mock the actions
 jest.mock('../../src/actions/index', () => ({
@@ -31,19 +33,37 @@ console.error = originalConsoleError; // Restore console.error
 
 const mockRetryImmediately = actions.retryImmediately as jest.MockedFunction<typeof actions.retryImmediately>;
 
-const mockUnits = {
-  123: { id: 123, name: { fi: 'Test Unit 1' }, services: [1] },
-  456: { id: 456, name: { fi: 'Test Unit 2' }, services: [2] },
-  789: { id: 789, name: { fi: 'Latest Unit' }, services: [3] }
+const mockUnits: Record<number, Unit> = {
+  123: {
+    id: 123,
+    name: { fi: 'Test Unit 1' },
+    services: [1],
+    address_postal_full: 'Test Address 1',
+    call_charge_info: { fi: 'Test charge info' },
+    displayed_service_owner: { fi: 'Test owner' },
+    street_address: { fi: 'Test street 1' }
+  },
+  456: {
+    id: 456,
+    name: { fi: 'Test Unit 2' },
+    services: [2],
+    address_postal_full: 'Test Address 2',
+    call_charge_info: { fi: 'Test charge info' },
+    displayed_service_owner: { fi: 'Test owner' },
+    street_address: { fi: 'Test street 2' }
+  },
+  789: {
+    id: 789,
+    name: { fi: 'Latest Unit' },
+    services: [3],
+    address_postal_full: 'Test Address 3',
+    call_charge_info: { fi: 'Test charge info' },
+    displayed_service_owner: { fi: 'Test owner' },
+    street_address: { fi: 'Test street 3' }
+  }
 };
 
-const mockQueueItems = [
-  { unitId: 123 },
-  { unitId: 456 }
-];
-
-const defaultState = {
-  updateQueue: mockQueueItems,
+const defaultState: RootState = {
   data: {
     unit: mockUnits,
     unitsByDistance: [],
@@ -52,7 +72,7 @@ const defaultState = {
     service: {},
     loading: {}
   },
-  unitsByUpdateTime: [789],
+  unitsByUpdateTime: ['789'],
   auth: {
     token: 'test-token',
     maintenance_organization: 'test-org',
@@ -61,17 +81,12 @@ const defaultState = {
   authError: null,
   updateFlush: false,
   serviceGroup: 'skiing',
+  updateQueue: {
+    1: { unitId: '123', status: 'pending', serviced: false, property: '1', value: 'test' },
+    2: { unitId: '456', status: 'pending', serviced: false, property: '1', value: 'test' }
+  },
   userLocation: null,
-  unitsByUpdateCount: {},
-  selectedUnits: [],
-  observationsByPropertyByUnit: {},
-  allowedValuesByProperty: {},
-  massEdit: {
-    selectedUnits: [],
-    isEditing: false,
-    property: null,
-    value: null
-  }
+  unitsByUpdateCount: {}
 };
 
 const renderComponent = (initialState = defaultState) => {
@@ -81,7 +96,7 @@ const renderComponent = (initialState = defaultState) => {
 describe('UpdateQueue', () => {
   beforeEach(() => {
     mockRetryImmediately.mockClear();
-    mockRetryImmediately.mockReturnValue({ type: 'RETRY_IMMEDIATELY' });
+    mockRetryImmediately.mockReturnValue({ type: 'RETRY_IMMEDIATELY', payload: undefined });
     mockConfirm.mockClear();
     mockLocalStorage.clear.mockClear();
     (window as any).location.href = 'http://localhost/';
@@ -160,9 +175,9 @@ describe('UpdateQueue', () => {
   });
 
   it('renders empty queue state', () => {
-    const stateWithEmptyQueue = {
+    const stateWithEmptyQueue: RootState = {
       ...defaultState,
-      updateQueue: []
+      updateQueue: {}
     };
 
     renderComponent(stateWithEmptyQueue);
@@ -217,13 +232,13 @@ describe('UpdateQueue', () => {
   });
 
   it('renders multiple queue items with correct keys', () => {
-    const stateWithMultipleItems = {
+    const stateWithMultipleItems: RootState = {
       ...defaultState,
-      updateQueue: [
-        { unitId: 123 },
-        { unitId: 456 },
-        { unitId: 123 } // Duplicate unit to test key generation
-      ]
+      updateQueue: {
+        123: { unitId: '123', status: 'pending', serviced: false, property: '1', value: 'test' },
+        124: { unitId: '123', status: 'pending', serviced: false, property: '2', value: 'test2' },
+        456: { unitId: '456', status: 'pending', serviced: false, property: '1', value: 'test' }
+      } 
     };
 
     renderComponent(stateWithMultipleItems);

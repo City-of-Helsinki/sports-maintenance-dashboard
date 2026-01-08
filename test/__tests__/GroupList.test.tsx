@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react';
 import GroupList from '../../src/components/GroupList';
 import { renderWithRoute } from '../testUtils';
 import * as utils from '../../src/components/utils';
+import { RootState } from 'reducers/types';
 
 // Mock the calculateGroups utility function
 jest.mock('../../src/components/utils', () => ({
@@ -11,16 +12,59 @@ jest.mock('../../src/components/utils', () => ({
 
 const mockCalculateGroups = utils.calculateGroups as jest.MockedFunction<typeof utils.calculateGroups>;
 
-const defaultState = {
+const defaultState: Partial<RootState>  = {
   data: {
     unit: {
-      '1': { id: 1, name: { fi: 'Unit 1' }, extensions: { maintenance_group: 'group1' } },
-      '2': { id: 2, name: { fi: 'Unit 2' }, extensions: { maintenance_group: 'group1' } },
-      '3': { id: 3, name: { fi: 'Unit 3' }, extensions: { maintenance_group: 'group2' } }
-    }
+      '1': {
+        id: 1,
+        name: { fi: 'Unit 1' },
+        extensions: {
+          maintenance_group: 'group1',
+          maintenance_organization: 'test-org'
+        },
+        address_postal_full: '00100 Helsinki',
+        call_charge_info: { fi: 'Paikallisverkkomaksu' },
+        displayed_service_owner: { fi: 'Test Organization' },
+        street_address: { fi: 'Test Street 1' },
+        services: [1, 2]
+      },
+      '2': {
+        id: 2,
+        name: { fi: 'Unit 2' },
+        extensions: {
+          maintenance_group: 'group1',
+          maintenance_organization: 'test-org'
+        },
+        address_postal_full: '00200 Helsinki',
+        call_charge_info: { fi: 'Paikallisverkkomaksu' },
+        displayed_service_owner: { fi: 'Test Organization' },
+        street_address: { fi: 'Test Street 2' },
+        services: [1, 3]
+      },
+      '3': {
+        id: 3,
+        name: { fi: 'Unit 3' },
+        extensions: {
+          maintenance_group: 'group2',
+          maintenance_organization: 'test-org'
+        },
+        address_postal_full: '00300 Helsinki',
+        call_charge_info: { fi: 'Paikallisverkkomaksu' },
+        displayed_service_owner: { fi: 'Test Organization' },
+        street_address: { fi: 'Test Street 3' },
+        services: [2, 4]
+      }
+    },
+    unitsByDistance: [],
+    observable_property: undefined,
+    observation: undefined,
+    service: undefined,
+    loading: undefined
   },
   auth: {
-    maintenance_organization: 'test-org'
+    maintenance_organization: 'test-org',
+    token: '',
+    login_id: ''
   }
 };
 
@@ -66,8 +110,8 @@ describe('GroupList', () => {
   describe('successful rendering', () => {
     it('renders group list with heading when groups are available', () => {
       const mockGroups = {
-        'group1': { name: 'Group 1' },
-        'group2': { name: 'Group 2' }
+        'group1': [1, 2],
+        'group2': [3]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -79,8 +123,8 @@ describe('GroupList', () => {
 
     it('renders group list items as links', () => {
       const mockGroups = {
-        'group1': { name: 'Group 1' },
-        'group2': { name: 'Group 2' }
+        'group1': [1, 2],
+        'group2': [3]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -97,9 +141,9 @@ describe('GroupList', () => {
 
     it('renders correct number of group items', () => {
       const mockGroups = {
-        'group1': { name: 'Group 1' },
-        'group2': { name: 'Group 2' },
-        'group3': { name: 'Group 3' }
+        group1: [1, 2],
+        group2: [3],
+        group3: [4, 5]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -113,7 +157,7 @@ describe('GroupList', () => {
   describe('CSS classes and styling', () => {
     it('applies correct CSS classes to container elements', () => {
       const mockGroups = {
-        'group1': { name: 'Group 1' }
+        'group1': [1]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -131,7 +175,7 @@ describe('GroupList', () => {
 
     it('applies correct CSS classes to group list items', () => {
       const mockGroups = {
-        'group1': { name: 'Group 1' }
+        'group1': [1]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -148,7 +192,7 @@ describe('GroupList', () => {
   describe('Redux integration', () => {
     it('calls calculateGroups with correct parameters', () => {
       const mockGroups = {
-        'group1': { name: 'Group 1' }
+        'group1': [1]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -170,7 +214,7 @@ describe('GroupList', () => {
       };
 
       const mockGroups = {
-        'group1': { name: 'Group 1' }
+        'group1': [1]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -186,7 +230,7 @@ describe('GroupList', () => {
   describe('edge cases', () => {
     it('handles single group correctly', () => {
       const mockGroups = {
-        'single-group': { name: 'Single Group' }
+        'single-group': [1, 2, 3]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -198,8 +242,8 @@ describe('GroupList', () => {
 
     it('handles groups with special characters in names', () => {
       const mockGroups = {
-        'group-with-special-chars!@#': { name: 'Special Group' },
-        'åäö-group': { name: 'Nordic Group' }
+        'group-with-special-chars!@#': [1, 2],
+        'åäö-group': [3, 4]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -210,7 +254,7 @@ describe('GroupList', () => {
     });
 
     it('handles empty unit data', () => {
-      const stateWithEmptyUnits = {
+      const stateWithEmptyUnits: Partial<RootState> = {
         ...defaultState,
         data: {
           ...defaultState.data,
@@ -235,7 +279,7 @@ describe('GroupList', () => {
       };
 
       const mockGroups = {
-        'group1': { name: 'Group 1' }
+        'group1': [1, 2]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -251,7 +295,7 @@ describe('GroupList', () => {
   describe('GroupListElement component', () => {
     it('renders individual group element with correct structure', () => {
       const mockGroups = {
-        'test-group': { name: 'Test Group' }
+        'test-group': [1, 2, 3]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 
@@ -268,9 +312,9 @@ describe('GroupList', () => {
 
     it('generates unique keys for multiple group elements', () => {
       const mockGroups = {
-        'group1': { name: 'Group 1' },
-        'group2': { name: 'Group 2' },
-        'group3': { name: 'Group 3' }
+        'group1': [1, 2],
+        'group2': [3],
+        'group3': [4, 5]
       };
       mockCalculateGroups.mockReturnValue(mockGroups);
 

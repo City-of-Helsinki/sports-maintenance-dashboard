@@ -104,19 +104,19 @@ function preProcessResponse<T>(resourceType: string, preprocess: boolean) {
 /* eslint-disable no-redeclare */
 export function fetchResource<T = any>(
   _resourceType: string,
-  _filters: Record<string, any> | null,
-  _selected: string[] | null,
-  _embedded: string[] | null,
-  _pageSize: number | null,
-  _options: FetchOptions & { preprocess: false },
+  _filters?: Record<string, any> | null,
+  _selected?: string[] | null,
+  _embedded?: string[] | null,
+  _pageSize?: number | null,
+  _options?: FetchOptions & { preprocess: false },
 ): Promise<T[]>;
 
 export function fetchResource<T = any>(
   _resourceType: string,
-  _filters: Record<string, any> | null,
-  _selected: string[] | null,
-  _embedded: string[] | null,
-  _pageSize: number | null,
+  _filters?: Record<string, any> | null,
+  _selected?: string[] | null,
+  _embedded?: string[] | null,
+  _pageSize?: number | null,
   _options?: FetchOptions & { preprocess?: true },
 ): Promise<{ [key: string]: { [id: string]: T } }>;
 /* eslint-enable no-redeclare */

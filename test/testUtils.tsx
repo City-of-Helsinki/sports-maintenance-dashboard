@@ -5,6 +5,18 @@ import { createStore } from 'redux';
 import { BrowserRouter, MemoryRouter, Routes, Route } from 'react-router-dom';
 import { RootState } from '../src/reducers/types';
 
+interface RenderWithProvidersOptions {
+  store?: any;
+  initialState?: Partial<RootState>;
+}
+
+interface RenderWithRouteOptions {
+  route: string;
+  path: string;
+  initialState?: Partial<RootState>;
+  store?: any;
+}
+
 // Create a default mock store for testing
 export const createMockStore = (initialState: Partial<RootState> = {}) => {
   const defaultState: RootState = {
@@ -37,7 +49,7 @@ export const createMockStore = (initialState: Partial<RootState> = {}) => {
 // Helper function to render components with router and Redux store
 export const renderWithProviders = (
   component: React.ReactElement,
-  { store, initialState }: { store?: any; initialState?: Partial<RootState> } = {}
+  { store, initialState }: RenderWithProvidersOptions = {}
 ) => {
   const testStore = store || createMockStore(initialState);
   
@@ -58,12 +70,7 @@ export const renderWithRoute = (
     path,
     initialState,
     store
-  }: {
-    route: string;
-    path: string;
-    initialState?: Partial<RootState>;
-    store?: any;
-  }
+  }: RenderWithRouteOptions
 ) => {
   const testStore = store || createMockStore(initialState);
   

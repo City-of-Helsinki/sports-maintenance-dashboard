@@ -3,6 +3,7 @@ import react from 'eslint-plugin-react';
 import babelParser from '@babel/eslint-parser';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
+import globals from 'globals';
 
 export default [
   js.configs.recommended,
@@ -22,34 +23,9 @@ export default [
         },
       },
       globals: {
-        // Node.js environment
-        process: 'readonly',
-        require: 'readonly',
-        module: 'readonly',
-        global: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        // Browser environment 
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        fetch: 'readonly',
-        localStorage: 'readonly',
-        navigator: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        // Test environment
-        describe: 'readonly',
-        it: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        beforeAll: 'readonly',
-        afterAll: 'readonly',
-        expect: 'readonly',
-        jest: 'readonly',
+        ...globals.browser,
+        ...globals.node,
+        ...globals.jest,
       },
     },
     rules: {
@@ -83,37 +59,9 @@ export default [
         },
       },
       globals: {
-        // Node.js environment
-        process: 'readonly',
-        require: 'readonly',
-        module: 'readonly',
-        global: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        // Browser environment 
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        fetch: 'readonly',
-        localStorage: 'readonly',
-        navigator: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        HTMLElement: 'readonly',
-        HTMLTextAreaElement: 'readonly',
-        HTMLFormElement: 'readonly',
-        // Test environment
-        describe: 'readonly',
-        it: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        beforeAll: 'readonly',
-        afterAll: 'readonly',
-        expect: 'readonly',
-        jest: 'readonly',
+        ...globals.browser,
+        ...globals.node,
+        ...globals.jest,
       },
     },
     rules: {

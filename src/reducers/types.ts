@@ -5,15 +5,25 @@ import { Unit, ObservableProperty, UserLocation } from '../types';
 // Redux store state types
 // These types should match the structure defined in the reducers
 
+// Base action interface compatible with redux-actions and Redux internal actions
+interface BaseAction extends Action {
+  type: string;
+  payload?: any;
+  error?: boolean;
+  meta?: any;
+}
+
 // Action interface definitions
 
-export interface GetResourceStartAction extends Action<typeof ActionTypes.GET_RESOURCE_START> {
+export interface GetResourceStartAction extends BaseAction {
+  type: typeof ActionTypes.GET_RESOURCE_START;
   meta: {
     resourceType: string;
   };
 }
 
-export interface GetResourceAction extends Action<typeof ActionTypes.GET_RESOURCE> {
+export interface GetResourceAction extends BaseAction {
+  type: typeof ActionTypes.GET_RESOURCE;
   payload: {
     [key: string]: any;
   };
@@ -27,11 +37,13 @@ export interface GetResourceAction extends Action<typeof ActionTypes.GET_RESOURC
   };
 }
 
-export interface GetNearestUnitsAction extends Action<typeof ActionTypes.GET_NEAREST_UNITS> {
+export interface GetNearestUnitsAction extends BaseAction {
+  type: typeof ActionTypes.GET_NEAREST_UNITS;
   payload: any[];
 }
 
-export interface LoginAction extends Action<typeof ActionTypes.LOGIN> {
+export interface LoginAction extends BaseAction {
+  type: typeof ActionTypes.LOGIN;
   payload: {
     maintenance_organization: string;
     token: string;
@@ -42,7 +54,8 @@ export interface LoginAction extends Action<typeof ActionTypes.LOGIN> {
 
 export type ObservationActionType = typeof ActionTypes.ENQUEUE_OBSERVATION | typeof ActionTypes.MARK_OBSERVATION_SENT | typeof ActionTypes.MARK_OBSERVATION_RESENT;
 
-export interface ObservationAction extends Action<ObservationActionType> {
+export interface ObservationAction extends BaseAction {
+  type: ObservationActionType;
   payload: {
     unitId: string;
     property: string;
@@ -52,7 +65,8 @@ export interface ObservationAction extends Action<ObservationActionType> {
   };
 }
 
-export interface PostObservationAction extends Action<typeof ActionTypes.POST_OBSERVATION> {
+export interface PostObservationAction extends BaseAction {
+  type: typeof ActionTypes.POST_OBSERVATION;
   payload?: {
     unit: string;
     property: string;
@@ -66,14 +80,17 @@ export interface PostObservationAction extends Action<typeof ActionTypes.POST_OB
 
 export type FlushUpdateQueueActionType = typeof ActionTypes.FLUSH_UPDATE_QUEUE | typeof ActionTypes.FLUSH_UPDATE_QUEUE_DISABLED;
 
-export interface FlushUpdateQueueAction extends Action<FlushUpdateQueueActionType> {
+export interface FlushUpdateQueueAction extends BaseAction {
+  type: FlushUpdateQueueActionType;
 }
 
-export interface SelectServiceGroupAction extends Action<typeof ActionTypes.SELECT_SERVICE_GROUP> {
+export interface SelectServiceGroupAction extends BaseAction {
+  type: typeof ActionTypes.SELECT_SERVICE_GROUP;
   payload: string;
 }
 
-export interface SetUserLocationAction extends Action<typeof ActionTypes.SET_USER_LOCATION> {
+export interface SetUserLocationAction extends BaseAction {
+  type: typeof ActionTypes.SET_USER_LOCATION;
   payload: any;
 }
 
@@ -86,7 +103,8 @@ export type ReduxAction =
   | PostObservationAction
   | FlushUpdateQueueAction
   | SelectServiceGroupAction
-  | SetUserLocationAction;
+  | SetUserLocationAction
+  | BaseAction; // Allow any other action type (including Redux internals)
 
 // Common data interfaces
 
@@ -107,6 +125,7 @@ export interface DataState {
 
 export type AuthErrorState = {
   message?: string;
+  non_field_errors?: string[];
 } | null;
 
 export interface PendingObservationData {

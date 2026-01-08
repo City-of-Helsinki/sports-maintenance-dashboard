@@ -1,6 +1,6 @@
 import * as actions from '../index';
 import { ActionTypes } from '../../constants';
-import { AllowedValue } from '../../types';
+import { AllowedValue, UserLocation } from '../../types';
 
 describe('Action Creators', () => {
   // Store original fetch to restore it after tests
@@ -366,7 +366,18 @@ describe('Action Creators', () => {
     });
 
     it('should create setUserLocation action', () => {
-      const location = { lat: 60.1699, lng: 24.9384 };
+      const location: UserLocation = {
+        timestamp: Date.now(),
+        coords: {
+          latitude: 60.1699,
+          longitude: 24.9384,
+          accuracy: 10,
+          altitude: null,
+          altitudeAccuracy: null,
+          heading: null,
+          speed: null
+        }
+      };
       const action = actions.setUserLocation(location);
       expect(action.type).toBe(ActionTypes.SET_USER_LOCATION);
       expect(action.payload).toBe(location);
