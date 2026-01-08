@@ -1,12 +1,12 @@
 import React from 'react';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { renderWithProviders } from '../testUtils';
-import LoginScreen from '../../src/components/LoginScreen';
-import * as actions from '../../src/actions/index';
-import { RootState } from '../../src/reducers/types';
+import { renderWithProviders } from '../../../test/testUtils';
+import LoginScreen from '../LoginScreen';
+import * as actions from '../../actions/index';
+import { RootState } from '../../reducers/types';
 
 // Mock the actions
-jest.mock('../../src/actions/index', () => ({
+jest.mock('../../actions/index', () => ({
   selectServiceGroup: jest.fn(),
   login: jest.fn()
 }));

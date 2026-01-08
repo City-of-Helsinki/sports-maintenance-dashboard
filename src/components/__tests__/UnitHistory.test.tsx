@@ -1,14 +1,14 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 
-import UnitHistory from '../../src/components/UnitHistory';
-import { renderWithRoute } from '../testUtils';
-import * as actions from '../../src/actions/index';
-import { RootState } from '../../src/reducers/types';
-import { Unit } from '../../src/types';
+import UnitHistory from '../UnitHistory';
+import { renderWithRoute } from '../../../test/testUtils';
+import * as actions from '../../actions/index';
+import { RootState } from '../../reducers/types';
+import { Unit } from '../../types';
 
 // Mock the actions
-jest.mock('../../src/actions/index', () => ({
+jest.mock('../../actions/index', () => ({
   fetchUnitObservations: jest.fn()
 }));
 
@@ -21,7 +21,7 @@ const mockUnit: Unit = {
   address_postal_full: null,
   call_charge_info: { fi: '' },
   displayed_service_owner: { fi: '' },
-  street_address: { fi: '' },
+  street_address: { fi: '' }
 };
 
 const mockObservations = [
@@ -229,9 +229,9 @@ describe('UnitHistory', () => {
         observation: {
           1: { ...mockObservations[0], unit: 123 },
           2: { ...mockObservations[1], unit: 123 },
-          3: { 
-            id: 3, 
-            unit: 456, 
+          3: {
+            id: 3,
+            unit: 456,
             property: 'other_property',
             time: '2024-01-03T12:00:00Z',
             expiration_time: null,

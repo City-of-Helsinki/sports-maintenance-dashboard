@@ -1,10 +1,9 @@
-/*eslint-env node, jest */
 /*eslint no-console: 0*/
 'use strict';
 
-import { CredentialError } from "../../src/util/error.js";
-import * as municipalClient from "../../src/lib/municipalServicesClient";
-import { Unit, Service, ObservableProperty, AllowedValue, LocalizedText } from "../../src/types";
+import { CredentialError } from '../../util/error.js';
+import * as municipalClient from '../municipalServicesClient';
+import { Unit } from '../../types';
 
 // Mock fetch globally
 global.fetch = jest.fn();
@@ -158,7 +157,7 @@ describe('municipalServicesClient utility functions', () => {
       const result4 = municipalClient.login('username', undefined as any);
       
       expect(result1).toBeInstanceOf(RangeError);
-      expect(result2).toBeInstanceOf(RangeError);  
+      expect(result2).toBeInstanceOf(RangeError);
       expect(result3).toBeInstanceOf(RangeError);
       expect(result4).toBeInstanceOf(RangeError);
     });
@@ -390,14 +389,14 @@ describe('municipalServicesClient utility functions', () => {
               measurement_unit: null,
               observation_type: 'categorical',
               allowed_values: [
-                { 
+                {
                   identifier: 'good',
                   name: { fi: 'good', sv: 'bra', en: 'good' },
                   description: { fi: 'Good condition', sv: 'Bra skick', en: 'Good condition' },
                   quality: 'good',
                   property: 'condition'
                 },
-                { 
+                {
                   identifier: 'poor',
                   name: { fi: 'poor', sv: 'dålig', en: 'poor' },
                   description: { fi: 'Poor condition', sv: 'Dåligt skick', en: 'Poor condition' },
@@ -419,7 +418,7 @@ describe('municipalServicesClient utility functions', () => {
               measurement_unit: null,
               observation_type: 'categorical',
               allowed_values: [
-                { 
+                {
                   identifier: 'clean',
                   name: { fi: 'clean', sv: 'ren', en: 'clean' },
                   description: { fi: 'Clean', sv: 'Ren', en: 'Clean' },
@@ -462,14 +461,14 @@ describe('municipalServicesClient utility functions', () => {
               measurement_unit: null,
               observation_type: 'categorical',
               allowed_values: [
-                { 
+                {
                   identifier: 'unknown',
                   name: { fi: 'unknown', sv: 'okänd', en: 'unknown' },
                   description: { fi: 'Unknown', sv: 'Okänd', en: 'Unknown' },
                   quality: 'unknown',
                   property: 'condition'
                 },
-                { 
+                {
                   identifier: 'poor',
                   name: { fi: 'poor', sv: 'dålig', en: 'poor' },
                   description: { fi: 'Poor condition', sv: 'Dåligt skick', en: 'Poor condition' },

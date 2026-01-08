@@ -1,22 +1,22 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 
-import UpdateConfirmation, { canPropertyBeMaintained } from '../../src/components/UpdateConfirmation';
-import { renderWithRoute } from '../testUtils';
-import * as actions from '../../src/actions/index';
+import UpdateConfirmation, { canPropertyBeMaintained } from '../UpdateConfirmation';
+import { renderWithRoute } from '../../../test/testUtils';
+import * as actions from '../../actions/index';
 
 // Mock the actions
-jest.mock('../../src/actions/index', () => ({
+jest.mock('../../actions/index', () => ({
   enqueueObservation: jest.fn()
 }));
 
 // Mock unitObservableProperties
-jest.mock('../../src/lib/municipalServicesClient', () => ({
+jest.mock('../../lib/municipalServicesClient', () => ({
   unitObservableProperties: jest.fn()
 }));
 
-import { unitObservableProperties } from '../../src/lib/municipalServicesClient';
-import { RootState } from '../../src/reducers/types';
+import { unitObservableProperties } from '../../lib/municipalServicesClient';
+import { RootState } from '../../reducers/types';
 
 const mockEnqueueObservation = actions.enqueueObservation as jest.MockedFunction<typeof actions.enqueueObservation>;
 const mockUnitObservableProperties = unitObservableProperties as jest.MockedFunction<typeof unitObservableProperties>;

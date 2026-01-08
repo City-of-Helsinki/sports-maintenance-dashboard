@@ -1,14 +1,14 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 
-import UpdateQueue from '../../src/components/UpdateQueue';
-import { renderWithProviders } from '../testUtils';
-import * as actions from '../../src/actions/index';
+import UpdateQueue from '../UpdateQueue';
+import { renderWithProviders } from '../../../test/testUtils';
+import * as actions from '../../actions/index';
 import { Unit } from 'types';
 import { RootState } from 'reducers/types';
 
 // Mock the actions
-jest.mock('../../src/actions/index', () => ({
+jest.mock('../../actions/index', () => ({
   retryImmediately: jest.fn()
 }));
 
@@ -238,7 +238,7 @@ describe('UpdateQueue', () => {
         123: { unitId: '123', status: 'pending', serviced: false, property: '1', value: 'test' },
         124: { unitId: '123', status: 'pending', serviced: false, property: '2', value: 'test2' },
         456: { unitId: '456', status: 'pending', serviced: false, property: '1', value: 'test' }
-      } 
+      }
     };
 
     renderComponent(stateWithMultipleItems);

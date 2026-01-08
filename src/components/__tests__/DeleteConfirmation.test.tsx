@@ -1,18 +1,18 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
-import DeleteConfirmation from '../../src/components/DeleteConfirmation';
-import { renderWithRoute } from '../testUtils';
-import * as actions from '../../src/actions';
-import { Unit } from '../../src/types';
-import { RootState } from '../../src/reducers/types';
+import DeleteConfirmation from '../DeleteConfirmation';
+import { renderWithRoute } from '../../../test/testUtils';
+import * as actions from '../../actions';
+import { Unit } from '../../types';
+import { RootState } from '../../reducers/types';
 
 // Mock actions
-jest.mock('../../src/actions', () => ({
+jest.mock('../../actions', () => ({
   enqueueObservation: jest.fn()
 }));
 
 // Mock unitObservableProperties
-jest.mock('../../src/lib/municipalServicesClient', () => ({
+jest.mock('../../lib/municipalServicesClient', () => ({
   unitObservableProperties: jest.fn(() => [])
 }));
 

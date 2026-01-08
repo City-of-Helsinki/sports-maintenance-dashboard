@@ -1,12 +1,12 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import GroupList from '../../src/components/GroupList';
-import { renderWithRoute } from '../testUtils';
-import * as utils from '../../src/components/utils';
+import GroupList from '../GroupList';
+import { renderWithRoute } from '../../../test/testUtils';
+import * as utils from '../utils';
 import { RootState } from 'reducers/types';
 
 // Mock the calculateGroups utility function
-jest.mock('../../src/components/utils', () => ({
+jest.mock('../utils', () => ({
   calculateGroups: jest.fn()
 }));
 
