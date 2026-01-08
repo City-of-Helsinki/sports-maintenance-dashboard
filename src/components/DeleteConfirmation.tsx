@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import UnitStatusSummary from './UnitStatusSummary';
 import { RootState } from '../reducers/types';
+import { LocalizedText } from '../types';
 
 import * as actions from '../actions/index';
 
@@ -87,7 +88,7 @@ const DeleteConfirmation: React.FC = () => {
           <h6>Oletko varma että haluat poistaa liikuntapaikalta seuraavan tekstitiedotteen?</h6>
         </div>
         <div className="panel-body">
-          <TextualDescription text={observation.value.fi} />
+          <TextualDescription text={(observation.value as LocalizedText).fi} />
           {buttonRow}
           <div className="row">
             <div className="col-xs-12">

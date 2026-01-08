@@ -3,6 +3,7 @@ import { screen, fireEvent } from '@testing-library/react';
 import DeleteConfirmation from '../../src/components/DeleteConfirmation';
 import { renderWithRoute } from '../testUtils';
 import * as actions from '../../src/actions';
+import { Unit } from '../../src/types';
 
 // Mock actions
 jest.mock('../../src/actions', () => ({
@@ -20,15 +21,24 @@ const mockEnqueueObservation = jest.fn().mockReturnValue({
   payload: { property: 'notice', value: null, unitId: 123 }
 });
 
-const mockUnit = {
+const mockUnit: Unit = {
   id: 123,
   name: { fi: 'Test Unit' },
-  extensions: { maintenance_group: 'test-group' },
+  extensions: {
+    maintenance_group: 'test-group',
+    maintenance_organization: ''
+  },
   observations: [
     {
+      id: 1,
+      unit: 123,
       property: 'notice',
+      time: '2026-01-08T10:00:00Z',
+      expiration_time: null,
+      name: { fi: 'Notice' },
+      quality: 'good',
       value: { fi: 'Test notice text\nSecond line' },
-      timestamp: '2026-01-08T10:00:00Z'
+      primary: true
     }
   ]
 };
@@ -164,9 +174,15 @@ describe('DeleteConfirmation', () => {
               ...mockUnit,
               observations: [
                 {
+                  id: 2,
+                  unit: 123,
                   property: 'notice',
+                  time: '2026-01-08T10:00:00Z',
+                  expiration_time: null,
+                  name: { fi: 'Notice' },
+                  quality: 'good',
                   value: { fi: 'Single line text' },
-                  timestamp: '2026-01-08T10:00:00Z'
+                  primary: true
                 }
               ]
             }
@@ -281,9 +297,15 @@ describe('DeleteConfirmation', () => {
               ...mockUnit,
               observations: [
                 {
+                  id: 3,
+                  unit: 123,
                   property: 'notice',
+                  time: '2026-01-08T10:00:00Z',
+                  expiration_time: null,
+                  name: { fi: 'Notice' },
+                  quality: 'good',
                   value: { fi: '' },
-                  timestamp: '2026-01-08T10:00:00Z'
+                  primary: true
                 }
               ]
             }

@@ -52,9 +52,9 @@ export function getQualityObservation(unit?: Unit): UnitObservation | undefined 
   });
 }
 
-export function calculateGroups(units: Unit[], maintenanceOrg: string): Record<string, number[]> {
+export function calculateGroups(units: Record<string, Unit> | Unit[], maintenanceOrg: string): Record<string, number[]> {
   let result: Record<string, number[]> = {};
-  _.each(units, (u) => {
+  _.each(units, (u: Unit) => {
     if (u.extensions.maintenance_organization == maintenanceOrg) {
       const group = result[u.extensions.maintenance_group] || [];
       result[u.extensions.maintenance_group] = group.concat(u.id);

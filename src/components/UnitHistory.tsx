@@ -7,12 +7,9 @@ import ObservationItem from './ObservationItem';
 import { UnitObservation } from '../types';
 import { RootState } from '../reducers/types';
 
-interface Params {
-  unitId: string;
-}
 
 const UnitHistory: React.FC = () => {
-  const params = useParams<Params>();
+  const params = useParams<{ unitId: string }>();
   const dispatch = useDispatch();
   
   const unitId = useMemo(() => Number(params.unitId), [params.unitId]);
@@ -28,7 +25,7 @@ const UnitHistory: React.FC = () => {
 
   useEffect(() => {
     if (params.unitId) {
-      dispatch(actions.fetchUnitObservations(params.unitId));
+      dispatch(actions.fetchUnitObservations(params.unitId) as any);
     }
   }, [dispatch, params.unitId]);
 
