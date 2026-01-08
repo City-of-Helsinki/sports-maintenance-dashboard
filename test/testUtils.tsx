@@ -72,6 +72,9 @@ export const renderWithRoute = (
       <MemoryRouter initialEntries={[route]}>
         <Routes>
           <Route path={path} element={component} />
+          <Route path="/unit/:unitId" element={<div>Unit Page</div>} />
+          <Route path="/unit/:unitId/history" element={<div>Unit History Page</div>} />
+          <Route path="/" element={<div>Home Page</div>} />
         </Routes>
       </MemoryRouter>
     </Provider>
