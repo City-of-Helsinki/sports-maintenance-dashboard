@@ -3,7 +3,7 @@
 export interface EnqueueObservationPayload {
   property: string;
   value: any;
-  unitId: string;
+  unitId: number;
   addServicedObservation: boolean;
 }
 
@@ -18,7 +18,7 @@ export interface ObservationMeta extends ResourceMeta {
 }
 
 export interface PostObservationMeta {
-  unitId: string;
+  unitId: number;
   property: string;
   value: any;
 }

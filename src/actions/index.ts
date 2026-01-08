@@ -45,7 +45,7 @@ export const login = createAction(
 
 export const enqueueObservation = createAction(
   ActionTypes.ENQUEUE_OBSERVATION,
-  (property: string, value: AllowedValue | string, unitId: string, addServicedObservation: boolean = false) => {
+  (property: string, value: AllowedValue | string, unitId: number, addServicedObservation: boolean = false) => {
     let processedValue = value;
     if (typeof value === 'object' && value && 'identifier' in value && value.identifier !== undefined) {
       processedValue = value.identifier;

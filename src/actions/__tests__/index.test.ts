@@ -299,7 +299,7 @@ describe('Action Creators', () => {
     it('should create ENQUEUE_OBSERVATION action', () => {
       const property = 'status';
       const value = 'open';
-      const unitId = '123';
+      const unitId = 123;
       
       const action = actions.enqueueObservation(property, value, unitId);
       
@@ -329,8 +329,8 @@ describe('Action Creators', () => {
 
     it('should be callable with parameters', () => {
       // Test that the function can be called without throwing
-      expect(() => actions.enqueueObservation('test', 'value', '123')).not.toThrow();
-      expect(() => (actions.enqueueObservation as any)('test', 'value', '123', true)).not.toThrow();
+      expect(() => actions.enqueueObservation('test', 'value', 123)).not.toThrow();
+      expect(() => (actions.enqueueObservation as any)('test', 'value', 123, true)).not.toThrow();
     });
   });
 
