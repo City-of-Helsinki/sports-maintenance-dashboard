@@ -3,7 +3,11 @@ import _ from 'lodash';
 import { Unit, UnitObservation } from '../types';
 
 export const QUALITIES: readonly string[] = [
-  'good', 'satisfactory', 'unusable', 'unknown', 'warning'
+  'good',
+  'satisfactory',
+  'unusable',
+  'unknown',
+  'warning'
 ];
 
 export const COLORS: Record<string, string> = {
@@ -25,6 +29,8 @@ export const ICONS: Record<string, string> = {
   frozen: 'icon-frozen',
   plowed: 'icon-plowed',
   freezing_started: 'icon-started',
+  open: 'icon-smile-o',
+  weak: 'icon-meh-o',
   unknown: 'icon-question'
 };
 

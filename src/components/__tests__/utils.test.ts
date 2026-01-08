@@ -1,12 +1,11 @@
-import moment from 'moment';
-import { 
-  QUALITIES, 
-  COLORS, 
-  ICONS, 
-  statusBarClassName, 
-  getQualityObservation, 
-  calculateGroups, 
-  getCurrentSeason 
+import {
+  QUALITIES,
+  COLORS,
+  ICONS,
+  statusBarClassName,
+  getQualityObservation,
+  calculateGroups,
+  getCurrentSeason
 } from '../utils';
 import { Unit, UnitObservation } from '../../types';
 
@@ -59,7 +58,7 @@ describe('Utils', () => {
     });
 
     it('should have correct ICONS mapping', () => {
-      expect(ICONS).toEqual(expect.objectContaining({
+      expect(ICONS).toEqual({
         good: 'icon-smile-o',
         satisfactory: 'icon-meh-o',
         poor: 'icon-frown-o',
@@ -72,8 +71,10 @@ describe('Utils', () => {
         frozen: 'icon-frozen',
         plowed: 'icon-plowed',
         freezing_started: 'icon-started',
+        open: 'icon-smile-o',
+        weak: 'icon-meh-o',
         unknown: 'icon-question'
-      }));
+      });
     });
   });
 
