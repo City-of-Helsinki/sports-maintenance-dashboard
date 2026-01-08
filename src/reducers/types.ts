@@ -1,5 +1,92 @@
+import { Action, AnyAction } from 'redux';
+import { ActionTypes } from '../constants';
+
 // Redux store state types
 // These types should match the structure defined in the reducers
+
+// Action interface definitions
+
+export interface GetResourceStartAction extends Action<typeof ActionTypes.GET_RESOURCE_START> {
+  meta: {
+    resourceType: string;
+  };
+}
+
+export interface GetResourceAction extends Action<typeof ActionTypes.GET_RESOURCE> {
+  payload: {
+    [key: string]: any;
+  };
+  meta: {
+    resourceType: string;
+    replaceAll?: boolean;
+    observation?: {
+      unitId: string;
+      property: string;
+    };
+  };
+}
+
+export interface GetNearestUnitsAction extends Action<typeof ActionTypes.GET_NEAREST_UNITS> {
+  payload: any[];
+}
+
+export interface LoginAction extends Action<typeof ActionTypes.LOGIN> {
+  payload: {
+    maintenance_organization: string;
+    token: string;
+    login_identifier: string;
+  };
+  error?: boolean;
+}
+
+export type ObservationActionType = typeof ActionTypes.ENQUEUE_OBSERVATION | typeof ActionTypes.MARK_OBSERVATION_SENT | typeof ActionTypes.MARK_OBSERVATION_RESENT;
+
+export interface ObservationAction extends Action<ObservationActionType> {
+  payload: {
+    unitId: string;
+    property: string;
+    value: any;
+    addServicedObservation?: boolean;
+    serviced?: boolean;
+  };
+}
+
+export interface PostObservationAction extends Action<typeof ActionTypes.POST_OBSERVATION> {
+  payload?: {
+    unit: string;
+    property: string;
+  };
+  meta: {
+    unitId: string;
+    property: string;
+  };
+  error?: boolean;
+}
+
+export type FlushUpdateQueueActionType = typeof ActionTypes.FLUSH_UPDATE_QUEUE | typeof ActionTypes.FLUSH_UPDATE_QUEUE_DISABLED;
+
+export interface FlushUpdateQueueAction extends Action<FlushUpdateQueueActionType> {
+}
+
+export interface SelectServiceGroupAction extends Action<typeof ActionTypes.SELECT_SERVICE_GROUP> {
+  payload: string;
+}
+
+export interface SetUserLocationAction extends Action<typeof ActionTypes.SET_USER_LOCATION> {
+  payload: any;
+}
+
+export type ReduxAction = 
+  | GetResourceStartAction
+  | GetResourceAction
+  | GetNearestUnitsAction
+  | LoginAction
+  | ObservationAction
+  | PostObservationAction
+  | FlushUpdateQueueAction
+  | SelectServiceGroupAction
+  | SetUserLocationAction
+  | AnyAction;
 
 // Common data interfaces
 export interface LocalizedText {

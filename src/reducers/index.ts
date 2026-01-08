@@ -1,7 +1,8 @@
-import { combineReducers, Action, AnyAction, Reducer } from 'redux';
+import { combineReducers, Reducer } from 'redux';
 import _ from 'lodash';
 
 import { CredentialError } from '../util/error';
+import { ActionTypes } from '../constants';
 import {
   DataState,
   AuthState,
@@ -9,88 +10,16 @@ import {
   PendingObservationsState,
   PendingObservationData,
   UnitsByUpdateCountState,
-  RootState
+  ReduxAction,
+  GetResourceStartAction,
+  GetResourceAction,
+  GetNearestUnitsAction,
+  LoginAction,
+  ObservationAction,
+  PostObservationAction,
+  SelectServiceGroupAction,
+  SetUserLocationAction
 } from './types';
-
-// Specific Action Types extending Redux's base Action interface
-
-interface GetResourceStartAction extends Action<'GET_RESOURCE_START'> {
-  meta: {
-    resourceType: string;
-  };
-}
-
-interface GetResourceAction extends Action<'GET_RESOURCE'> {
-  payload: {
-    [key: string]: any;
-  };
-  meta: {
-    resourceType: string;
-    replaceAll?: boolean;
-    observation?: {
-      unitId: string;
-      property: string;
-    };
-  };
-}
-
-interface GetNearestUnitsAction extends Action<'GET_NEAREST_UNITS'> {
-  payload: any[];
-}
-
-interface LoginAction extends Action<'LOGIN'> {
-  payload: {
-    maintenance_organization: string;
-    token: string;
-    login_identifier: string;
-  };
-  error?: boolean;
-}
-
-interface ObservationAction extends Action<'ENQUEUE_OBSERVATION' | 'MARK_OBSERVATION_SENT' | 'MARK_OBSERVATION_RESENT'> {
-  payload: {
-    unitId: string;
-    property: string;
-    value: any;
-    addServicedObservation?: boolean;
-    serviced?: boolean;
-  };
-}
-
-interface PostObservationAction extends Action<'POST_OBSERVATION'> {
-  payload?: {
-    unit: string;
-    property: string;
-  };
-  meta: {
-    unitId: string;
-    property: string;
-  };
-  error?: boolean;
-}
-
-interface FlushUpdateQueueAction extends Action<'FLUSH_UPDATE_QUEUE' | 'FLUSH_UPDATE_QUEUE_DISABLED'> {
-}
-
-interface SelectServiceGroupAction extends Action<'SELECT_SERVICE_GROUP'> {
-  payload: string;
-}
-
-interface SetUserLocationAction extends Action<'SET_USER_LOCATION'> {
-  payload: any;
-}
-
-type ReduxAction = 
-  | GetResourceStartAction
-  | GetResourceAction
-  | GetNearestUnitsAction
-  | LoginAction
-  | ObservationAction
-  | PostObservationAction
-  | FlushUpdateQueueAction
-  | SelectServiceGroupAction
-  | SetUserLocationAction
-  | AnyAction;
 
 const initialDataState: DataState = {
   unit: {},
@@ -117,23 +46,26 @@ const serviceGroup: string = 'skiing';
 
 const dataReducer: Reducer<DataState, ReduxAction> = (state = initialDataState, action) => {
   switch (action.type) {
-    case 'GET_RESOURCE_START': {
+    case ActionTypes.GET_RESOURCE_START: {
       const startResourceType = (action as GetResourceStartAction).meta.resourceType;
+      
       return {
         ...state,
-          loading: {
-            ...state.loading,
-            [startResourceType]: true
-          }
+        loading: {
+          ...state.loading,
+          [startResourceType]: true
+        }
       };
     }
-    case 'GET_RESOURCE': {
+    case ActionTypes.GET_RESOURCE: {
       const resourceAction = action as GetResourceAction;
       const resourceType = resourceAction.meta.resourceType;
       let existingResources = state[resourceType as keyof DataState];
+
       if (resourceAction.meta.replaceAll === true) {
         existingResources = {};
       }
+
       return {
         ...state,
         [resourceType]: {
@@ -146,17 +78,18 @@ const dataReducer: Reducer<DataState, ReduxAction> = (state = initialDataState, 
         }
       };
     }
-    case 'GET_NEAREST_UNITS':
+    case ActionTypes.GET_NEAREST_UNITS:
       return {
         ...state,
         unitsByDistance: (action as GetNearestUnitsAction).payload
       };
+    default:
+      return state;
   }
-  return state;
 };
 
 const authErrorReducer: Reducer<AuthErrorState, ReduxAction> = (state = initialAuthErrorState, action) => {
-  if (action.type === 'LOGIN' && action.error) {
+  if (action.type === ActionTypes.LOGIN && action.error) {
     let payload: AuthErrorState = null;
 
     if (action.payload !== undefined) {
@@ -173,6 +106,7 @@ const authErrorReducer: Reducer<AuthErrorState, ReduxAction> = (state = initialA
         payload = {message: 'Palvelimeen ei saatu yhteyttä tai tapahtui virhe.'};
       }
     }
+
     return payload;
   }
   return state;
@@ -180,7 +114,7 @@ const authErrorReducer: Reducer<AuthErrorState, ReduxAction> = (state = initialA
 
 const authReducer: Reducer<AuthState, ReduxAction> = (state = initialAuthState, action) => {
   switch (action.type) {
-    case 'LOGIN': {
+    case ActionTypes.LOGIN: {
       const loginAction = action as LoginAction;
       if (loginAction.error) {
         return {
@@ -190,21 +124,16 @@ const authReducer: Reducer<AuthState, ReduxAction> = (state = initialAuthState, 
         };
       }
       const {maintenance_organization, token, login_identifier} = loginAction.payload;
-      if (!maintenance_organization || !token) {
-        return {
-          maintenance_organization,
-          token,
-          login_id: login_identifier
-        };
-      }
+      
       return {
         maintenance_organization,
         token,
         login_id: login_identifier
       };
     }
+    default:
+      return state;
   }
-  return state;
 };
 
 function observationPath({unitId, property}: {unitId: string; property: string}): string {
@@ -222,6 +151,7 @@ function createObservationData(
   status: string
 ): PendingObservationData {
   const { unitId, value, property, addServicedObservation, serviced } = payload;
+  
   return {
     unitId,
     status,
@@ -235,97 +165,135 @@ const pendingObservationsReducer: Reducer<PendingObservationsState, ReduxAction>
   state = initialPendingObservationsState, 
   action
 ) => {
-  let path: string | null = null;
   switch (action.type) {
-    case 'ENQUEUE_OBSERVATION':
-      path = observationPath((action as ObservationAction).payload);
-      return Object.assign({}, state, {[path]: createObservationData((action as ObservationAction).payload, 'enqueued')});
-    case 'MARK_OBSERVATION_SENT':
-      path = observationPath((action as ObservationAction).payload);
-      return Object.assign({}, state, {[path]: createObservationData((action as ObservationAction).payload, 'pending')});
-    case 'MARK_OBSERVATION_RESENT':
-      path = observationPath((action as ObservationAction).payload);
-      return Object.assign({}, state, {[path]: createObservationData((action as ObservationAction).payload, 'retrying')});
-    case 'POST_OBSERVATION': {
+    case ActionTypes.ENQUEUE_OBSERVATION: {
+      const path = observationPath((action as ObservationAction).payload);
+      return {
+        ...state,
+        [path]: createObservationData((action as ObservationAction).payload, 'enqueued')
+      };
+    }
+    case ActionTypes.MARK_OBSERVATION_SENT: {
+      const path = observationPath((action as ObservationAction).payload);
+      return {
+        ...state,
+        [path]: createObservationData((action as ObservationAction).payload, 'pending')
+      };
+    }
+    case ActionTypes.MARK_OBSERVATION_RESENT: {
+      const path = observationPath((action as ObservationAction).payload);
+      return {
+        ...state,
+        [path]: createObservationData((action as ObservationAction).payload, 'retrying')
+      };
+    }
+    case ActionTypes.POST_OBSERVATION: {
       const postAction = action as PostObservationAction;
       if (postAction.error) {
-        path = observationPath(postAction.meta);
-        return Object.assign({}, state, {[path]: createObservationData(postAction.meta, 'failed')});
+        const path = observationPath(postAction.meta);
+        return {
+          ...state,
+          [path]: createObservationData(postAction.meta, 'failed')
+        };
       }
       if (postAction.payload) {
-        path = observationPath({unitId: postAction.payload.unit, property: postAction.payload.property});
-        return Object.assign({}, state, {[path]: createObservationData({unitId: postAction.payload.unit, property: postAction.payload.property}, 'success')});
+        const path = observationPath({unitId: postAction.payload.unit, property: postAction.payload.property});
+        return {
+          ...state,
+          [path]: createObservationData({unitId: postAction.payload.unit, property: postAction.payload.property}, 'success')
+        };
       }
-      break;
+      return state;
     }
-    case 'GET_RESOURCE': {
+    case ActionTypes.GET_RESOURCE: {
       const resourceAction = action as GetResourceAction;
       const observation = resourceAction.meta.observation;
       if (observation !== undefined) {
-        path = observationPath({
+        const path = observationPath({
           unitId: observation.unitId,
-          property: observation.property});
-        return Object.assign({}, _.omit(state, [path]));
+          property: observation.property
+        });
+        return _.omit(state, [path]);
       }
-      break;
+      return state;
     }
+    default:
+      return state;
   }
-  return state;
 };
 
 const updateFlushReducer: Reducer<boolean, ReduxAction> = (state = manuallyFlushUpdateQueue, action) => {
-  if (action.type === 'FLUSH_UPDATE_QUEUE') {
-    return true;
+  switch (action.type) {
+    case ActionTypes.FLUSH_UPDATE_QUEUE:
+      return true;
+    case ActionTypes.FLUSH_UPDATE_QUEUE_DISABLED:
+      return false;
+    default:
+      return state;
   }
-  else if (action.type === 'FLUSH_UPDATE_QUEUE_DISABLED') {
-    return false;
-  }
-  return state;
 };
 
 const serviceGroupReducer: Reducer<string, ReduxAction> = (state = serviceGroup, action) => {
-  if (action.type === 'SELECT_SERVICE_GROUP') {
-    return (action as SelectServiceGroupAction).payload;
+  switch (action.type) {
+    case ActionTypes.SELECT_SERVICE_GROUP:
+      return (action as SelectServiceGroupAction).payload;
+    default:
+      return state;
   }
-  return state;
 };
 
-const userLocation: any = null;
+const initialUserLocation: any = null;
 
-const userLocationReducer: Reducer<any, ReduxAction> = (state = userLocation, action) => {
-  if (action.type === 'SET_USER_LOCATION') {
-    return (action as SetUserLocationAction).payload;
+const userLocationReducer: Reducer<any, ReduxAction> = (state = initialUserLocation, action) => {
+  switch (action.type) {
+    case ActionTypes.SET_USER_LOCATION:
+      return (action as SetUserLocationAction).payload;
+    default:
+      return state;
   }
-  return state;
 };
 
-const unitsByUpdateTime: string[] = [];
-const unitsByUpdateTimeReducer: Reducer<string[], ReduxAction> = (state = unitsByUpdateTime, action) => {
-  if (action.type === 'POST_OBSERVATION') {
-    const postAction = action as PostObservationAction;
-    
-    if (postAction.error === true) {
+const initialUnitsByUpdateTime: string[] = [];
+const unitsByUpdateTimeReducer: Reducer<string[], ReduxAction> = (state = initialUnitsByUpdateTime, action) => {
+  switch (action.type) {
+    case ActionTypes.POST_OBSERVATION: {
+      const postAction = action as PostObservationAction;
+      
+      if (postAction.error === true) {
         return state;
+      }
+      
+      return _.uniq([postAction.meta.unitId, ...state]).slice(0, 20);
     }
-    return _.uniq([].concat(postAction.meta.unitId, state)).slice(0, 20);
+    default:
+      return state;
   }
-  return state;
 };
 
-const unitsByUpdateCount: UnitsByUpdateCountState = {};
+const initialUnitsByUpdateCount: UnitsByUpdateCountState = {};
 const unitsByUpdateCountReducer: Reducer<UnitsByUpdateCountState, ReduxAction> = (
-  state = unitsByUpdateCount, 
+  state = initialUnitsByUpdateCount, 
   action
 ) => {
-  if (action.type === 'POST_OBSERVATION') {
-    const postAction = action as PostObservationAction;
-    if (postAction.error === true) return state;
-    const { unitId } = postAction.meta;
-    const existingCount = (state[unitId] || {}).count || 0;
-    const result = Object.assign({}, state, {[unitId]: {count: existingCount + 1, id: unitId}});
-    return result;
+  switch (action.type) {
+    case ActionTypes.POST_OBSERVATION: {
+      const postAction = action as PostObservationAction;
+
+      if (postAction.error === true) {
+        return state;
+      }
+
+      const { unitId } = postAction.meta;
+      const existingCount = (state[unitId] || {}).count || 0;
+      
+      return {
+        ...state,
+        [unitId]: { count: existingCount + 1, id: unitId }
+      };
+    }
+    default:
+      return state;
   }
-  return state;
 };
 
 export default combineReducers({
