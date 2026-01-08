@@ -10,7 +10,7 @@ interface UnitStatusSummaryProps {
   unit: Unit;
 }
 
-export default function UnitStatusSummary({ unit }: UnitStatusSummaryProps): React.ReactElement {
+export default function UnitStatusSummary({ unit }: Readonly<UnitStatusSummaryProps>): React.ReactElement {
   const observations = _.map(
     unit.observations,
     (obs) => <ObservationItem key={obs.id} observation={obs} />
@@ -24,7 +24,7 @@ export default function UnitStatusSummary({ unit }: UnitStatusSummaryProps): Rea
         <div className="list-group facility-return clearfix">
           <Link to="/" className="list-group-item">
             <span className="action-icon glyphicon glyphicon-chevron-left"></span>
-                    Takaisin
+            {' '}Takaisin
           </Link>
         </div>
         <div className="well">

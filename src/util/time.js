@@ -26,7 +26,7 @@ export function minutesToHours (minutes) {
 
 export function hoursToMinutes (hours) {
   if (typeof hours !== 'number') {
-    hours = parseFloat(hours);
+    hours = Number.parseFloat(hours);
   }
   return Math.floor(hours * 60);
 }
@@ -36,9 +36,9 @@ export function formatHours (hours) {
   const fract = hours % 1;
   let fractString;
   switch (fract) {
-    case 0.75: fractString = String.fromCharCode(190); break;
-    case 0.5: fractString = String.fromCharCode(189); break;
-    case 0.25: fractString = String.fromCharCode(188); break;
+    case 0.75: fractString = String.fromCodePoint(190); break;
+    case 0.5: fractString = String.fromCodePoint(189); break;
+    case 0.25: fractString = String.fromCodePoint(188); break;
     case 0: fractString = ''; break;
     default: return hours;
   }
@@ -46,9 +46,8 @@ export function formatHours (hours) {
 }
 
 
-export function round (floatVal, stepOption) {
-  const step = (stepOption || 0.25);
-  if (1 % step != 0) {
+export function round (floatVal, stepOption = 0.25) {
+  if (1 % stepOption != 0) {
     return floatVal;
   }
 
@@ -57,10 +56,10 @@ export function round (floatVal, stepOption) {
   const fract = num - whole;
 
   let returnValue = null;
-  const steps = _.range(step/2, 1, step);
+  const steps = _.range(stepOption/2, 1, stepOption);
   for (let i = 0; i < steps.length; i++) {
     if (fract < steps[i]) {
-      returnValue = whole + step * i;
+      returnValue = whole + stepOption * i;
       break;
     }
   }

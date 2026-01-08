@@ -32,7 +32,7 @@ export default function queueHandler(store) {
       markAndSendObservation(store, item);
     });
 
-    const shouldRetryImmediately = ((opts && opts.initial === true) || store.getState().updateFlush);
+    const shouldRetryImmediately = ((opts?.initial === true) || store.getState().updateFlush);
     if (shouldRetryImmediately) {
       _.each(timers, (_, key) => {
         clearTimeout(key);

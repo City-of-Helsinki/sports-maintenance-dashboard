@@ -24,7 +24,7 @@ class UnitMassEditPropertySelect extends React.Component {
         <div className="list-group facility-return clearfix">
           <Link to={`/group/${groupId}`} className="list-group-item">
             <span className="action-icon glyphicon glyphicon-chevron-left"></span>
-            Takaisin
+            {' '}Takaisin
           </Link>
         </div>
         <div className="well">
@@ -52,12 +52,12 @@ function mapStateToProps(state, ownProps) {
   // Get all available properties
   const properties = units.reduce((result, currentUnit) => {
     const observableProperties = unitObservableProperties(currentUnit, service, onlyQualityProperties);
-    observableProperties.map((op) => {
+    observableProperties.forEach((op) => {
       // Remove duplicate observable properties
-      if (result.findIndex(res => res.id === op.id) === -1) {
+      if (!result.some(res => res.id === op.id)) {
         result.push(op);
       }
-    })
+    });
     return result;
   }, []);
 

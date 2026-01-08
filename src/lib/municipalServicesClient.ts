@@ -10,7 +10,6 @@ import {
   UnitObservation
 } from '../types';
 
-require('process');
 const API_BASE_URL = process.env.API_URL;
 
 // Type definitions
@@ -66,7 +65,7 @@ function filteredUrl(
 ): string {
   let uri = URI(url);
   uri.addSearch({ page_size: pageSize || 1000 });
-  uri.addSearch({ freshen: new Date().getTime() });
+  uri.addSearch({ freshen: Date.now() });
   if (filters === null || filters === undefined) {
     return uri.toString();
   }
@@ -129,7 +128,7 @@ export function fetchResource<T = any>(
   selected: string[] | null = null,
   embedded: string[] | null = null,
   pageSize: number | null = null,
-  options: FetchOptions = { preprocess: true }
+  options?: FetchOptions
 ): Promise<T[] | { [key: string]: { [id: string]: T } }> {
   const url = resourceEndpoint(resourceType);
   // TODO: pagination
@@ -142,7 +141,7 @@ export function fetchResource<T = any>(
     .then((data) => {
       return preProcessResponse<T>(
         resourceType,
-        options.preprocess ?? true
+        options?.preprocess ?? true
       )(data);
     });
 }

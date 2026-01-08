@@ -30,7 +30,7 @@ interface ObservablePropertyPanelProps {
   header: string;
 }
 
-export function ObservableProperty({ quality, property, identifier, name, unitId }: ObservablePropertyProps): React.ReactElement {
+export function ObservableProperty({ quality, property, identifier, name, unitId }: Readonly<ObservablePropertyProps>): React.ReactElement {
   const url = `/unit/${unitId}/update/${property}/${identifier}`;
   const color = COLORS[quality] || 'primary';
   const icon = ICONS[identifier];
@@ -40,7 +40,7 @@ export function ObservableProperty({ quality, property, identifier, name, unitId
   return <Link to={url} className={buttonClassName}><span className={iconClassName}></span><br />{name.fi}</Link>;
 }
 
-export function ObservablePropertyPanel({ allowedValues, header }: ObservablePropertyPanelProps): React.ReactElement {
+export function ObservablePropertyPanel({ allowedValues, header }: Readonly<ObservablePropertyPanelProps>): React.ReactElement {
   const amountOfValues = allowedValues.length;
   const cutPoint = (amountOfValues / 2) + (amountOfValues % 2);
   const left = allowedValues.slice(0, cutPoint);
@@ -65,7 +65,7 @@ export function ObservablePropertyPanel({ allowedValues, header }: ObservablePro
 
 const UnitDetails: React.FC = () => {
   const params = useParams<{ unitId: string }>();
-  const unitId = params.unitId!;
+  const unitId = params.unitId;
   
   const unit = useSelector((state: RootState) => state.data.unit[unitId]);
   const isLoading = useSelector((state: RootState) => state.data.loading.unit === true);

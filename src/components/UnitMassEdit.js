@@ -76,10 +76,10 @@ const UnitMassEdit = (props) => {
     const isServiced = formValues.observationType === 'serviced';
     const notice = formValues.notice;
 
-    unitIds.map((unitId) => {
-      enqueueObservation(propertyId, value, parseInt(unitId), isServiced);
+    unitIds.forEach((unitId) => {
+      enqueueObservation(propertyId, value, Number.parseInt(unitId), isServiced);
       if (notice) {
-        enqueueObservation('notice', notice, parseInt(unitId));
+        enqueueObservation('notice', notice, Number.parseInt(unitId));
       }
     });
 
@@ -229,7 +229,7 @@ const UnitMassEdit = (props) => {
       <div className="list-group facility-return clearfix">
         <Link to={`/group/${groupId}/mass-edit`} className="list-group-item">
           <span className="action-icon glyphicon glyphicon-chevron-left"></span>
-          Takaisin
+          {' '}Takaisin
         </Link>
       </div>
       <h4>Massapäivitys ({qualityHeader})</h4>
@@ -278,7 +278,7 @@ function mapStateToProps(state, ownProps) {
   let unitsIncludingSelectedProperty = [];
   let observableProperty;
 
-  units.map((u) => {
+  units.forEach((u) => {
     const allObservableProperties = unitObservableProperties(u, service, onlyQualityProperties);
     const selectedObservableProperty = _.filter(allObservableProperties, (op) => op.id === propertyId);
     const selectedObservablePropertyId = selectedObservableProperty[0]?.id;

@@ -34,11 +34,10 @@ class LoginScreen extends React.Component {
   }
   handleChange(field) {
     return (event) => {
-      this.setState(
-        Object.assign(
-          this.state,
-          {[field]: event.target.value}
-        ));
+      this.setState(prevState => ({
+        ...prevState,
+        [field]: event.target.value
+      }));
     };
   }
   render() {

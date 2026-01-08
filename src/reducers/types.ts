@@ -1,4 +1,4 @@
-import { Action, AnyAction } from 'redux';
+import { Action } from 'redux';
 import { ActionTypes } from '../constants';
 import { Unit, ObservableProperty } from '../types';
 
@@ -86,8 +86,7 @@ export type ReduxAction =
   | PostObservationAction
   | FlushUpdateQueueAction
   | SelectServiceGroupAction
-  | SetUserLocationAction
-  | AnyAction;
+  | SetUserLocationAction;
 
 // Common data interfaces
 
@@ -139,7 +138,7 @@ export interface RootState {
   updateQueue: PendingObservationsState;  // Note: renamed from pendingObservations in actual store
   updateFlush: boolean;
   serviceGroup: string;
-  userLocation: any | null;
+  userLocation: any;
   unitsByUpdateTime: string[];
   unitsByUpdateCount: UnitsByUpdateCountState;
 }

@@ -7,7 +7,7 @@ const NotFound: React.FC = () => {
       <div className="list-group facility-return clearfix">
         <Link to="/" className="list-group-item">
           <span className="action-icon glyphicon glyphicon-chevron-left"></span>
-          Takaisin
+          {' '}Takaisin
         </Link>
       </div>
       <h4>404 - Sivua ei löytynyt</h4>

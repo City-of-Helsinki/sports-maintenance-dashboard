@@ -21,7 +21,7 @@ export const fetchResource = createAction(
   ActionTypes.GET_RESOURCE,
   ApiClient.fetchResource,
   (resourceType: string, filters?: any, include?: string[], embed?: string[], meta?: any) => {
-    return Object.assign({}, meta, { resourceType });
+    return { ...meta, resourceType };
   }
 );
 

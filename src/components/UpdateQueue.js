@@ -24,9 +24,9 @@ function LatestUpdates({units}) {
 
 class UpdateQueue extends React.Component {
   logout() {
-    if (window.confirm('Haluatko varmasti kirjautua ulos?')) {
-      window.localStorage.clear();
-      window.location = '/';
+    if (globalThis.confirm('Haluatko varmasti kirjautua ulos?')) {
+      globalThis.localStorage.clear();
+      globalThis.location = '/';
     }
   }
   render() {

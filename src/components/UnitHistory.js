@@ -37,7 +37,7 @@ class UnitHistory extends React.Component {
           <div className="list-group facility-return clearfix">
             <Link to={`/unit/${unit.id}`} className="list-group-item">
               <span className="action-icon glyphicon glyphicon-chevron-left"></span>
-                    Takaisin
+              {' '}Takaisin
             </Link>
           </div>
           <div className="well">

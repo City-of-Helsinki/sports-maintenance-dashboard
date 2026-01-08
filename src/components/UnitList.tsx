@@ -11,7 +11,7 @@ interface UnitListElementProps {
   unit: Unit;
 }
 
-export function UnitListElement(props: UnitListElementProps): React.ReactElement {
+export function UnitListElement(props: Readonly<UnitListElementProps>): React.ReactElement {
   const { unit } = props;
   const url = `/unit/${unit.id}`;
   let iconClassName: string;
@@ -72,7 +72,7 @@ const UnitList: React.FC = () => {
         <div className="list-group facility-return">
           <Link to="/group" className="list-group-item">
             <span className="action-icon glyphicon glyphicon-chevron-left"></span>
-            Takaisin
+            {' '}Takaisin
           </Link>
         </div>
         <h5>{name}</h5>
