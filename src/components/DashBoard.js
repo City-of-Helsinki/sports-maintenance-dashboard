@@ -19,9 +19,9 @@ class DashBoard extends React.Component {
       nearest = _.map(_.filter(this.props.nearest, (u) => {
         return (u !== undefined && u !== null && u.id);
       }), (u) => {
-        return <UnitListElement key={u.id} {...u}/>; });
+        return <UnitListElement key={u.id} unit={u}/>; });
     }
-    const frequent = _.map(this.props.frequent, (u) => { return <UnitListElement key={u.id} {...u}/>; });
+    const frequent = _.map(this.props.frequent, (u) => { return <UnitListElement key={u.id} unit={u}/>; });
     return (
       <div className="row">
           <div className="col-xs-12">

@@ -7,7 +7,7 @@ import { UnitListElement } from './UnitList';
 
 function LatestUpdates({units}) {
   const elements = _.map(units, (u, index) => {
-    return <UnitListElement key={`${u.id}-${index}`} {...u} />;
+    return <UnitListElement key={`${u.id}-${index}`} unit={u} />;
   });
   return (
     <div className="row">

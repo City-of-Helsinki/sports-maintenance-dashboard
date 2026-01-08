@@ -1,0 +1,94 @@
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import _ from 'lodash';
+
+import { getQualityObservation, ICONS } from './utils';
+import { Unit } from '../types';
+import { RootState } from '../reducers/types';
+
+interface UnitListElementProps {
+  unit: Unit;
+}
+
+interface UnitListParams {
+  groupId: string;
+}
+
+export function UnitListElement(props: UnitListElementProps): React.ReactElement {
+  const { unit } = props;
+  const url = `/unit/${unit.id}`;
+  let iconClassName: string;
+  let badgeClassName: string;
+  
+  const qualityObservation = getQualityObservation(unit);
+  if (qualityObservation) {
+    const iconClass = ICONS[qualityObservation.value as string];
+    const condition = qualityObservation.quality;
+    iconClassName = `icon ${iconClass}`;
+    badgeClassName = `condition condition-${condition}`;
+  } else {
+    iconClassName = 'icon icon-question';
+    badgeClassName = 'condition condition-unknown';
+  }
+
+  return (
+    <Link to={url} className="list-group-item">
+      <div className="unit-list-item">
+        <div className={badgeClassName}><span className={iconClassName} /></div>
+        <div className="unit-name">
+          {unit.name.fi}
+        </div>
+        <span className="action-icon icon icon-pencil-square" />
+      </div>
+    </Link>
+  );
+}
+
+const UnitList: React.FC = () => {
+  const { groupId } = useParams<UnitListParams>();
+  
+  const allUnits = useSelector((state: RootState) => state.data.unit);
+  const isLoading = useSelector((state: RootState) => state.data.loading.unit === true);
+
+  const { units, name } = useMemo(() => {
+    const filteredUnits = _.filter(allUnits, (u) => u.extensions.maintenance_group === groupId);
+    return {
+      units: filteredUnits,
+      name: groupId // This might need to be derived from group data if available
+    };
+  }, [allUnits, groupId]);
+
+  if (isLoading) {
+    return <div>Ladataan...</div>;
+  }
+  
+  const elements = _.map(
+    _.sortBy(units, [(u) => u.name.fi]), 
+    (unit) => <UnitListElement key={unit.id} unit={unit} />
+  );
+  
+  const urlMassEdit = `/group/${groupId}/mass-edit`;
+  
+  return (
+    <div className="row">
+      <div className="col-xs-12">
+        <div className="list-group facility-return">
+          <Link to="/group" className="list-group-item">
+            <span className="action-icon glyphicon glyphicon-chevron-left"></span>
+            Takaisin
+          </Link>
+        </div>
+        <h5>{name}</h5>
+        <p className="text-right">
+          <Link to={urlMassEdit} className="btn btn-primary">Luo massapäivitys</Link>
+        </p>
+        <div className="list-group facility-drilldown">
+          {elements}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UnitList;
