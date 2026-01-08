@@ -5,7 +5,6 @@ import ObservationItem from '../ObservationItem';
 import { UnitObservation } from '../../types';
 
 describe('ObservationItem Component', () => {
-  // Set Finnish locale for these tests and restore original after
   beforeAll(() => {
     // @ts-ignore
     import('moment/locale/fi');
@@ -20,7 +19,7 @@ describe('ObservationItem Component', () => {
     unit: 1,
     id: 123,
     property: 'ski_trail_maintenance',
-    time: '2024-01-15T14:30:00.000Z',
+    time: '2024-01-15T14:30:00.000',
     expiration_time: null,
     name: { fi: 'Hyväksi todettu' },
     quality: 'good',
@@ -100,8 +99,7 @@ describe('ObservationItem Component', () => {
   it('displays formatted time correctly', () => {
     render(<ObservationItem observation={mockObservation} />);
     
-    // Check that Finnish time format is displayed (actual moment.js formatting with Finnish locale)
-    expect(screen.getByText(new RegExp('ma 15.1.2024 klo 16.30.00'))).toBeInTheDocument();
+    expect(screen.getByText(new RegExp('ma 15.1.2024 klo 14.30.00'))).toBeInTheDocument();
   });
 
   describe('Short descriptions mapping', () => {
