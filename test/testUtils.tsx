@@ -2,11 +2,11 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter, Routes, Route } from 'react-router-dom';
 import { RootState } from '../src/reducers/types';
 
 // Create a default mock store for testing
-const createMockStore = (initialState: Partial<RootState> = {}) => {
+export const createMockStore = (initialState: Partial<RootState> = {}) => {
   const defaultState: RootState = {
     data: {
       unit: {},
@@ -46,6 +46,34 @@ export const renderWithProviders = (
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         {component}
       </BrowserRouter>
+    </Provider>
+  );
+};
+
+// Helper function to render components with specific routes
+export const renderWithRoute = (
+  component: React.ReactElement,
+  {
+    route,
+    path,
+    initialState,
+    store
+  }: {
+    route: string;
+    path: string;
+    initialState?: Partial<RootState>;
+    store?: any;
+  }
+) => {
+  const testStore = store || createMockStore(initialState);
+  
+  return render(
+    <Provider store={testStore}>
+      <MemoryRouter initialEntries={[route]}>
+        <Routes>
+          <Route path={path} element={component} />
+        </Routes>
+      </MemoryRouter>
     </Provider>
   );
 };
