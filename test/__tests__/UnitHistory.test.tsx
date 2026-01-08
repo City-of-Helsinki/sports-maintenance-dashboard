@@ -92,21 +92,77 @@ describe('UnitHistory', () => {
     mockFetchUnitObservations.mockReturnValue({ type: 'FETCH_UNIT_OBSERVATIONS' });
   });
 
-  it('renders loading state when unit is undefined', () => {
+  it('renders loading state when isLoading is true', () => {
+    const stateWithLoading = {
+      ...defaultState,
+      data: {
+        ...defaultState.data,
+        loading: {
+          'unit-123': true
+        }
+      }
+    };
+
+    renderComponent('123', stateWithLoading);
+    expect(screen.getByText('Ladataan...')).toBeInTheDocument();
+  });
+
+  it('renders loading state when observation loading is true', () => {
+    const stateWithObservationLoading = {
+      ...defaultState,
+      data: {
+        ...defaultState.data,
+        loading: {
+          'observation-123': true
+        }
+      }
+    };
+
+    renderComponent('123', stateWithObservationLoading);
+    expect(screen.getByText('Ladataan...')).toBeInTheDocument();
+  });
+
+  it('renders "unit not found" when unit is undefined and not loading', () => {
     const stateWithoutUnit = {
       ...defaultState,
       data: {
         ...defaultState.data,
-        unit: {}
+        unit: {},
+        loading: {}
       }
     };
 
     renderComponent('123', stateWithoutUnit);
-    expect(screen.getByText('Ladataan...')).toBeInTheDocument();
+    expect(screen.getByText('Yksikköä ei löytynyt')).toBeInTheDocument();
   });
 
-  it('renders unit name and back link when unit is loaded', () => {
-    renderComponent();
+  it('prioritizes loading state over unit not found', () => {
+    const stateWithLoadingAndNoUnit = {
+      ...defaultState,
+      data: {
+        ...defaultState.data,
+        unit: {},
+        loading: {
+          'unit-123': true
+        }
+      }
+    };
+
+    renderComponent('123', stateWithLoadingAndNoUnit);
+    expect(screen.getByText('Ladataan...')).toBeInTheDocument();
+    expect(screen.queryByText('Yksikköä ei löytynyt')).not.toBeInTheDocument();
+  });
+
+  it('renders unit name and back link when unit is loaded and not loading', () => {
+    const stateWithNoLoading = {
+      ...defaultState,
+      data: {
+        ...defaultState.data,
+        loading: {}
+      }
+    };
+
+    renderComponent('123', stateWithNoLoading);
 
     expect(screen.getByText('Test Unit')).toBeInTheDocument();
     expect(screen.getByText('Takaisin')).toBeInTheDocument();
@@ -116,14 +172,30 @@ describe('UnitHistory', () => {
   });
 
   it('dispatches fetchUnitObservations on component mount', () => {
-    renderComponent();
+    const stateWithNoLoading = {
+      ...defaultState,
+      data: {
+        ...defaultState.data,
+        loading: {}
+      }
+    };
+
+    renderComponent('123', stateWithNoLoading);
 
     expect(mockFetchUnitObservations).toHaveBeenCalledWith('123');
     expect(mockFetchUnitObservations).toHaveBeenCalledTimes(1);
   });
 
-  it('renders observations when they exist', () => {
-    renderComponent();
+  it('renders observations when they exist and not loading', () => {
+    const stateWithNoLoading = {
+      ...defaultState,
+      data: {
+        ...defaultState.data,
+        loading: {}
+      }
+    };
+
+    renderComponent('123', stateWithNoLoading);
 
     expect(screen.getByText('Historia')).toBeInTheDocument();
     // Check that observation components are rendered (they contain the property names)
@@ -131,12 +203,13 @@ describe('UnitHistory', () => {
     expect(screen.getByText('Test Property 2')).toBeInTheDocument();
   });
 
-  it('renders "no history" message when observations are empty', () => {
+  it('renders "no history" message when observations are empty and not loading', () => {
     const stateWithoutObservations = {
       ...defaultState,
       data: {
         ...defaultState.data,
-        observation: {}
+        observation: {},
+        loading: {}
       }
     };
 
@@ -147,7 +220,7 @@ describe('UnitHistory', () => {
     expect(screen.queryByText('Test Property')).not.toBeInTheDocument();
   });
 
-  it('filters observations by unit id', () => {
+  it('filters observations by unit id when not loading', () => {
     const stateWithMultipleObservations = {
       ...defaultState,
       data: {
@@ -166,7 +239,8 @@ describe('UnitHistory', () => {
             value: 'other_value',
             primary: false
           }
-        }
+        },
+        loading: {}
       }
     };
 
@@ -177,7 +251,7 @@ describe('UnitHistory', () => {
     expect(screen.queryByText('Other Property')).not.toBeInTheDocument();
   });
 
-  it('handles different unit ids correctly', () => {
+  it('handles different unit ids correctly when not loading', () => {
     const stateWithDifferentUnit = {
       ...defaultState,
       data: {
@@ -185,7 +259,8 @@ describe('UnitHistory', () => {
         unit: { 456: { ...mockUnit, id: 456, name: { fi: 'Different Unit' } } },
         observation: {
           3: { ...mockObservations[0], id: 3, unit: 456 }
-        }
+        },
+        loading: {}
       }
     };
 
@@ -198,12 +273,13 @@ describe('UnitHistory', () => {
     expect(backLink).toHaveAttribute('href', '/unit/456');
   });
 
-  it('handles missing observations gracefully', () => {
+  it('handles missing observations gracefully when not loading', () => {
     const stateWithNullObservations = {
       ...defaultState,
       data: {
         ...defaultState.data,
-        observation: null as any
+        observation: null as any,
+        loading: {}
       }
     };
 
@@ -213,8 +289,16 @@ describe('UnitHistory', () => {
     expect(screen.getByText('Ei historiatietoja')).toBeInTheDocument();
   });
 
-  it('renders correct DOM structure', () => {
-    renderComponent();
+  it('renders correct DOM structure when not loading', () => {
+    const stateWithNoLoading = {
+      ...defaultState,
+      data: {
+        ...defaultState.data,
+        loading: {}
+      }
+    };
+
+    renderComponent('123', stateWithNoLoading);
 
     // Check main container structure
     expect(document.querySelector('.row')).toBeInTheDocument();
@@ -224,8 +308,16 @@ describe('UnitHistory', () => {
     expect(document.querySelector('.unit-observations')).toBeInTheDocument();
   });
 
-  it('renders glyphicon for back link', () => {
-    renderComponent();
+  it('renders glyphicon for back link when not loading', () => {
+    const stateWithNoLoading = {
+      ...defaultState,
+      data: {
+        ...defaultState.data,
+        loading: {}
+      }
+    };
+
+    renderComponent('123', stateWithNoLoading);
 
     const glyphicon = document.querySelector('.glyphicon-chevron-left');
     expect(glyphicon).toBeInTheDocument();

@@ -19,6 +19,7 @@ const UnitHistory: React.FC = () => {
   
   const unit = useSelector((state: RootState) => state.data.unit[unitId]);
   const observationData = useSelector((state: RootState) => state.data.observation);
+  const isLoading = useSelector((state: RootState) => state.data.loading[`unit-${unitId}`] || state.data.loading[`observation-${unitId}`]);
   
   const observations = useMemo(() => {
     if (!observationData) return [];
@@ -39,8 +40,12 @@ const UnitHistory: React.FC = () => {
     ));
   };
 
-  if (unit === undefined) {
+  if (isLoading) {
     return <div>Ladataan...</div>;
+  }
+
+  if (unit === undefined) {
+    return <div>Yksikköä ei löytynyt</div>;
   }
 
   return (
