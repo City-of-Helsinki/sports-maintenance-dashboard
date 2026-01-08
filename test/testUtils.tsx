@@ -76,7 +76,10 @@ export const renderWithRoute = (
   
   return render(
     <Provider store={testStore}>
-      <MemoryRouter initialEntries={[route]}>
+      <MemoryRouter 
+        initialEntries={[route]} 
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <Routes>
           <Route path={path} element={component} />
           <Route path="/unit/:unitId" element={<div>Unit Page</div>} />
