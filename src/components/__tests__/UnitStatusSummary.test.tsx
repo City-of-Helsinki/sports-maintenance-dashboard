@@ -2,7 +2,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../../../test/testUtils';
 import UnitStatusSummary from '../UnitStatusSummary';
-import { Unit, UnitObservation } from '../../reducers/types';
+import { Unit, UnitObservation } from '../../types';
 
 describe('UnitStatusSummary Component', () => {
   // Base observation for tests

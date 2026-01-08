@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { ACTION_TYPE, canPropertyBeMaintained, HELP_TEXTS } from './UpdateConfirmation';
 import { allowedValuesByQuality } from './UnitDetails';
 import ObservationItem from './ObservationItem';
-import { unitObservableProperties } from '../lib/municipal-services-client';
+import { unitObservableProperties } from '../lib/municipalServicesClient';
 import { withRouter } from '../hooks';
 import * as constants from '../constants/index';
 import * as actions from '../actions/index';

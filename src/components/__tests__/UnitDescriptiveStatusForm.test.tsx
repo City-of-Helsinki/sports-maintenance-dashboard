@@ -3,7 +3,7 @@ import { screen, fireEvent } from '@testing-library/react';
 import { renderWithProviders } from '../../../test/testUtils';
 
 import UnitDescriptiveStatusForm from '../UnitDescriptiveStatusForm';
-import { Unit, UnitObservation } from '../../reducers/types';
+import { Unit, UnitObservation } from '../../types';
 import { enqueueObservation } from '../../actions/index';
 
 // Mock the actions
@@ -23,7 +23,7 @@ describe('UnitDescriptiveStatusForm', () => {
     },
     services: [1, 2],
     address_postal_full: 'Test Address',
-    short_description: 'Test description',
+    short_description: { fi: 'Test description' },
     call_charge_info: { fi: 'Test charge info' },
     picture_caption: 'Test caption',
     description: { fi: 'Test description' },

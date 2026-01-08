@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import moment from 'moment';
 import ObservationItem from '../ObservationItem';
-import { UnitObservation } from '../../reducers/types';
+import { UnitObservation } from '../../types';
 
 describe('ObservationItem Component', () => {
   // Set Finnish locale for these tests and restore original after

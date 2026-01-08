@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { createAction, Action } from 'redux-actions';
-import * as ApiClient from '../lib/municipal-services-client.js';
-import { AllowedValue } from '../reducers/types';
+import { createAction } from 'redux-actions';
+import * as ApiClient from '../lib/municipalServicesClient';
 import { ActionTypes } from '../constants';
+import { AllowedValue } from 'types';
 
 // Action creators with proper TypeScript types
 export const setResourceFetchStart = createAction(

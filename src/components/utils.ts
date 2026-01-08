@@ -1,6 +1,6 @@
 import moment from 'moment';
 import _ from 'lodash';
-import { Unit, UnitObservation } from '../reducers/types';
+import { Unit, UnitObservation } from '../types';
 
 export const QUALITIES: readonly string[] = [
   'good', 'satisfactory', 'unusable', 'unknown', 'warning'

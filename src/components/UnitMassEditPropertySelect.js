@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
 import { withRouter } from '../hooks';
-import { unitObservableProperties } from '../lib/municipal-services-client';
+import { unitObservableProperties } from '../lib/municipalServicesClient';
 import * as constants from '../constants/index';
 
 class UnitMassEditPropertySelect extends React.Component {

@@ -1,7 +1,6 @@
 import * as actions from '../index';
-import * as ApiClient from '../../lib/municipal-services-client';
 import { ActionTypes } from '../../constants';
-import { AllowedValue } from '../../reducers/types';
+import { AllowedValue } from '../../types';
 
 describe('Action Creators', () => {
   // Store original fetch to restore it after tests

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { enqueueObservation } from '../actions/index';
-import { Unit, UnitObservation } from '../reducers/types';
+import { Unit, UnitObservation } from '../types';
 
 interface UnitDescriptiveStatusFormProps {
   unit: Unit;
@@ -23,7 +23,7 @@ const UnitDescriptiveStatusForm: React.FC<UnitDescriptiveStatusFormProps> = ({ u
 
   const textualDescription: UnitObservation | undefined = _.find(unit.observations, (o: UnitObservation) => o.property === 'notice');
 
-  const defaultValue = textualDescription?.value?.fi ?? null;
+  const defaultValue = typeof textualDescription?.value === 'string' ? textualDescription.value : textualDescription?.value?.fi ?? null;
 
   const deleteButton = textualDescription?.value ? (
     <Link to={`/unit/${unit.id}/delete/notice`} className="btn btn-danger btn-block">Poista kuvausteksti</Link>

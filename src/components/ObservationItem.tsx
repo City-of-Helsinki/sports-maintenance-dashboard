@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import { UnitObservation } from '../reducers/types';
+import { UnitObservation } from '../types';
 
 const SHORT_DESCRIPTIONS: Record<string, string> = {
     ski_trail_maintenance: 'Kunnostettu',
@@ -32,7 +32,7 @@ const ObservationItem: React.FC<ObservationItemProps> = ({ observation, classNam
       <div key={id} className={className}>
         <small>Tekstitiedote julkaistu {formattedTime}</small><br />
         <div className="notice-small">
-          <small>"{value?.fi}"</small>
+          <small>"{typeof value === 'string' ? value : value?.fi}"</small>
         </div>
       </div>
     );
@@ -44,7 +44,7 @@ const ObservationItem: React.FC<ObservationItemProps> = ({ observation, classNam
         {SHORT_DESCRIPTIONS[property]}{' '}
         <strong>
           {getUnitObservationText(
-            name?.fi || value?.fi || '',
+            name?.fi || (typeof value === 'string' ? value : value?.fi) || '',
             property
           )}
         </strong>{' '}

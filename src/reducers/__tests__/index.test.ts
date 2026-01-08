@@ -45,7 +45,24 @@ describe('Reducers', () => {
         ...initialState,
         data: {
           ...initialState.data,
-          unit: { '1': { id: '1', name: 'Existing Unit' } }
+          unit: { 
+            '1': { 
+              id: 1, 
+              name: { fi: 'Existing Unit' },
+              extensions: { maintenance_group: 'test', maintenance_organization: 'test' },
+              services: [],
+              address_postal_full: null,
+              short_description: null,
+              call_charge_info: { fi: 'info' },
+              picture_caption: null,
+              description: { fi: 'desc' },
+              www: { fi: 'www' },
+              displayed_service_owner: { fi: 'owner' },
+              street_address: { fi: 'address' },
+              location: { type: 'Point', coordinates: [0, 0] },
+              observations: []
+            } 
+          }
         }
       };
 

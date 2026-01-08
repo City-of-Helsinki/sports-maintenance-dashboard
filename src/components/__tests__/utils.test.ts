@@ -8,7 +8,7 @@ import {
   calculateGroups, 
   getCurrentSeason 
 } from '../utils';
-import { Unit, UnitObservation } from '../../reducers/types';
+import { Unit, UnitObservation } from '../../types';
 
 describe('Utils', () => {
   // Base observation for tests - override specific properties as needed
@@ -20,7 +20,7 @@ describe('Utils', () => {
     expiration_time: null,
     name: { fi: 'Test' },
     quality: 'good',
-    value: 'test',
+    value: { fi: 'test' },
     primary: true
   };
 

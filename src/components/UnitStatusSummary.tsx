@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { statusBarClassName, getQualityObservation } from './utils';
 import ObservationItem from './ObservationItem';
-import { Unit } from '../reducers/types';
+import { Unit } from '../types';
 
 interface UnitStatusSummaryProps {
   unit: Unit;
