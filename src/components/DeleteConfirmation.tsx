@@ -14,7 +14,7 @@ interface ConfirmButtonProps {
   clearObservation: (property: string, unitId: number) => void;
 }
 
-function ConfirmButton({ unitId, clearObservation }: ConfirmButtonProps): React.ReactElement {
+function ConfirmButton({ unitId, clearObservation }: Readonly<ConfirmButtonProps>): React.ReactElement {
   const buttonClassName = 'btn btn-success btn-block';
   return (
     <Link to={`/unit/${unitId}`} className={buttonClassName} onClick={() => { clearObservation('notice', unitId); }}>
@@ -27,7 +27,7 @@ interface TextualDescriptionProps {
   text: string;
 }
 
-function TextualDescription({ text }: TextualDescriptionProps): React.ReactElement {
+function TextualDescription({ text }: Readonly<TextualDescriptionProps>): React.ReactElement {
   const lines = text.split('\n');
   return (
     <div className="notice-large">
@@ -54,7 +54,7 @@ const DeleteConfirmation: React.FC = () => {
   const isLoading = useSelector((state: RootState) => state.data.loading.unit === true);
   
   const observation = useMemo(() => {
-    if (!unit || !unit.observations) return null;
+    if (!unit?.observations) return null;
     return _.find(unit.observations, (o) => { return o.property === 'notice'; }) || null;
   }, [unit]);
 

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import * as ApiClient from '../lib/municipalServicesClient';
 import { ActionTypes } from '../constants';
-import { AllowedValue } from 'types';
+import { AllowedValue, UserLocation } from 'types';
 
 // Action creators with proper TypeScript types
 export const setResourceFetchStart = createAction(
@@ -65,7 +65,10 @@ export const retryImmediately = createAction(ActionTypes.FLUSH_UPDATE_QUEUE);
 export const finishRetryImmediately = createAction(ActionTypes.FLUSH_UPDATE_QUEUE_DISABLED);
 export const selectServiceGroup = createAction(ActionTypes.SELECT_SERVICE_GROUP);
 
-export const setUserLocation = createAction(ActionTypes.SET_USER_LOCATION);
+export const setUserLocation = createAction(
+  ActionTypes.SET_USER_LOCATION,
+  (userLocation: UserLocation | null) => userLocation
+);
 
 export const sendObservation = createAction(
   ActionTypes.POST_OBSERVATION,

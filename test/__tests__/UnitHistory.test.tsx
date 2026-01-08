@@ -4,6 +4,8 @@ import { screen } from '@testing-library/react';
 import UnitHistory from '../../src/components/UnitHistory';
 import { renderWithRoute } from '../testUtils';
 import * as actions from '../../src/actions/index';
+import { RootState } from '../../src/reducers/types';
+import { Unit } from '../../src/types';
 
 // Mock the actions
 jest.mock('../../src/actions/index', () => ({
@@ -12,10 +14,14 @@ jest.mock('../../src/actions/index', () => ({
 
 const mockFetchUnitObservations = actions.fetchUnitObservations as jest.MockedFunction<typeof actions.fetchUnitObservations>;
 
-const mockUnit = {
+const mockUnit: Unit = {
   id: 123,
   name: { fi: 'Test Unit' },
-  services: [1, 2]
+  services: [1, 2],
+  address_postal_full: null,
+  call_charge_info: { fi: '' },
+  displayed_service_owner: { fi: '' },
+  street_address: { fi: '' },
 };
 
 const mockObservations = [
@@ -43,7 +49,7 @@ const mockObservations = [
   }
 ];
 
-const defaultState = {
+const defaultState: RootState = {
   data: {
     unit: { 123: mockUnit },
     observation: {
@@ -66,16 +72,7 @@ const defaultState = {
   serviceGroup: 'skiing',
   userLocation: null,
   unitsByUpdateTime: [],
-  unitsByUpdateCount: {},
-  selectedUnits: [],
-  observationsByPropertyByUnit: {},
-  allowedValuesByProperty: {},
-  massEdit: {
-    selectedUnits: [],
-    isEditing: false,
-    property: null,
-    value: null
-  }
+  unitsByUpdateCount: {}
 };
 
 const renderComponent = (unitId = '123', initialState = defaultState) => {
@@ -89,7 +86,11 @@ const renderComponent = (unitId = '123', initialState = defaultState) => {
 describe('UnitHistory', () => {
   beforeEach(() => {
     mockFetchUnitObservations.mockClear();
-    mockFetchUnitObservations.mockReturnValue({ type: 'FETCH_UNIT_OBSERVATIONS' });
+    mockFetchUnitObservations.mockReturnValue({
+      type: 'FETCH_UNIT_OBSERVATIONS',
+      meta: undefined,
+      payload: undefined
+    });
   });
 
   it('renders loading state when isLoading is true', () => {

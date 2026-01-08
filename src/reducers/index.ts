@@ -12,6 +12,7 @@ import {
   UnitsByUpdateCountState,
   ReduxAction
 } from './types';
+import { UserLocation } from 'types';
 
 const initialDataState: DataState = {
   unit: {},
@@ -231,9 +232,9 @@ const serviceGroupReducer: Reducer<string, ReduxAction> = (state = serviceGroup,
   return state;
 };
 
-const initialUserLocation: any = null;
+const initialUserLocation: UserLocation | null = null;
 
-const userLocationReducer: Reducer<any, ReduxAction> = (state = initialUserLocation, action) => {
+const userLocationReducer: Reducer<UserLocation | null, ReduxAction> = (state = initialUserLocation, action) => {
   if (action.type === ActionTypes.SET_USER_LOCATION) {
     return action.payload;
   }

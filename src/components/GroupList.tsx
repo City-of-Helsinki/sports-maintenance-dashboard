@@ -10,7 +10,7 @@ interface GroupListElementProps {
   name: string;
 }
 
-function GroupListElement({ id, name }: GroupListElementProps): React.ReactElement {
+function GroupListElement({ id, name }: Readonly<GroupListElementProps>): React.ReactElement {
   const url = `/group/${id}`;
   return (
     <Link to={url} className="list-group-item">

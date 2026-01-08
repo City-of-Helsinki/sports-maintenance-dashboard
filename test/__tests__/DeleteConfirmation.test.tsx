@@ -4,6 +4,7 @@ import DeleteConfirmation from '../../src/components/DeleteConfirmation';
 import { renderWithRoute } from '../testUtils';
 import * as actions from '../../src/actions';
 import { Unit } from '../../src/types';
+import { RootState } from '../../src/reducers/types';
 
 // Mock actions
 jest.mock('../../src/actions', () => ({
@@ -28,6 +29,10 @@ const mockUnit: Unit = {
     maintenance_group: 'test-group',
     maintenance_organization: ''
   },
+  address_postal_full: null,
+  call_charge_info: { fi: '' },
+  displayed_service_owner: { fi: '' },
+  street_address: { fi: '' },
   observations: [
     {
       id: 1,
@@ -43,14 +48,12 @@ const mockUnit: Unit = {
   ]
 };
 
-const mockUnitWithoutObservation = {
-  id: 123,
-  name: { fi: 'Test Unit' },
-  extensions: { maintenance_group: 'test-group' },
+const mockUnitWithoutObservation: Unit = {
+  ...mockUnit,
   observations: []
 };
 
-const defaultState = {
+const defaultState: RootState = {
   data: {
     unit: { 123: mockUnit },
     unitsByDistance: [],
@@ -70,16 +73,7 @@ const defaultState = {
   serviceGroup: 'skiing',
   userLocation: null,
   unitsByUpdateTime: [],
-  unitsByUpdateCount: {},
-  selectedUnits: [],
-  observationsByPropertyByUnit: {},
-  allowedValuesByProperty: {},
-  massEdit: {
-    selectedUnits: [],
-    isEditing: false,
-    property: null,
-    value: null
-  }
+  unitsByUpdateCount: {}
 };
 
 const renderComponent = (unitId = '123', propertyId = 'notice', initialState = defaultState) => {
@@ -126,7 +120,7 @@ describe('DeleteConfirmation', () => {
     });
 
     it('renders message when observation is not found', () => {
-      const stateWithoutObservation = {
+      const stateWithoutObservation: RootState = {
         ...defaultState,
         data: {
           ...defaultState.data,
@@ -288,7 +282,7 @@ describe('DeleteConfirmation', () => {
 
   describe('edge cases', () => {
     it('handles empty text observation', () => {
-      const stateWithEmptyText = {
+      const stateWithEmptyText: RootState = {
         ...defaultState,
         data: {
           ...defaultState.data,
@@ -320,7 +314,7 @@ describe('DeleteConfirmation', () => {
     });
 
     it('handles unit without observations array', () => {
-      const stateWithoutObservationsArray = {
+      const stateWithoutObservationsArray: RootState = {
         ...defaultState,
         data: {
           ...defaultState.data,

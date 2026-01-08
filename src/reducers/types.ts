@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { ActionTypes } from '../constants';
-import { Unit, ObservableProperty } from '../types';
+import { Unit, ObservableProperty, UserLocation } from '../types';
 
 // Redux store state types
 // These types should match the structure defined in the reducers
@@ -138,7 +138,7 @@ export interface RootState {
   updateQueue: PendingObservationsState;  // Note: renamed from pendingObservations in actual store
   updateFlush: boolean;
   serviceGroup: string;
-  userLocation: any;
+  userLocation: UserLocation | null;
   unitsByUpdateTime: string[];
   unitsByUpdateCount: UnitsByUpdateCountState;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 
-import UpdateConfirmation, { canPropertyBeMaintained, ACTION_TYPE, HELP_TEXTS } from '../../src/components/UpdateConfirmation';
+import UpdateConfirmation, { canPropertyBeMaintained } from '../../src/components/UpdateConfirmation';
 import { renderWithRoute } from '../testUtils';
 import * as actions from '../../src/actions/index';
 
@@ -16,6 +16,7 @@ jest.mock('../../src/lib/municipalServicesClient', () => ({
 }));
 
 import { unitObservableProperties } from '../../src/lib/municipalServicesClient';
+import { RootState } from '../../src/reducers/types';
 
 const mockEnqueueObservation = actions.enqueueObservation as jest.MockedFunction<typeof actions.enqueueObservation>;
 const mockUnitObservableProperties = unitObservableProperties as jest.MockedFunction<typeof unitObservableProperties>;
@@ -71,7 +72,7 @@ const mockSatisfactoryAllowedValue = {
   property: 'test_property'
 };
 
-const defaultState = {
+const defaultState: RootState = {
   data: {
     unit: { 123: mockUnit },
     unitsByDistance: [],
@@ -97,16 +98,7 @@ const defaultState = {
   serviceGroup: 'skiing',
   userLocation: null,
   unitsByUpdateTime: [],
-  unitsByUpdateCount: {},
-  selectedUnits: [],
-  observationsByPropertyByUnit: {},
-  allowedValuesByProperty: {},
-  massEdit: {
-    selectedUnits: [],
-    isEditing: false,
-    property: null,
-    value: null
-  }
+  unitsByUpdateCount: {}
 };
 
 const renderComponent = (unitId = '123', propertyId = 'test_property', valueId = 'good_condition', initialState = defaultState) => {
@@ -120,7 +112,10 @@ const renderComponent = (unitId = '123', propertyId = 'test_property', valueId =
 describe('UpdateConfirmation', () => {
   beforeEach(() => {
     mockEnqueueObservation.mockClear();
-    mockEnqueueObservation.mockReturnValue({ type: 'ENQUEUE_OBSERVATION' });
+    mockEnqueueObservation.mockReturnValue({
+      type: 'ENQUEUE_OBSERVATION',
+      payload: undefined
+    });
     mockUnitObservableProperties.mockClear();
     mockUnitObservableProperties.mockReturnValue([mockObservableProperty]);
   });

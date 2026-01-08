@@ -82,3 +82,19 @@ export interface Service {
   unit_count: UnitCount;
   observable_properties: ObservableProperty[];
 }
+
+// Geolocation API types
+export interface GeolocationCoordinates {
+  accuracy: number;
+  latitude: number;
+  longitude: number;
+  altitude: number | null;
+  altitudeAccuracy: number | null;
+  heading: number | null;
+  speed: number | null;
+}
+
+export interface UserLocation {
+  timestamp: number;
+  coords: GeolocationCoordinates;
+}
