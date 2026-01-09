@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMockStore } from '../../../test/testUtils';
 import UnitMassEdit from '../UnitMassEdit';
@@ -335,9 +335,7 @@ describe('UnitMassEdit', () => {
     await user.click(goodRadio);
 
     // Wait for confirmation panel to appear
-    waitFor(() => {
-      expect(screen.getByText('Vahvista valinta')).toBeInTheDocument();
-    });
+    await screen.findByText('Vahvista valinta');
 
     const observedRadio = screen.getByLabelText(/Todettu - Good/) as HTMLInputElement;
     await user.click(observedRadio);
@@ -348,10 +346,8 @@ describe('UnitMassEdit', () => {
     await user.click(poorRadio);
 
     // Observation type should be reset
-    waitFor(() => {
-      const newObservedRadio = screen.getByLabelText(/Havaittu - Poor/) as HTMLInputElement;
-      expect(newObservedRadio.checked).toBe(false);
-    });
+    const newObservedRadio = await screen.findByLabelText(/Todettu - Poor/) as HTMLInputElement;
+    expect(newObservedRadio.checked).toBe(false);
   });
 
   it('shows confirmation panel when units and quality are selected', async () => {
@@ -371,11 +367,9 @@ describe('UnitMassEdit', () => {
     const goodRadio = screen.getByLabelText('Good');
     await user.click(goodRadio);
 
-    waitFor(() => {
-      expect(screen.getByText('Vahvista valinta')).toBeInTheDocument();
-      expect(screen.getByLabelText(/Todettu - Good/)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Kunnostettu - Good/)).toBeInTheDocument();
-    });
+    await screen.findByText('Vahvista valinta');
+    expect(screen.getByLabelText(/Todettu - Good/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Kunnostettu - Good/)).toBeInTheDocument();
   });
 
   it('shows only observed option for poor quality', async () => {
@@ -395,11 +389,9 @@ describe('UnitMassEdit', () => {
     const poorRadio = screen.getByLabelText('Poor');
     await user.click(poorRadio);
 
-    waitFor(() => {
-      expect(screen.getByText('Vahvista valinta')).toBeInTheDocument();
-      expect(screen.getByLabelText(/Havaittu - Poor/)).toBeInTheDocument();
-      expect(screen.queryByLabelText(/Huollettu - Poor/)).not.toBeInTheDocument();
-    });
+    await screen.findByText('Vahvista valinta');
+    expect(screen.getByLabelText(/Todettu - Poor/)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Kunnostettu - Poor/)).not.toBeInTheDocument();
   });
 
   it('handles observation type selection', async () => {
@@ -419,10 +411,8 @@ describe('UnitMassEdit', () => {
     const goodRadio = screen.getByLabelText('Good');
     await user.click(goodRadio);
 
-    waitFor(() => {
-      expect(screen.getByLabelText(/Todettu - Good/)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Kunnostettu - Good/)).toBeInTheDocument();
-    });
+    await screen.findByLabelText(/Todettu - Good/);
+    expect(screen.getByLabelText(/Kunnostettu - Good/)).toBeInTheDocument();
 
     const observedRadio = screen.getByLabelText(/Todettu - Good/) as HTMLInputElement;
     const servicedRadio = screen.getByLabelText(/Kunnostettu - Good/) as HTMLInputElement;
@@ -497,11 +487,7 @@ describe('UnitMassEdit', () => {
     await user.click(goodRadio);
     expect(submitButton.disabled).toBe(true);
 
-    await waitFor(() => {
-      expect(screen.getByLabelText(/Todettu - Good/)).toBeInTheDocument();
-    });
-
-    const observedRadio = screen.getByLabelText(/Todettu - Good/);
+    const observedRadio = await screen.findByLabelText(/Todettu - Good/);
     await user.click(observedRadio);
     expect(submitButton.disabled).toBe(false);
   });
@@ -525,11 +511,7 @@ describe('UnitMassEdit', () => {
     const goodRadio = screen.getByLabelText('Good');
     await user.click(goodRadio);
 
-    await waitFor(() => {
-      expect(screen.getByLabelText(/Todettu - Good/)).toBeInTheDocument();
-    });
-
-    const observedRadio = screen.getByLabelText(/Todettu - Good/);
+    const observedRadio = await screen.findByLabelText(/Todettu - Good/);
     await user.click(observedRadio);
 
     const submitButton = screen.getByText('Tee päivitys');
@@ -558,9 +540,7 @@ describe('UnitMassEdit', () => {
     const goodRadio = screen.getByLabelText('Good');
     await user.click(goodRadio);
 
-    await waitFor(() => {
-      expect(screen.getByLabelText(/Kunnostettu - Good/)).toBeInTheDocument();
-    });
+    await screen.findByLabelText(/Kunnostettu - Good/);
 
     const servicedRadio = screen.getByLabelText(/Kunnostettu - Good/);
     await user.click(servicedRadio);
@@ -594,11 +574,7 @@ describe('UnitMassEdit', () => {
     const noticeTextarea = screen.getByPlaceholderText('Kirjoita tähän suomen kielellä kuvaus valittujen paikkojen tilanteesta.');
     await user.type(noticeTextarea, 'Test notice');
 
-    await waitFor(() => {
-      expect(screen.getByLabelText(/Todettu - Good/)).toBeInTheDocument();
-    });
-
-    const observedRadio = screen.getByLabelText(/Todettu - Good/);
+    const observedRadio = await screen.findByLabelText(/Todettu - Good/);
     await user.click(observedRadio);
 
     const submitButton = screen.getByText('Tee päivitys');
@@ -630,11 +606,7 @@ describe('UnitMassEdit', () => {
     const goodRadio = screen.getByLabelText('Good');
     await user.click(goodRadio);
 
-    await waitFor(() => {
-      expect(screen.getByLabelText(/Todettu - Good/)).toBeInTheDocument();
-    });
-
-    const observedRadio = screen.getByLabelText(/Todettu - Good/);
+    const observedRadio = await screen.findByLabelText(/Todettu - Good/);
     await user.click(observedRadio);
 
     const submitButton = screen.getByText('Tee päivitys');
