@@ -27,6 +27,7 @@ module.exports = {
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/index.js',
     '!src/config/**',
+    '!src/**/types.ts',
   ],
   coverageProvider: 'v8',
   coverageDirectory: 'coverage',
