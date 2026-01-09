@@ -25,7 +25,7 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
-    '!src/index.js',
+    '!src/index.tsx',
     '!src/config/**',
     '!src/**/types.ts',
     '!src/**/mock_groups.js',
