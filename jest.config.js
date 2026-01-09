@@ -28,6 +28,7 @@ module.exports = {
     '!src/index.js',
     '!src/config/**',
     '!src/**/types.ts',
+    '!src/**/mock_groups.js',
   ],
   coverageProvider: 'v8',
   coverageDirectory: 'coverage',
