@@ -1,12 +1,11 @@
 import 'core-js/internals/object-assign.js';
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, Root } from 'react-dom/client';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { compose, applyMiddleware, legacy_createStore as createStore } from 'redux';
+import { compose, applyMiddleware, legacy_createStore as createStore, Store, StoreEnhancer } from 'redux';
 import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistStore, persistReducer, Persistor, PersistConfig } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // localStorage
 import { PersistGate } from 'redux-persist/integration/react';
 import 'bootstrap-sass';
@@ -32,16 +31,27 @@ import UnitMassEditPropertySelect from './components/UnitMassEditPropertySelect'
 
 import moment from 'moment';
 
+// Extend Window interface for Redux DevTools
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION__?: () => StoreEnhancer;
+    store: Store;
+  }
+}
+
 moment.locale('fi');
 
-const persistConfig = {
+// Type for the root state - this should match your actual reducer state shape
+type RootState = ReturnType<typeof rootReducer>;
+
+const persistConfig: PersistConfig<RootState> = {
   key: 'root',
   storage,
   whitelist: ['auth', 'updateQueue', 'unitsByUpdateTime', 'unitsByUpdateCount', 'serviceGroup'], // Only persist these
   transforms: [
     // Transform to exclude loading from data if we include data
     {
-      in: (state, key) => {
+      in: (state: any, key: string) => {
         if (key === 'data' && state) {
           // eslint-disable-next-line no-unused-vars
           const { loading, ...stateWithoutLoading } = state;
@@ -50,36 +60,47 @@ const persistConfig = {
         return state;
       },
       // eslint-disable-next-line no-unused-vars
-      out: (state, key) => state
+      out: (state: any, key: string) => state
     }
   ]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(
+// Fix for minification issues: When Redux DevTools Extension is not available,
+// the && operator returns undefined which gets passed to compose(). 
+// When minified, this becomes 'b(...args)' where 'b' is undefined, causing "b is not a function" error.
+// This approach conditionally adds enhancers to avoid passing undefined to compose().
+const enhancers: StoreEnhancer[] = [applyMiddleware(promiseMiddleware)];
+
+if (globalThis.__REDUX_DEVTOOLS_EXTENSION__) {
+  enhancers.push(globalThis.__REDUX_DEVTOOLS_EXTENSION__());
+}
+
+const store: Store = createStore(
   persistedReducer,
-  compose(
-    applyMiddleware(promiseMiddleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+  compose(...enhancers)
 );
 
-const persistor = persistStore(store);
-window.store = store;
+const persistor: Persistor = persistStore(store);
+globalThis.store = store;
 
-const rootElement = document.getElementById('app');
-const root = createRoot(rootElement);
+const rootElement: HTMLElement | null = document.getElementById('app');
+if (!rootElement) {
+  throw new Error('Failed to find the root element');
+}
+
+const root: Root = createRoot(rootElement);
 
 // Render the main component into the dom
 root.render(
   <Provider store={store}>
     <PersistGate loading={<div>Ladataan...</div>} persistor={persistor}>
-      <BrowserRouter history={createMemoryHistory()}>
+      <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/" element={<App />}>
-            <Route exact path="/" element={<DashBoard />} />
+            <Route path="/" element={<DashBoard />} />
             <Route path="/group" element={<GroupList />} />
             <Route path="/group/:groupId" element={<UnitList />} />
             <Route path="/group/:groupId/mass-edit" element={<UnitMassEditPropertySelect />} />
