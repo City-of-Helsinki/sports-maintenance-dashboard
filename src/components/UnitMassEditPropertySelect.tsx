@@ -61,8 +61,8 @@ const UnitMassEditPropertySelect: React.FC<UnitMassEditPropertySelectProps> = ()
         <h4>Massapäivitys</h4>
         <p>Valitse päivitettävä tieto</p>
         <div className="list-group clearfix">
-          {properties.map((p, index) => (
-            <Link to={`/group/${groupId}/mass-edit/${p.id}`} className="list-group-item" key={index}>
+          {properties.map((p) => (
+            <Link to={`/group/${groupId}/mass-edit/${p.id}`} className="list-group-item" key={p.id}>
               {p.name.fi}
             </Link>
           ))}

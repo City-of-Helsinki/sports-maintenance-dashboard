@@ -53,7 +53,12 @@ function createSuccessCallback(callback: GeolocationCallback): GeolocationCallba
   };
 }
 
-function error(): void {
+function handleGeolocationError(error: GeolocationPositionError): void {
+  // Silently handle geolocation errors to allow graceful fallback
+  // Common errors: PERMISSION_DENIED, POSITION_UNAVAILABLE, TIMEOUT
+  if (process.env.NODE_ENV !== 'test') {
+    console.debug('Geolocation error:', error.message);
+  }
 }
 
 export function getInitialLocation(callback: GeolocationCallback, reset: boolean = true): void {
@@ -67,6 +72,6 @@ export function getInitialLocation(callback: GeolocationCallback, reset: boolean
   
   const options = POSITION_OPTIONS[STAGES[currentStage]];
   if (options) {
-    navigator.geolocation.getCurrentPosition(createSuccessCallback(callback), error, options);
+    navigator.geolocation.getCurrentPosition(createSuccessCallback(callback), handleGeolocationError, options); // NOSONAR
   }
 }

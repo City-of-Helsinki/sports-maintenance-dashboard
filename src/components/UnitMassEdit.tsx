@@ -57,12 +57,12 @@ const UnitMassEdit: React.FC = () => {
   if (units) {
     units.forEach((u: Unit) => {
       const allObservableProperties = unitObservableProperties(u, service, onlyQualityProperties);
-      const selectedObservableProperty = _.filter(allObservableProperties, (op: ObservableProperty) => op.id === propertyId);
-      const selectedObservablePropertyId = selectedObservableProperty[0]?.id;
+      const selectedObservableProperty = _.find(allObservableProperties, (op: ObservableProperty) => op.id === propertyId);
+      const selectedObservablePropertyId = selectedObservableProperty?.id;
       if (selectedObservablePropertyId === propertyId) {
         unitsIncludingSelectedProperty.push(u);
-        if (selectedObservableProperty[0]) {
-          observableProperty = selectedObservableProperty[0];
+        if (selectedObservableProperty) {
+          observableProperty = selectedObservableProperty;
         }
       }
     });
@@ -95,20 +95,18 @@ const UnitMassEdit: React.FC = () => {
         ...formValues,
         [name]: newChoices
       });
+    } else if (name === 'quality') {
+      // Reset observationType selection when changing quality
+      setFormValues({
+        ...formValues,
+        [name]: value,
+        observationType: ''
+      });
     } else {
-      if (name === 'quality') {
-        // Reset observationType selection when changing quality
-        setFormValues({
-          ...formValues,
-          [name]: value,
-          observationType: ''
-        });
-      } else {
-        setFormValues({
-          ...formValues,
-          [name]: value
-        });
-      }
+      setFormValues({
+        ...formValues,
+        [name]: value
+      });
     }
   }
 

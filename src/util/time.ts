@@ -53,7 +53,7 @@ export function round(floatVal: number, stepOption: number = 0.25): number {
 
   const num = floatVal.toFixed(2);
   const whole = Math.floor(floatVal);
-  const fract = parseFloat(num) - whole;
+  const fract = Number.parseFloat(num) - whole;
 
   let returnValue: number | null = null;
   const steps = _.range(stepOption/2, 1, stepOption);
@@ -63,9 +63,7 @@ export function round(floatVal: number, stepOption: number = 0.25): number {
       break;
     }
   }
-  if (returnValue == null) {
-    returnValue = whole + 1;
-  }
+  returnValue ??= whole + 1;
   if (returnValue > 18) {
     returnValue = 18;
   }
