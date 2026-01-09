@@ -52,7 +52,7 @@ module.exports = {
     allowedHosts: 'all'
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     fallback: {
       "process": require.resolve("process/browser.js")
     },

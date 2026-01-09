@@ -36,6 +36,27 @@ let config = Object.assign({}, baseConfig, {
 
 // Add needed loaders to the defaults here
 config.module.rules.push({
+  test: /\.(ts|tsx)$/,
+  use: [
+    {
+      loader: require.resolve('babel-loader'),
+      options: {
+        plugins: [require.resolve('react-refresh/babel')],
+      }
+    },
+    {
+      loader: 'ts-loader',
+      options: {
+        transpileOnly: true
+      }
+    }
+  ],
+  include: [].concat(
+    [ path.join(__dirname, '/../src') ]
+  )
+});
+
+config.module.rules.push({
   test: /\.(js|jsx)$/,
   use: [
     {

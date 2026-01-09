@@ -48,4 +48,20 @@ config.module.rules.push({
   )
 });
 
+config.module.rules.push({
+  test: /\.(ts|tsx)$/,
+  use: [
+    'babel-loader',
+    {
+      loader: 'ts-loader',
+      options: {
+        transpileOnly: true
+      }
+    }
+  ],
+  include: [].concat(
+    [ path.join(__dirname, '/../src') ]
+  )
+});
+
 module.exports = config;
