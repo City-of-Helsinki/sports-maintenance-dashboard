@@ -131,7 +131,7 @@ describe('UnitMassEdit', () => {
     // Mock unitObservableProperties to return the test property
     mockUnitObservableProperties.mockImplementation((unit) => {
       // Return the observable property for units in group '1'
-      if (unit.extensions?.maintenance_group === '1') {
+      if (unit?.extensions?.maintenance_group === '1') {
         return [
           {
             id: 'property1',

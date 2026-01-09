@@ -108,7 +108,7 @@ describe('UnitList Components', () => {
     });
 
     it('renders unit element without quality observation', () => {
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitListElement unit={mockUnit} />);
 
@@ -124,7 +124,7 @@ describe('UnitList Components', () => {
     });
 
     it('renders correct URL for unit', () => {
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitListElement unit={mockUnit} />);
 
@@ -134,7 +134,7 @@ describe('UnitList Components', () => {
     });
 
     it('displays unit name correctly', () => {
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitListElement unit={mockUnit} />);
 
@@ -144,7 +144,7 @@ describe('UnitList Components', () => {
     });
 
     it('includes pencil icon for editing', () => {
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitListElement unit={mockUnit} />);
 
@@ -170,7 +170,7 @@ describe('UnitList Components', () => {
     });
 
     it('renders unit list when not loading', () => {
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitList />, { initialState: baseMockState });
 
@@ -181,7 +181,7 @@ describe('UnitList Components', () => {
 
     it('filters units by group id from URL params', () => {
       mockUseParams.mockReturnValue({ groupId: 'different-group' });
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitList />, { initialState: baseMockState });
 
@@ -214,7 +214,7 @@ describe('UnitList Components', () => {
         }
       };
 
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       const { container } = renderWithProviders(<UnitList />, {
         initialState: stateWithMoreUnits
@@ -227,7 +227,7 @@ describe('UnitList Components', () => {
     });
 
     it('renders back link to group list', () => {
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitList />, { initialState: baseMockState });
 
@@ -237,7 +237,7 @@ describe('UnitList Components', () => {
     });
 
     it('renders mass edit link with correct group id', () => {
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitList />, { initialState: baseMockState });
 
@@ -247,7 +247,7 @@ describe('UnitList Components', () => {
     });
 
     it('displays group name in header', () => {
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitList />, { initialState: baseMockState });
 
@@ -267,7 +267,7 @@ describe('UnitList Components', () => {
         }
       };
 
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitList />, { initialState: emptyState });
 
@@ -300,7 +300,7 @@ describe('UnitList Components', () => {
         }
       };
 
-      mockGetQualityObservation.mockReturnValue(null);
+      mockGetQualityObservation.mockReturnValue(undefined);
 
       renderWithProviders(<UnitList />, { initialState: stateWithDifferentGroup });
 

@@ -117,7 +117,7 @@ describe('UnitStatusSummary Component', () => {
     renderWithProviders(<UnitStatusSummary unit={unitWithOnlyUnknownQuality} />);
     
     // Should not find any element with unit-status class (quality bar should not render)
-    expect(screen.queryByText('Unknown Status').closest('.unit-status')).not.toBeInTheDocument();
+    expect(screen.queryByText('Unknown Status')?.closest('.unit-status')).not.toBeInTheDocument();
   });
 
   it('renders both observations and quality status bar when both exist', () => {

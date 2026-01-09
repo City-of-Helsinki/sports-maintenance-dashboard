@@ -115,7 +115,7 @@ describe('UpdateConfirmation', () => {
     mockEnqueueObservation.mockClear();
     mockEnqueueObservation.mockReturnValue({
       type: 'ENQUEUE_OBSERVATION',
-      payload: undefined
+      payload: { addServicedObservation: false, unitId: 1, value: '', property: 'test' }
     });
     mockUnitObservableProperties.mockClear();
     mockUnitObservableProperties.mockReturnValue([mockObservableProperty]);

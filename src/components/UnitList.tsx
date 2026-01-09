@@ -48,7 +48,7 @@ const UnitList: React.FC = () => {
   const isLoading = useSelector((state: RootState) => state.data.loading.unit === true);
 
   const { units, name } = useMemo(() => {
-    const filteredUnits = _.filter(allUnits, (u) => u.extensions.maintenance_group === groupId);
+    const filteredUnits = _.filter(allUnits, (u) => u.extensions?.maintenance_group === groupId);
     return {
       units: filteredUnits,
       name: groupId // This might need to be derived from group data if available

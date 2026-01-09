@@ -56,10 +56,10 @@ const defaultState: Partial<RootState>  = {
       }
     },
     unitsByDistance: [],
-    observable_property: undefined,
-    observation: undefined,
-    service: undefined,
-    loading: undefined
+    observable_property: {},
+    observation: {},
+    service: {},
+    loading: {}
   },
   auth: {
     maintenance_organization: 'test-org',
@@ -83,7 +83,7 @@ beforeEach(() => {
 describe('GroupList', () => {
   describe('loading states', () => {
     it('renders loading state when groups is null', () => {
-      mockCalculateGroups.mockReturnValue(null);
+      mockCalculateGroups.mockReturnValue({});
 
       renderComponent();
 
@@ -99,7 +99,7 @@ describe('GroupList', () => {
     });
 
     it('renders loading state when groups is undefined', () => {
-      mockCalculateGroups.mockReturnValue(undefined);
+      mockCalculateGroups.mockReturnValue({});
 
       renderComponent();
 
@@ -199,8 +199,8 @@ describe('GroupList', () => {
       renderComponent();
 
       expect(mockCalculateGroups).toHaveBeenCalledWith(
-        defaultState.data.unit,
-        defaultState.auth.maintenance_organization
+        defaultState.data!.unit,
+        defaultState.auth!.maintenance_organization
       );
     });
 
@@ -208,8 +208,9 @@ describe('GroupList', () => {
       const stateWithDifferentOrg = {
         ...defaultState,
         auth: {
-          ...defaultState.auth,
-          maintenance_organization: 'different-org'
+          maintenance_organization: 'different-org' as string,
+          token: null,
+          login_id: null
         }
       };
 
@@ -221,7 +222,7 @@ describe('GroupList', () => {
       renderComponent(stateWithDifferentOrg);
 
       expect(mockCalculateGroups).toHaveBeenCalledWith(
-        defaultState.data.unit,
+        defaultState.data!.unit,
         'different-org'
       );
     });
@@ -257,7 +258,7 @@ describe('GroupList', () => {
       const stateWithEmptyUnits: Partial<RootState> = {
         ...defaultState,
         data: {
-          ...defaultState.data,
+          ...defaultState.data!,
           unit: {}
         }
       };
@@ -273,8 +274,9 @@ describe('GroupList', () => {
       const stateWithNullOrg = {
         ...defaultState,
         auth: {
-          ...defaultState.auth,
-          maintenance_organization: null
+          maintenance_organization: null,
+          token: null,
+          login_id: null
         }
       };
 
@@ -286,7 +288,7 @@ describe('GroupList', () => {
       renderComponent(stateWithNullOrg);
 
       expect(mockCalculateGroups).toHaveBeenCalledWith(
-        defaultState.data.unit,
+        defaultState.data!.unit,
         null
       );
     });

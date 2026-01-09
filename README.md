@@ -25,7 +25,7 @@ This project supports incremental TypeScript migration alongside JavaScript. You
 
 ### Type Checking ###
 
-Run `npm run type-check` to check TypeScript types without emitting files.
+Run `npm run typecheck` to check TypeScript types without emitting files.
 
 ### File Extensions ###
 

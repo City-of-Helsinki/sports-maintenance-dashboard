@@ -88,8 +88,8 @@ describe('UnitHistory', () => {
     mockFetchUnitObservations.mockClear();
     mockFetchUnitObservations.mockReturnValue({
       type: 'FETCH_UNIT_OBSERVATIONS',
-      meta: undefined,
-      payload: undefined
+      meta: { resourceType: 'unitObservations', filters: { unit: 'test' } },
+      payload: Promise.resolve({})
     });
   });
 

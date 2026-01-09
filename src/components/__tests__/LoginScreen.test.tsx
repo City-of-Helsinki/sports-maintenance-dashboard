@@ -48,7 +48,7 @@ const renderComponent = (initialState: Partial<RootState> = defaultState) => {
 beforeEach(() => {
   jest.clearAllMocks();
   mockSelectServiceGroup.mockReturnValue({ type: 'SELECT_SERVICE_GROUP', payload: 'skiing' });
-  mockLogin.mockReturnValue({ type: 'LOGIN', payload: undefined });
+  mockLogin.mockReturnValue({ type: 'LOGIN', payload: Promise.resolve({ token: 'mock-token', maintenance_organization: 'mock-org', login_identifier: 'mock-id' }) });
   mockLocalStorage.clear.mockClear();
   mockNavigate.mockClear();
 });
@@ -244,8 +244,9 @@ describe('LoginScreen', () => {
       const stateWithToken = {
         ...defaultState,
         auth: {
-          ...defaultState.auth,
-          token: 'valid-token'
+          token: 'valid-token',
+          maintenance_organization: null,
+          login_id: null
         }
       };
 

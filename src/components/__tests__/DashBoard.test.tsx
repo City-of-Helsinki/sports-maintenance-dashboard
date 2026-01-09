@@ -55,11 +55,11 @@ describe('DashBoard Component', () => {
   };
 
   const baseUnitsByDistanceItem = {
-    name: undefined,
+    name: { fi: '' },
     address_postal_full: '',
-    call_charge_info: undefined,
-    displayed_service_owner: undefined,
-    street_address: undefined
+    call_charge_info: { fi: '' },
+    displayed_service_owner: { fi: '' },
+    street_address: { fi: '' }
   };
 
   const defaultState: RootState = {
