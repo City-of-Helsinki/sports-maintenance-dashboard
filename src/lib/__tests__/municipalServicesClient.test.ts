@@ -1,7 +1,7 @@
 /*eslint no-console: 0*/
 'use strict';
 
-import { CredentialError } from '../../util/error.js';
+import { CredentialError } from '../../util/error';
 import * as municipalClient from '../municipalServicesClient';
 import { Unit } from '../../types';
 
@@ -201,7 +201,7 @@ describe('municipalServicesClient utility functions', () => {
 
       await expect(municipalClient.login('testuser', 'wrongpass'))
         .rejects
-        .toThrow(CredentialError);
+        .toThrow(CredentialError as any);
     });
   });
 

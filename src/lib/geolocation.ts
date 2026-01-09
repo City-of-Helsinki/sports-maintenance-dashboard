@@ -1,19 +1,28 @@
 import _ from 'lodash';
 
-let DISABLED;
-if ('geolocation' in navigator) {
-  DISABLED = false;
-} else {
-  DISABLED = true;
+type Stage = 'initial' | 'cacheSuccess' | 'lowAccuracySuccess' | 'highAccuracySuccess';
+
+type GeolocationCallback = (position: GeolocationPosition) => void;
+
+interface StagePositionOptions {
+  enableHighAccuracy: boolean;
+  timeout: number;
+  maximumAge: number;
 }
-const STAGES = [
+
+// Check geolocation availability at runtime instead of module load
+const isGeolocationDisabled = (): boolean => {
+  return !('geolocation' in navigator);
+};
+
+const STAGES: Stage[] = [
   'initial',
   'cacheSuccess',
   'lowAccuracySuccess',
   'highAccuracySuccess'
 ];
 
-const POSITION_OPTIONS = {
+const POSITION_OPTIONS: Record<Stage, StagePositionOptions | null> = {
   initial: {
     enableHighAccuracy: false,
     timeout: 10000,
@@ -33,8 +42,9 @@ const POSITION_OPTIONS = {
 };
 
 let currentStage = 0;
-function createSuccessCallback(callback) {
-  return (position) => {
+
+function createSuccessCallback(callback: GeolocationCallback): GeolocationCallback {
+  return (position: GeolocationPosition) => {
     currentStage++;
     if (currentStage < _.size(POSITION_OPTIONS) - 1) {
       getInitialLocation(callback, false); // Don't reset on subsequent calls
@@ -43,11 +53,11 @@ function createSuccessCallback(callback) {
   };
 }
 
-function error() {
+function error(): void {
 }
 
-export function getInitialLocation(callback, reset = true) {
-  if (DISABLED) {
+export function getInitialLocation(callback: GeolocationCallback, reset: boolean = true): void {
+  if (isGeolocationDisabled()) {
     return;
   }
   // Reset stage for new geolocation session
