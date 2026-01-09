@@ -1,5 +1,5 @@
 
-export function CredentialError(message) {
+export function CredentialError(message: string) {
   this.name = 'CredentialError';
   this.message = message;
   this.stack = (new Error(message)).stack;
