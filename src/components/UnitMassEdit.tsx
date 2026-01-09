@@ -1,28 +1,79 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import _ from 'lodash';
 
 import { ACTION_TYPE, canPropertyBeMaintained, HELP_TEXTS } from './UpdateConfirmation';
 import { allowedValuesByQuality } from './UnitDetails';
 import ObservationItem from './ObservationItem';
 import { unitObservableProperties } from '../lib/municipalServicesClient';
-import { withRouter } from '../hooks';
 import * as constants from '../constants/index';
 import * as actions from '../actions/index';
+import { RootState } from '../reducers/types';
+import { Unit, ObservableProperty, AllowedValue, UnitObservation } from '../types';
 
 import { QUALITIES } from './utils';
 
-const UnitMassEdit = (props) => {
-  const { units, groupId, observableProperty, allowedValues, enqueueObservation, navigate } = props;
-  const [formValues, setFormValues] = useState({
+interface FormValues {
+  units: string[];
+  quality: string;
+  observationType: string;
+  notice: string;
+}
+
+// Extended AllowedValue type with property for internal use
+type AllowedValueWithProperty = AllowedValue & {
+  property: string;
+};
+
+const UnitMassEdit: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const params = useParams<{ groupId: string; propertyId: string }>();
+  
+  const unit = useSelector((state: RootState) => state.data.unit);
+  const service = useSelector((state: RootState) => state.data.service);
+  const serviceGroup = useSelector((state: RootState) => state.serviceGroup);
+  
+  const [formValues, setFormValues] = useState<FormValues>({
     units: [],
     quality: '',
     observationType: '',
     notice: ''
   });
+
+  if (!params.groupId || !params.propertyId) {
+    return <div>Virheellinen parametrit</div>;
+  }
+
+  const { groupId, propertyId } = params;
+  const onlyQualityProperties = serviceGroup !== constants.SERVICE_GROUPS.swimming.id;
+  const units = unit ? _.filter(unit, (u: Unit) => u.extensions?.maintenance_group === groupId) : undefined;
+
+  let allowedValues: Record<string, Record<string, AllowedValue[]>> = {};
+  let unitsIncludingSelectedProperty: Unit[] = [];
+  let observableProperty: ObservableProperty | undefined;
+
+  if (units) {
+    units.forEach((u: Unit) => {
+      const allObservableProperties = unitObservableProperties(u, service, onlyQualityProperties);
+      const selectedObservableProperty = _.filter(allObservableProperties, (op: ObservableProperty) => op.id === propertyId);
+      const selectedObservablePropertyId = selectedObservableProperty[0]?.id;
+      if (selectedObservablePropertyId === propertyId) {
+        unitsIncludingSelectedProperty.push(u);
+        if (selectedObservableProperty[0]) {
+          observableProperty = selectedObservableProperty[0];
+        }
+      }
+    });
+  }
+
+  if (observableProperty) {
+    allowedValues = { [observableProperty.id]: allowedValuesByQuality(observableProperty) };
+  }
+
   const unitsHeader = 'Valitse päivitettävät paikat';
-  const qualityHeader = observableProperty.name ? observableProperty.name.fi : 'Kuntotilanne';
+  const qualityHeader = observableProperty?.name ? observableProperty.name.fi : 'Kuntotilanne';
   const observationHeader = 'Vahvista valinta';
   const noticeHeader = 'Päivitä kuntokuvaus';
   const hasUnitsSelected = !!formValues.units.length;
@@ -30,11 +81,12 @@ const UnitMassEdit = (props) => {
   const hasObservationTypeSelected = !!formValues.observationType;
   const submitEnabled = hasUnitsSelected && hasQualitySelected && hasObservationTypeSelected;
 
-  function handleChange(event) {
-    const { value, name, checked, type } = event.target;
+  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const target = event.target as HTMLInputElement;
+    const { value, name, checked, type } = target;
 
     if (type === 'checkbox') {
-      let newChoices = [...formValues[name]];
+      let newChoices = [...formValues[name as keyof FormValues] as string[]];
       newChoices = newChoices.filter(e => e !== value);
       if (checked) {
         newChoices.push(value);
@@ -60,26 +112,29 @@ const UnitMassEdit = (props) => {
     }
   }
 
-  function allowedValue() {
+  function allowedValue(): AllowedValueWithProperty | undefined {
     if (!observableProperty || !formValues?.quality) return undefined;
 
-    return _.find(observableProperty.allowed_values, (value) => {
-      value.property = observableProperty.id;
-      return (value.identifier == formValues.quality);
-    });
+    return _.find(observableProperty.allowed_values, (value: AllowedValue) => {
+      const valueWithProperty = value as AllowedValueWithProperty;
+      valueWithProperty.property = observableProperty.id;
+      return value.identifier === formValues.quality;
+    }) as AllowedValueWithProperty | undefined;
   }
 
   function onSubmit() {
-    const propertyId = observableProperty?.id;
+    if (!observableProperty) return;
+    
+    const propertyId = observableProperty.id;
     const unitIds = formValues.units;
     const value = allowedValue();
     const isServiced = formValues.observationType === 'serviced';
     const notice = formValues.notice;
 
-    unitIds.forEach((unitId) => {
-      enqueueObservation(propertyId, value, Number.parseInt(unitId), isServiced);
+    unitIds.forEach((unitId: string) => {
+      dispatch((actions.enqueueObservation as any)(propertyId, value?.identifier || '', Number.parseInt(unitId, 10), isServiced));
       if (notice) {
-        enqueueObservation('notice', notice, Number.parseInt(unitId));
+        dispatch((actions.enqueueObservation as any)('notice', notice, Number.parseInt(unitId, 10)));
       }
     });
 
@@ -90,10 +145,10 @@ const UnitMassEdit = (props) => {
     return <div>Ladataan...</div>;
   }
 
-  const renderUnitInputs = _.map(_.sortBy(units, [(u) => u.name.fi]), (unit) => {
+  const renderUnitInputs = _.map(_.sortBy(unitsIncludingSelectedProperty, [(u: Unit) => u.name.fi]), (unit: Unit) => {
     const observations = _.map(
-      unit.observations,
-      (obs) => { return <ObservationItem key={obs.id} observation={obs} />; }
+      unit.observations || [],
+      (obs: UnitObservation) => { return <ObservationItem key={obs.id} observation={obs} />; }
     );
     return (
       <div key={unit.id} className="mass-edit-checkbox">
@@ -113,40 +168,43 @@ const UnitMassEdit = (props) => {
     );
   });
 
-  const renderQualityInputs = () => {
-    let values = [];
+  const renderQualityInputs = (): React.ReactElement[] => {
+    if (!observableProperty) return [];
+    
+    let values: React.ReactElement[] = [];
 
-    _.each(QUALITIES, (quality) => {
-      values = values.concat(_.map(allowedValues[observableProperty.id][quality], (v) => {
+    _.each(QUALITIES, (quality: string) => {
+      const qualityValues = allowedValues[observableProperty.id]?.[quality] || [];
+      values = values.concat(_.map(qualityValues, (v: AllowedValue) => {
         return (
           <div key={v.identifier} className="mass-edit-radio">
             <input
               type="radio"
               value={v.identifier}
               name="quality"
-              id={`id-${v.property}-${v.identifier}`}
+              id={`id-${observableProperty.id}-${v.identifier}`}
               checked={formValues.quality === v.identifier}
               onChange={handleChange}
               disabled={!hasUnitsSelected}
             />
-            <label htmlFor={`id-${v.property}-${v.identifier}`}>{v.name.fi}</label>
+            <label htmlFor={`id-${observableProperty.id}-${v.identifier}`}>{v.name.fi}</label>
           </div>
-        )
+        );
       }));
     });
 
     return values;
-  }
+  };
 
-  const renderConfirmation = () => {
+  const renderConfirmation = (): React.ReactElement | undefined => {
     const value = allowedValue();
 
     if (!value) return;
 
-    const render = () => {
+    const render = (): React.ReactElement => {
       const quality = value.quality;
 
-      const observedOption = (showHelpText=true) => (
+      const observedOption = (showHelpText: boolean = true): React.ReactElement => (
         <div className="mass-edit-radio">
           <input
             type="radio"
@@ -179,7 +237,7 @@ const UnitMassEdit = (props) => {
       );
 
       if (canPropertyBeMaintained(value.property) && (
-        quality === 'good' || quality == 'satisfactory' || value.identifier == 'event')
+        quality === 'good' || quality === 'satisfactory' || value.identifier === 'event')
       ) {
         return (
           <>
@@ -202,7 +260,7 @@ const UnitMassEdit = (props) => {
     );
   };
 
-  const renderNoticeField = () => (
+  const renderNoticeField = (): React.ReactElement => (
     <div className="panel panel-default">
       <div className="panel-heading">{noticeHeader}</div>
       <div className="panel-body">
@@ -212,7 +270,7 @@ const UnitMassEdit = (props) => {
             id="notice"
             name="notice"
             className="form-control"
-            rows="3"
+            rows={3}
             value={formValues.notice}
             onChange={handleChange}
             disabled={!hasUnitsSelected}
@@ -244,8 +302,7 @@ const UnitMassEdit = (props) => {
           <div className="panel panel-default">
             <div className="panel-heading">{qualityHeader}</div>
             <div className="panel-body">
-              {!hasUnitsSelected && <p className="text-muted"><em>Valitse ensin päivitettävät paikat</em></p>}
-              {hasUnitsSelected && renderQualityInputs()}
+              {renderQualityInputs()}
             </div>
           </div>
           {(hasUnitsSelected && hasQualitySelected) && renderConfirmation()}
@@ -266,46 +323,6 @@ const UnitMassEdit = (props) => {
       </div>
     </div>
   );
-}
+};
 
-function mapStateToProps(state, ownProps) {
-  const { groupId, propertyId } = ownProps.params;
-  const { unit, service } = state.data;
-  const onlyQualityProperties = state.serviceGroup !== constants.SERVICE_GROUPS.swimming.id;
-  const units = _.filter(unit, (u) => u.extensions.maintenance_group);
-
-  let allowedValues;
-  let unitsIncludingSelectedProperty = [];
-  let observableProperty;
-
-  units.forEach((u) => {
-    const allObservableProperties = unitObservableProperties(u, service, onlyQualityProperties);
-    const selectedObservableProperty = _.filter(allObservableProperties, (op) => op.id === propertyId);
-    const selectedObservablePropertyId = selectedObservableProperty[0]?.id;
-    if (selectedObservablePropertyId === propertyId) {
-      unitsIncludingSelectedProperty.push(u);
-      observableProperty = selectedObservableProperty;
-    }
-  });
-
-  if (observableProperty) {
-    allowedValues = _.fromPairs(_.map(observableProperty, (p) => [p.id, allowedValuesByQuality(p)]))
-  }
-
-  return {
-    allowedValues,
-    groupId,
-    observableProperty: Object.assign({}, ...observableProperty),
-    units: unitsIncludingSelectedProperty
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    enqueueObservation: (property, allowedValue, unitId, addServicedObservation) => {
-      dispatch(actions.enqueueObservation(property, allowedValue, unitId, addServicedObservation));
-    }
-  };
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UnitMassEdit));
+export default UnitMassEdit;

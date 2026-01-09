@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import DeleteConfirmation from '../DeleteConfirmation';
 import { renderWithRoute } from '../../../test/testUtils';
 import * as actions from '../../actions';
@@ -202,20 +203,22 @@ describe('DeleteConfirmation', () => {
   });
 
   describe('button clicks and action dispatching', () => {
-    it('dispatches clearObservation when delete button is clicked', () => {
+    it('dispatches clearObservation when delete button is clicked', async () => {
+      const user = userEvent.setup();
       renderComponent();
 
       const deleteButton = screen.getByRole('link', { name: /poista/i });
-      fireEvent.click(deleteButton);
+      await user.click(deleteButton);
 
       expect(mockEnqueueObservation).toHaveBeenCalledWith('notice', null, 123);
     });
 
-    it('does not dispatch action when cancel button is clicked', () => {
+    it('does not dispatch action when cancel button is clicked', async () => {
+      const user = userEvent.setup();
       renderComponent();
 
       const cancelButton = screen.getByRole('link', { name: /peruuta/i });
-      fireEvent.click(cancelButton);
+      await user.click(cancelButton);
 
       expect(mockEnqueueObservation).not.toHaveBeenCalled();
     });

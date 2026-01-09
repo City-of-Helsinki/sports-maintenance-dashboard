@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../../test/testUtils';
 import LoginScreen from '../LoginScreen';
 import * as actions from '../../actions/index';
@@ -84,20 +85,22 @@ describe('LoginScreen', () => {
   });
 
   describe('form inputs', () => {
-    it('updates username when typing', () => {
+    it('updates username when typing', async () => {
+      const user = userEvent.setup();
       renderComponent();
 
       const usernameInput = screen.getByPlaceholderText('käyttäjätunnus');
-      fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+      await user.type(usernameInput, 'testuser');
 
       expect(usernameInput).toHaveValue('testuser');
     });
 
-    it('updates password when typing', () => {
+    it('updates password when typing', async () => {
+      const user = userEvent.setup();
       renderComponent();
 
       const passwordInput = screen.getByPlaceholderText('salasana');
-      fireEvent.change(passwordInput, { target: { value: 'testpass' } });
+      await user.type(passwordInput, 'testpass');
 
       expect(passwordInput).toHaveValue('testpass');
     });
@@ -130,11 +133,12 @@ describe('LoginScreen', () => {
       expect(skiingRadio).toBeChecked();
     });
 
-    it('dispatches action when service group is changed', () => {
+    it('dispatches action when service group is changed', async () => {
+      const user = userEvent.setup();
       renderComponent();
 
       const iceSkatingRadio = screen.getByLabelText('Luistelukentät');
-      fireEvent.click(iceSkatingRadio);
+      await user.click(iceSkatingRadio);
 
       expect(mockSelectServiceGroup).toHaveBeenCalledWith('iceSkating');
     });
@@ -162,30 +166,32 @@ describe('LoginScreen', () => {
   });
 
   describe('form submission', () => {
-    it('dispatches login action on form submit', () => {
+    it('dispatches login action on form submit', async () => {
+      const user = userEvent.setup();
       renderComponent();
 
       const usernameInput = screen.getByPlaceholderText('käyttäjätunnus');
       const passwordInput = screen.getByPlaceholderText('salasana');
       const submitButton = screen.getByRole('button', { name: 'Kirjaudu' });
 
-      fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-      fireEvent.change(passwordInput, { target: { value: 'testpass' } });
-      fireEvent.click(submitButton);
+      await user.type(usernameInput, 'testuser');
+      await user.type(passwordInput, 'testpass');
+      await user.click(submitButton);
 
       expect(mockLogin).toHaveBeenCalledWith('testuser', 'testpass');
     });
 
-    it('can submit with Enter key', () => {
+    it('can submit with Enter key', async () => {
+      const user = userEvent.setup();
       renderComponent();
 
       const usernameInput = screen.getByPlaceholderText('käyttäjätunnus');
       const passwordInput = screen.getByPlaceholderText('salasana');
-      const form = screen.getByRole('button', { name: 'Kirjaudu' }).closest('form')!;
+      screen.getByRole('button', { name: 'Kirjaudu' }).closest('form')!;
 
-      fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-      fireEvent.change(passwordInput, { target: { value: 'testpass' } });
-      fireEvent.submit(form);
+      await user.type(usernameInput, 'testuser');
+      await user.type(passwordInput, 'testpass');
+      await user.keyboard('{Enter}');
 
       expect(mockLogin).toHaveBeenCalledWith('testuser', 'testpass');
     });

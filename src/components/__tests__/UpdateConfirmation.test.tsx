@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import UpdateConfirmation, { canPropertyBeMaintained } from '../UpdateConfirmation';
 import { renderWithRoute } from '../../../test/testUtils';
@@ -262,20 +263,22 @@ describe('UpdateConfirmation', () => {
   });
 
   describe('button clicks and action dispatching', () => {
-    it('dispatches enqueueObservation when observed button is clicked', () => {
+    it('dispatches enqueueObservation when observed button is clicked', async () => {
+      const user = userEvent.setup();
       renderComponent();
 
       const observedButton = screen.getByRole('link', { name: /todettu.*hyvä kunto/i });
-      fireEvent.click(observedButton);
+      await user.click(observedButton);
 
       expect(mockEnqueueObservation).toHaveBeenCalledWith('test_property', mockAllowedValue, 123, false);
     });
 
-    it('dispatches enqueueObservation when serviced button is clicked', () => {
+    it('dispatches enqueueObservation when serviced button is clicked', async () => {
+      const user = userEvent.setup();
       renderComponent();
 
       const servicedButton = screen.getByRole('link', { name: /kunnostettu.*hyvä kunto/i });
-      fireEvent.click(servicedButton);
+      await user.click(servicedButton);
 
       expect(mockEnqueueObservation).toHaveBeenCalledWith('test_property', mockAllowedValue, 123, true);
     });

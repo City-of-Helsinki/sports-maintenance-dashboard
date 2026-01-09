@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../../test/testUtils';
 
 import UnitDescriptiveStatusForm from '../UnitDescriptiveStatusForm';
@@ -155,31 +156,34 @@ describe('UnitDescriptiveStatusForm', () => {
   });
 
   describe('Form submission', () => {
-    it('dispatches enqueueObservation action with correct parameters on form submit', () => {
+    it('dispatches enqueueObservation action with correct parameters on form submit', async () => {
+      const user = userEvent.setup();
       renderWithProviders(<UnitDescriptiveStatusForm unit={baseUnit} />);
 
       const textarea = screen.getByRole('textbox');
-      const form = document.getElementById('descriptive-status-form')!;
+      const submitButton = screen.getByRole('button', { name: /julkaise kuvausteksti/i });
 
       // Type some text in the textarea
-      fireEvent.change(textarea, { target: { value: 'New description text' } });
+      await user.type(textarea, 'New description text');
       
-      // Submit the form
-      fireEvent.submit(form);
+      // Submit the form by clicking the submit button
+      await user.click(submitButton);
 
       expect(mockEnqueueObservation).toHaveBeenCalledWith('notice', 'New description text', 123);
     });
 
-    it('prevents default form submission behavior', () => {
+    it('prevents default form submission behavior', async () => {
+      const user = userEvent.setup();
       renderWithProviders(<UnitDescriptiveStatusForm unit={baseUnit} />);
 
       const form = document.getElementById('descriptive-status-form')!;
+      const submitButton = screen.getByRole('button', { name: /julkaise kuvausteksti/i });
       
       // Spy on the form's submit method to verify preventDefault is working
       const formSubmitSpy = jest.fn();
       form.addEventListener('submit', formSubmitSpy);
 
-      fireEvent.submit(form);
+      await user.click(submitButton);
 
       // Verify that the form's submit event was called
       expect(formSubmitSpy).toHaveBeenCalled();
@@ -189,24 +193,26 @@ describe('UnitDescriptiveStatusForm', () => {
       expect(event.defaultPrevented).toBe(true);
     });
 
-    it('does not dispatch action when textarea is empty', () => {
+    it('does not dispatch action when textarea is empty', async () => {
+      const user = userEvent.setup();
       renderWithProviders(<UnitDescriptiveStatusForm unit={baseUnit} />);
 
-      const form = document.getElementById('descriptive-status-form')!;
+      const submitButton = screen.getByRole('button', { name: /julkaise kuvausteksti/i });
 
-      fireEvent.submit(form);
+      await user.click(submitButton);
 
       expect(mockEnqueueObservation).toHaveBeenCalledWith('notice', '', 123);
     });
 
-    it('dispatches action when textarea has whitespace only', () => {
+    it('dispatches action when textarea has whitespace only', async () => {
+      const user = userEvent.setup();
       renderWithProviders(<UnitDescriptiveStatusForm unit={baseUnit} />);
 
       const textarea = screen.getByRole('textbox');
-      const form = document.getElementById('descriptive-status-form')!;
+      const submitButton = screen.getByRole('button', { name: /julkaise kuvausteksti/i });
 
-      fireEvent.change(textarea, { target: { value: '   ' } });
-      fireEvent.submit(form);
+      await user.type(textarea, '   ');
+      await user.click(submitButton);
 
       expect(mockEnqueueObservation).toHaveBeenCalledWith('notice', '   ', 123);
     });

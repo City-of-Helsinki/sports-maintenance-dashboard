@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import UpdateQueue from '../UpdateQueue';
 import { renderWithProviders } from '../../../test/testUtils';
@@ -141,35 +142,38 @@ describe('UpdateQueue', () => {
     expect(screen.getByText('Latest Unit')).toBeInTheDocument();
   });
 
-  it('handles logout confirmation and clears storage', () => {
+  it('handles logout confirmation and clears storage', async () => {
+    const user = userEvent.setup();
     mockConfirm.mockReturnValue(true);
     renderComponent();
 
     const logoutButton = screen.getByRole('button', { name: /kirjaudu ulos/i });
-    fireEvent.click(logoutButton);
+    await user.click(logoutButton);
 
     expect(mockConfirm).toHaveBeenCalledWith('Haluatko varmasti kirjautua ulos?');
     expect(mockLocalStorage.clear).toHaveBeenCalled();
     expect((window as any).location.href).toBe('http://localhost/');
   });
 
-  it('handles logout cancellation', () => {
+  it('handles logout cancellation', async () => {
+    const user = userEvent.setup();
     mockConfirm.mockReturnValue(false);
     renderComponent();
 
     const logoutButton = screen.getByRole('button', { name: /kirjaudu ulos/i });
-    fireEvent.click(logoutButton);
+    await user.click(logoutButton);
 
     expect(mockConfirm).toHaveBeenCalledWith('Haluatko varmasti kirjautua ulos?');
     expect(mockLocalStorage.clear).not.toHaveBeenCalled();
     expect((window as any).location.href).toBe('http://localhost/');
   });
 
-  it('dispatches retry action when retry button is clicked', () => {
+  it('dispatches retry action when retry button is clicked', async () => {
+    const user = userEvent.setup();
     renderComponent();
 
     const retryButton = screen.getByRole('button', { name: /yritä uudelleen/i });
-    fireEvent.click(retryButton);
+    await user.click(retryButton);
 
     expect(mockRetryImmediately).toHaveBeenCalled();
   });
