@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Pulkka UI - A user interface for storing observations with timestamps",
   "main": "",
   "scripts": {
