@@ -8,9 +8,16 @@ WORKDIR /app
 
 RUN yum update -y && yum install -y bzip2 && yum clean all
 
-COPY package.json .
+RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
+RUN yum -y install yarn
 
-RUN npm install
+# Yarn
+ENV YARN_VERSION 1.22.22
+RUN yarn policies set-version $YARN_VERSION
+
+COPY package.json yarn.lock ./
+
+RUN yarn install
 
 # =======================================================
 FROM appbase AS development
@@ -23,7 +30,7 @@ COPY . .
 
 EXPOSE 8001
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
 
 # =======================================================
 FROM appbase AS staticbuilder
@@ -34,7 +41,7 @@ ENV API_URL $API_URL
 
 COPY --chown=root:root . .
 
-RUN npm install -D webpack-cli && npm run dist
+RUN yarn add -D webpack-cli && yarn dist
 
 # =======================================================
 FROM registry.access.redhat.com/ubi9/nginx-122 AS production

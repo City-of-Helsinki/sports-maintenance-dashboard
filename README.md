@@ -6,18 +6,18 @@ compatible observations REST API.
 
 # Requirements #
 
-Node.js version 18
+Node.js version 22
 
 # Setup #
 
 Copy .env.example to .env and edit the API_URL variable to
 point to the correct API root or use the API_URL environment variable.
 
-Run `npm install`
+Run `yarn install`
 
 # Development #
 
-Run `npm start`
+Run `yarn start`
 
 ## TypeScript Support ##
 
@@ -25,7 +25,7 @@ This project supports incremental TypeScript migration alongside JavaScript. You
 
 ### Type Checking ###
 
-Run `npm run typecheck` to check TypeScript types without emitting files.
+Run `yarn typecheck` to check TypeScript types without emitting files.
 
 ### File Extensions ###
 
@@ -45,5 +45,5 @@ The build system automatically handles both JavaScript and TypeScript files.
 # Production build #
 
 1. Important! Update the version in `src/pulkka.appcache`
-2. Run `npm run build`.
+2. Run `yarn build`.
 3. Deploy the contents of the dist folder as static files.
