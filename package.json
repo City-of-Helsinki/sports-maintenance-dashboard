@@ -1,22 +1,23 @@
 {
   "private": true,
   "version": "1.0.1",
+  "packageManager": "pnpm@11.22.0",
   "description": "Pulkka UI - A user interface for storing observations with timestamps",
   "main": "",
   "scripts": {
-    "build": "yarn dist",
+    "build": "pnpm dist",
     "clean": "find dist -mindepth 1 -not -name 'README.md' -delete 2>/dev/null || true",
     "copy": "copyfiles -f ./src/index.html ./src/pulkka.appcache ./dist && copyfiles -u 1 ./src/favicons/* ./src/img/* ./dist",
-    "dist": "yarn run copy & webpack --env=dist",
+    "dist": "pnpm run copy && webpack --env=dist",
     "lint": "eslint ./src",
     "typecheck": "tsc --noEmit",
-    "posttest": "yarn run lint",
-    "release:major": "yarn version major && yarn publish && git push --follow-tags",
-    "release:minor": "yarn version minor && yarn publish && git push --follow-tags",
-    "release:patch": "yarn version patch && yarn publish && git push --follow-tags",
+    "posttest": "pnpm run lint",
+    "release:major": "pnpm version major && pnpm publish && git push --follow-tags",
+    "release:minor": "pnpm version minor && pnpm publish && git push --follow-tags",
+    "release:patch": "pnpm version patch && pnpm publish && git push --follow-tags",
     "serve": "node server.js --env=dev",
     "serve:dist": "node server.js --env=dist",
-    "start": "yarn run copy && cp -n .env.example .env; node server.js --env=dev",
+    "start": "pnpm run copy && cp -n .env.example .env; node server.js --env=dev",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
@@ -93,9 +94,5 @@
   },
   "browserslist": [
     "defaults"
-  ],
-  "resolutions": {
-    "serialize-javascript": ">=7.0.5",
-    "uuid": ">=11.1.1"
-  }
+  ]
 }
