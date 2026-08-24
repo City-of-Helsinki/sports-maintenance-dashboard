@@ -30,5 +30,10 @@ dist/
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
+# Yarn - blocked to prevent accidental re-introduction
+yarn.lock
+.yarn/
+.yarnrc.yml
+
 # Bower
 bower_components/
