@@ -20,17 +20,17 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "types": ["jest", "@testing-library/jest-dom", "node"],
-    "baseUrl": "./src",
     "paths": {
-      "styles/*": ["./styles/*"],
-      "components/*": ["./components/*"],
-      "actions/*": ["./actions/*"],
-      "reducers/*": ["./reducers/*"],
-      "lib/*": ["./lib/*"],
-      "util/*": ["./util/*"],
-      "constants/*": ["./constants/*"],
-      "config/*": ["./config/*"],
-      "hooks/*": ["./hooks/*"]
+      "*": ["./src/*"],
+      "styles/*": ["./src/styles/*"],
+      "components/*": ["./src/components/*"],
+      "actions/*": ["./src/actions/*"],
+      "reducers/*": ["./src/reducers/*"],
+      "lib/*": ["./src/lib/*"],
+      "util/*": ["./src/util/*"],
+      "constants/*": ["./src/constants/*"],
+      "config/*": ["./src/config/*"],
+      "hooks/*": ["./src/hooks/*"]
     }
   },
   "include": [
