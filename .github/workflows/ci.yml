@@ -12,7 +12,7 @@ jobs:
     uses: City-of-Helsinki/.github/.github/workflows/ci-pnpm-node.yml@main
     secrets: inherit
     with:
-      node-version: 22
+      node-version: 24
       typecheck: true  # Enable type checking
       extra-commands: |
         cp .env.example .env
