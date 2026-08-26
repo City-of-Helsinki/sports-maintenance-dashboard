@@ -35,10 +35,7 @@ jest.mock('../NotFound', () => () => <div data-testid="not-found">NotFound</div>
 describe('AppRoutes Component', () => {
   const renderWithRouter = (initialEntries: string[] = ['/']) => {
     return render(
-      <MemoryRouter
-        initialEntries={initialEntries}
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      >
+      <MemoryRouter initialEntries={initialEntries}>
         <AppRoutes />
       </MemoryRouter>
     );
