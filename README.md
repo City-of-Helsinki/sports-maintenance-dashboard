@@ -13,11 +13,22 @@ Node.js version 22
 Copy .env.example to .env and edit the API_URL variable to
 point to the correct API root or use the API_URL environment variable.
 
-Run `yarn install`
+Run `pnpm install`
 
 # Development #
 
-Run `yarn start`
+Run `pnpm start`
+
+## Development with Docker ##
+
+Build and start the development container with:
+
+```sh
+docker compose up --build
+```
+
+Open http://localhost:8001 in your browser. Stop the container with `Ctrl+C`,
+or run `docker compose down` from another terminal.
 
 ## TypeScript Support ##
 
@@ -25,7 +36,7 @@ This project supports incremental TypeScript migration alongside JavaScript. You
 
 ### Type Checking ###
 
-Run `yarn typecheck` to check TypeScript types without emitting files.
+Run `pnpm typecheck` to check TypeScript types without emitting files.
 
 ### File Extensions ###
 
@@ -45,5 +56,5 @@ The build system automatically handles both JavaScript and TypeScript files.
 # Production build #
 
 1. Important! Update the version in `src/pulkka.appcache`
-2. Run `yarn build`.
+2. Run `pnpm build`.
 3. Deploy the contents of the dist folder as static files.

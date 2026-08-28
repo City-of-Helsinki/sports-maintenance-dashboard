@@ -8,16 +8,11 @@ WORKDIR /app
 
 RUN yum update -y && yum install -y bzip2 && yum clean all
 
-RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
-RUN yum -y install yarn
+RUN npm install --global pnpm@11.22.0
 
-# Yarn
-ENV YARN_VERSION 1.22.22
-RUN yarn policies set-version $YARN_VERSION
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-COPY package.json yarn.lock ./
-
-RUN yarn install
+RUN pnpm install --frozen-lockfile
 
 # =======================================================
 FROM appbase AS development
@@ -30,7 +25,7 @@ COPY . .
 
 EXPOSE 8001
 
-CMD ["yarn", "start"]
+CMD ["pnpm", "start"]
 
 # =======================================================
 FROM appbase AS staticbuilder
@@ -41,7 +36,7 @@ ENV API_URL $API_URL
 
 COPY --chown=root:root . .
 
-RUN yarn add -D webpack-cli && yarn dist
+RUN pnpm dist
 
 # =======================================================
 FROM registry.access.redhat.com/ubi9/nginx-122 AS production
