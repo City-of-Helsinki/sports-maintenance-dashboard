@@ -1,3 +1,4 @@
+import './lib/sentry';
 import 'core-js/internals/object-assign.js';
 import React from 'react';
 import { createRoot, Root } from 'react-dom/client';
