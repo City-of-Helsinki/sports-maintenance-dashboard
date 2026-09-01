@@ -27,6 +27,8 @@ let config = Object.assign({}, baseConfig, {
     new Dotenv({
       path: './.env',
       safe: './.env.example',
+      // Sentry vars default to '' (off); safe mode treats '' as missing otherwise
+      allowEmptyValues: true,
       ignoreStub: true
     }),
     new ReactRefreshWebpackPlugin()

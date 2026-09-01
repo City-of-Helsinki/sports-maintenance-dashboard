@@ -45,5 +45,14 @@ extends:
     # The values here will override the values defined in the ulkoliikuntakartta-pipelines repository
     # buildArgs:
     #   DEBUG: 1
+    #   # Cloud Sentry (https://city-of-helsinki.sentry.io/), set per environment
+    #   REACT_APP_SENTRY_DSN: https://...@city-of-helsinki.sentry.io/...
+    #   REACT_APP_SENTRY_ENVIRONMENT: development
+    #   REACT_APP_SENTRY_RELEASE: $(Build.SourceVersion)
+    #   REACT_APP_SENTRY_TRACES_SAMPLE_RATE: 1
+    #   REACT_APP_SENTRY_TRACE_PROPAGATION_TARGETS: api.hel.fi
+    #   REACT_APP_SENTRY_PROFILES_SAMPLE_RATE: 1
+    #   REACT_APP_SENTRY_REPLAYS_SESSION_SAMPLE_RATE: 0 # org policy: keep disabled
+    #   REACT_APP_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE: 0 # org policy: keep disabled
     # configMap: # pod environment variables
     #   DEBUG: 1

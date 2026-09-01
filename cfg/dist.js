@@ -22,7 +22,15 @@ let config = Object.assign({}, baseConfig, {
       safe: false,
       systemvars: true,
       defaults: {
-        'API_URL': 'https://api.hel.fi/servicemap/v2'
+        'API_URL': 'https://api.hel.fi/servicemap/v2',
+        'REACT_APP_SENTRY_DSN': '',
+        'REACT_APP_SENTRY_ENVIRONMENT': '',
+        'REACT_APP_SENTRY_RELEASE': '',
+        'REACT_APP_SENTRY_TRACES_SAMPLE_RATE': '0',
+        'REACT_APP_SENTRY_TRACE_PROPAGATION_TARGETS': '',
+        'REACT_APP_SENTRY_PROFILES_SAMPLE_RATE': '0',
+        'REACT_APP_SENTRY_REPLAYS_SESSION_SAMPLE_RATE': '0',
+        'REACT_APP_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE': '0'
       }
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
