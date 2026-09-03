@@ -1,5 +1,6 @@
 import { combineReducers, Reducer } from 'redux';
-import _ from 'lodash';
+import omit from 'lodash/omit';
+import uniq from 'lodash/uniq';
 
 import { CredentialError } from '../util/error';
 import { ActionTypes } from '../constants';
@@ -204,7 +205,7 @@ const pendingObservationsReducer: Reducer<PendingObservationsState, ReduxAction>
           unitId: observation.unitId,
           property: observation.property
         });
-        return _.omit(state, [path]);
+        return omit(state, [path]);
       }
       return state;
     }
@@ -251,7 +252,7 @@ const unitsByUpdateTimeReducer: Reducer<string[], ReduxAction> = (state = initia
       return state;
     }
     
-    return _.uniq([postAction.meta.unitId, ...state]).slice(0, 20);
+    return uniq([postAction.meta.unitId, ...state]).slice(0, 20);
   }
   
   return state;

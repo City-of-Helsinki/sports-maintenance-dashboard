@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import identity from 'lodash/identity';
 import { createAction } from 'redux-actions';
 import * as ApiClient from '../lib/municipalServicesClient';
 import { ActionTypes } from '../constants';
@@ -73,6 +73,6 @@ export const setUserLocation = createAction(
 export const sendObservation = createAction(
   ActionTypes.POST_OBSERVATION,
   ApiClient.postObservation,
-  _.identity
+  identity
 );
 

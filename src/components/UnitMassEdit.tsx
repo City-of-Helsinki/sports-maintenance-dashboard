@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import _ from 'lodash';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
+import includes from 'lodash/includes';
+import each from 'lodash/each';
 
 import { ACTION_TYPE, canPropertyBeMaintained, HELP_TEXTS } from './UpdateConfirmation';
 import { allowedValuesByQuality } from './UnitDetails';
@@ -48,7 +53,7 @@ const UnitMassEdit: React.FC = () => {
 
   const { groupId, propertyId } = params;
   const onlyQualityProperties = serviceGroup !== constants.SERVICE_GROUPS.swimming.id;
-  const units = unit ? _.filter(unit, (u: Unit) => u.extensions?.maintenance_group === groupId) : undefined;
+  const units = unit ? filter(unit, (u: Unit) => u.extensions?.maintenance_group === groupId) : undefined;
 
   let allowedValues: Record<string, Record<string, AllowedValue[]>> = {};
   let unitsIncludingSelectedProperty: Unit[] = [];
@@ -57,7 +62,7 @@ const UnitMassEdit: React.FC = () => {
   if (units) {
     units.forEach((u: Unit) => {
       const allObservableProperties = unitObservableProperties(u, service, onlyQualityProperties);
-      const selectedObservableProperty = _.find(allObservableProperties, (op: ObservableProperty) => op.id === propertyId);
+      const selectedObservableProperty = find(allObservableProperties, (op: ObservableProperty) => op.id === propertyId);
       const selectedObservablePropertyId = selectedObservableProperty?.id;
       if (selectedObservablePropertyId === propertyId) {
         unitsIncludingSelectedProperty.push(u);
@@ -113,7 +118,7 @@ const UnitMassEdit: React.FC = () => {
   function allowedValue(): AllowedValueWithProperty | undefined {
     if (!observableProperty || !formValues?.quality) return undefined;
 
-    return _.find(observableProperty.allowed_values, (value: AllowedValue) => {
+    return find(observableProperty.allowed_values, (value: AllowedValue) => {
       const valueWithProperty = value as AllowedValueWithProperty;
       valueWithProperty.property = observableProperty.id;
       return value.identifier === formValues.quality;
@@ -143,8 +148,8 @@ const UnitMassEdit: React.FC = () => {
     return <div>Ladataan...</div>;
   }
 
-  const renderUnitInputs = _.map(_.sortBy(unitsIncludingSelectedProperty, [(u: Unit) => u.name.fi]), (unit: Unit) => {
-    const observations = _.map(
+  const renderUnitInputs = map(sortBy(unitsIncludingSelectedProperty, [(u: Unit) => u.name.fi]), (unit: Unit) => {
+    const observations = map(
       unit.observations || [],
       (obs: UnitObservation) => { return <ObservationItem key={obs.id} observation={obs} />; }
     );
@@ -155,7 +160,7 @@ const UnitMassEdit: React.FC = () => {
           value={unit.id}
           name="units"
           id={`id-${unit.id}`}
-          checked={_.includes(formValues.units, unit.id.toString())}
+          checked={includes(formValues.units, unit.id.toString())}
           onChange={handleChange}
         />
         <label htmlFor={`id-${unit.id}`}>
@@ -171,9 +176,9 @@ const UnitMassEdit: React.FC = () => {
     
     let values: React.ReactElement[] = [];
 
-    _.each(QUALITIES, (quality: string) => {
+    each(QUALITIES, (quality: string) => {
       const qualityValues = allowedValues[observableProperty.id]?.[quality] || [];
-      values = values.concat(_.map(qualityValues, (v: AllowedValue) => {
+      values = values.concat(map(qualityValues, (v: AllowedValue) => {
         return (
           <div key={v.identifier} className="mass-edit-radio">
             <input

@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import map from 'lodash/map';
+import find from 'lodash/find';
 import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -31,7 +32,7 @@ function TextualDescription({ text }: Readonly<TextualDescriptionProps>): React.
   const lines = text.split('\n');
   return (
     <div className="notice-large">
-      {_.map(lines, (l, idx) => {
+      {map(lines, (l, idx) => {
         return <div key={`line-${idx}`} className="line">{l}</div>;
       })}
     </div>
@@ -55,7 +56,7 @@ const DeleteConfirmation: React.FC = () => {
   
   const observation = useMemo(() => {
     if (!unit?.observations) return null;
-    return _.find(unit.observations, (o) => { return o.property === 'notice'; }) || null;
+    return find(unit.observations, (o) => { return o.property === 'notice'; }) || null;
   }, [unit]);
 
   const clearObservation = (property: string, unitId: number) => {

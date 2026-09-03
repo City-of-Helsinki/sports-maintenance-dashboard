@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import find from 'lodash/find';
 import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -55,11 +55,11 @@ function allowedValueSelector(properties: ObservableProperty[], { propertyId, va
   if (properties.length === 0) {
     return null;
   }
-  const property = _.find(properties, (p) => { return p.id == propertyId; });
+  const property = find(properties, (p) => { return p.id == propertyId; });
   if (!property) {
     return null;
   }
-  const foundValue = _.find(property.allowed_values, (value) => {
+  const foundValue = find(property.allowed_values, (value) => {
     return (value.identifier == valueId);
   });
   if (!foundValue) {

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import delay from 'lodash/delay';
 import queueHandler from '../queueHandler';
 import {
   markObservationSent,
@@ -18,11 +18,8 @@ jest.mock('../index', () => ({
   finishRetryImmediately: jest.fn()
 }));
 
-// Mock lodash delay
-jest.mock('lodash', () => ({
-  ...jest.requireActual('lodash'),
-  delay: jest.fn()
-}));
+// Mock lodash delay (queueHandler imports it via the direct 'lodash/delay' path)
+jest.mock('lodash/delay', () => jest.fn());
 
 const mockActions = {
   markObservationSent: markObservationSent as jest.MockedFunction<typeof markObservationSent>,
@@ -32,7 +29,7 @@ const mockActions = {
   finishRetryImmediately: finishRetryImmediately as jest.MockedFunction<typeof finishRetryImmediately>
 };
 
-const mockDelay = _.delay as jest.MockedFunction<typeof _.delay>;
+const mockDelay = delay as jest.MockedFunction<typeof delay>;
 
 describe('queueHandler', () => {
   let mockStore: any;
