@@ -8,7 +8,6 @@ import promiseMiddleware from 'redux-promise';
 import { persistStore, persistReducer, Persistor, PersistConfig } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // localStorage
 import { PersistGate } from 'redux-persist/integration/react';
-import 'bootstrap-sass';
 
 import queueHandler from './actions/queueHandler';
 
