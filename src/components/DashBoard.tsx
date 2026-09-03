@@ -1,4 +1,7 @@
-import _ from 'lodash';
+import reverse from 'lodash/reverse';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
+import keys from 'lodash/keys';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -16,10 +19,10 @@ function topUnits(
   units: Record<string, Unit>,
   unitsByUpdateCount: UnitsByUpdateCountState
 ): Unit[] {
-  return _.reverse(
-    _.map(
-      _.sortBy(
-        _.map(unitsByUpdateCount, (u, id) => ({
+  return reverse(
+    map(
+      sortBy(
+        map(unitsByUpdateCount, (u, id) => ({
           id,
           count: u.count
         })),
@@ -40,8 +43,8 @@ const DashBoard: React.FC = () => {
   const unitsByUpdateCount = useSelector((state: RootState) => state.unitsByUpdateCount);
   
   const nearest = useMemo(() => {
-    if (_.keys(unitData).length > 0) {
-      return _.map(unitsByDistance, (u) => {
+    if (keys(unitData).length > 0) {
+      return map(unitsByDistance, (u) => {
         return unitData[u.id.toString()];
       });
     }
@@ -49,7 +52,7 @@ const DashBoard: React.FC = () => {
   }, [unitData, unitsByDistance]);
 
   const frequent = useMemo(() => {
-    if (_.keys(unitData).length > 0) {
+    if (keys(unitData).length > 0) {
       return topUnits(20, unitData, unitsByUpdateCount);
     }
     return [];

@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import _ from 'lodash';
+import filter from 'lodash/filter';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 
 import { getQualityObservation, ICONS } from './utils';
 import { Unit } from '../types';
@@ -48,7 +50,7 @@ const UnitList: React.FC = () => {
   const isLoading = useSelector((state: RootState) => state.data.loading.unit === true);
 
   const { units, name } = useMemo(() => {
-    const filteredUnits = _.filter(allUnits, (u) => u.extensions?.maintenance_group === groupId);
+    const filteredUnits = filter(allUnits, (u) => u.extensions?.maintenance_group === groupId);
     return {
       units: filteredUnits,
       name: groupId // This might need to be derived from group data if available
@@ -59,8 +61,8 @@ const UnitList: React.FC = () => {
     return <div>Ladataan...</div>;
   }
   
-  const elements = _.map(
-    _.sortBy(units, [(u) => u.name.fi]),
+  const elements = map(
+    sortBy(units, [(u) => u.name.fi]),
     (unit) => <UnitListElement key={unit.id} unit={unit} />
   );
   
