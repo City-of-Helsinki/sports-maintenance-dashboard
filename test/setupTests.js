@@ -1,3 +1,11 @@
+import { TextEncoder, TextDecoder } from 'util';
+
+// jsdom does not provide these globals, but react-router requires them
+if (typeof global.TextEncoder === 'undefined') {
+  global.TextEncoder = TextEncoder;
+  global.TextDecoder = TextDecoder;
+}
+
 import 'core-js/stable';
 import '@testing-library/jest-dom';
 

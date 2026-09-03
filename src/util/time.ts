@@ -1,5 +1,5 @@
 import moment, { Moment } from 'moment';
-import _ from 'lodash';
+import range from 'lodash/range';
 
 export const LINK_DATEFORMAT = 'YYYY-MM-DD';
 
@@ -56,7 +56,7 @@ export function round(floatVal: number, stepOption: number = 0.25): number {
   const fract = Number.parseFloat(num) - whole;
 
   let returnValue: number | null = null;
-  const steps = _.range(stepOption/2, 1, stepOption);
+  const steps = range(stepOption/2, 1, stepOption);
   for (let i = 0; i < steps.length; i++) {
     if (fract < steps[i]) {
       returnValue = whole + stepOption * i;

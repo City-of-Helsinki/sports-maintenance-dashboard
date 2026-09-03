@@ -1,5 +1,6 @@
 import moment from 'moment';
-import _ from 'lodash';
+import find from 'lodash/find';
+import each from 'lodash/each';
 import { Unit, UnitObservation } from '../types';
 
 export const QUALITIES: readonly string[] = [
@@ -47,14 +48,14 @@ export function getQualityObservation(unit?: Unit): UnitObservation | undefined 
     return undefined;
   }
   const observations = unit.observations;
-  return _.find(observations, (obs) => {
+  return find(observations, (obs) => {
     return (obs.quality !== null && obs.quality !== undefined && obs.quality !== 'unknown');
   });
 }
 
 export function calculateGroups(units: Record<string, Unit> | Unit[], maintenanceOrg: string): Record<string, number[]> {
   let result: Record<string, number[]> = {};
-  _.each(units, (unit) => {
+  each(units, (unit) => {
     const u = unit as Unit;
     if (u.extensions?.maintenance_organization === maintenanceOrg) {
       const group = result[u.extensions.maintenance_group] || [];

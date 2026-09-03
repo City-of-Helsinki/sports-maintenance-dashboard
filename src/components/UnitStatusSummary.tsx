@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import map from 'lodash/map';
 import { Link } from 'react-router-dom';
 
 import { statusBarClassName, getQualityObservation } from './utils';
@@ -11,7 +11,7 @@ interface UnitStatusSummaryProps {
 }
 
 export default function UnitStatusSummary({ unit }: Readonly<UnitStatusSummaryProps>): React.ReactElement {
-  const observations = _.map(
+  const observations = map(
     unit.observations,
     (obs) => <ObservationItem key={obs.id} observation={obs} />
   );

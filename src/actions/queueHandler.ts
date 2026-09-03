@@ -1,4 +1,6 @@
-import _ from 'lodash';
+import filter from 'lodash/filter';
+import each from 'lodash/each';
+import delay from 'lodash/delay';
 
 import {
   markObservationSent,
@@ -34,40 +36,40 @@ export default function queueHandler(store: Store) {
   let timers: Record<string, boolean> = {};
   return (opts?: QueueHandlerOptions): void => {
     const queue = store.getState().updateQueue;
-    const enqueuedItems = _.filter(queue, makeFilter('enqueued'));
-    const itemsToRetry = _.filter(queue, makeFilter('failed'));
-    const itemsToRefresh = _.filter(queue, makeFilter('success'));
+    const enqueuedItems = filter(queue, makeFilter('enqueued'));
+    const itemsToRetry = filter(queue, makeFilter('failed'));
+    const itemsToRefresh = filter(queue, makeFilter('success'));
 
-    _.each(enqueuedItems, (item: PendingObservationData) => {
+    each(enqueuedItems, (item: PendingObservationData) => {
       markAndSendObservation(store, item);
     });
 
     const shouldRetryImmediately = ((opts?.initial === true) || store.getState().updateFlush);
     if (shouldRetryImmediately) {
-      _.each(timers, (_, key) => {
+      each(timers, (_value, key) => {
         clearTimeout(Number(key));
       });
       timers = {};
-      const itemsToRetryImmediately = _.filter(queue, (item: PendingObservationData) => {
+      const itemsToRetryImmediately = filter(queue, (item: PendingObservationData) => {
         const {status} = item;
         return (status === 'failed' || status === 'retrying');
       });
-      _.each(itemsToRetryImmediately, (item: PendingObservationData) => {
+      each(itemsToRetryImmediately, (item: PendingObservationData) => {
         send(store, item);
       });
     }
     else {
-      _.each(itemsToRetry, (item: PendingObservationData) => {
+      each(itemsToRetry, (item: PendingObservationData) => {
         store.dispatch(markObservationResent(item));
         const QUARTER_MINUTE = 15000;
-        let timerId = _.delay(send, QUARTER_MINUTE, store, item);
+        let timerId = delay(send, QUARTER_MINUTE, store, item);
         timers[timerId] = true;
       });
     }
     if (shouldRetryImmediately) {
       store.dispatch(finishRetryImmediately());
     }
-    _.each(itemsToRefresh, (item: PendingObservationData) => {
+    each(itemsToRefresh, (item: PendingObservationData) => {
       store.dispatch(
         fetchResource(
           'unit',

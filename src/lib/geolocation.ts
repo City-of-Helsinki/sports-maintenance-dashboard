@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import size from 'lodash/size';
 
 type Stage = 'initial' | 'cacheSuccess' | 'lowAccuracySuccess' | 'highAccuracySuccess';
 
@@ -46,7 +46,7 @@ let currentStage = 0;
 function createSuccessCallback(callback: GeolocationCallback): GeolocationCallback {
   return (position: GeolocationPosition) => {
     currentStage++;
-    if (currentStage < _.size(POSITION_OPTIONS) - 1) {
+    if (currentStage < size(POSITION_OPTIONS) - 1) {
       getInitialLocation(callback, false); // Don't reset on subsequent calls
     }
     callback(position);

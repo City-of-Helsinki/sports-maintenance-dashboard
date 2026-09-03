@@ -35,10 +35,7 @@ jest.mock('../NotFound', () => () => <div data-testid="not-found">NotFound</div>
 describe('AppRoutes Component', () => {
   const renderWithRouter = (initialEntries: string[] = ['/']) => {
     return render(
-      <MemoryRouter
-        initialEntries={initialEntries}
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      >
+      <MemoryRouter initialEntries={initialEntries}>
         <AppRoutes />
       </MemoryRouter>
     );
@@ -67,66 +64,66 @@ describe('AppRoutes Component', () => {
       expect(screen.getByTestId('dashboard')).toBeInTheDocument();
     });
 
-    it('renders GroupList for /group route', () => {
+    it('renders GroupList for /group route', async () => {
       renderWithRouter(['/group']);
+      expect(await screen.findByTestId('group-list')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('group-list')).toBeInTheDocument();
     });
 
-    it('renders NotFound for unknown routes', () => {
+    it('renders NotFound for unknown routes', async () => {
       renderWithRouter(['/unknown-path']);
+      expect(await screen.findByTestId('not-found')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('not-found')).toBeInTheDocument();
     });
   });
 
   describe('Nested Routes with Parameters', () => {
-    it('renders UnitList for /group/:groupId route', () => {
+    it('renders UnitList for /group/:groupId route', async () => {
       renderWithRouter(['/group/test-group']);
+      expect(await screen.findByTestId('unit-list')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('unit-list')).toBeInTheDocument();
     });
 
-    it('renders UnitDetails for /unit/:unitId route', () => {
+    it('renders UnitDetails for /unit/:unitId route', async () => {
       renderWithRouter(['/unit/123']);
+      expect(await screen.findByTestId('unit-details')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('unit-details')).toBeInTheDocument();
     });
 
-    it('renders UnitHistory for /unit/:unitId/history route', () => {
+    it('renders UnitHistory for /unit/:unitId/history route', async () => {
       renderWithRouter(['/unit/123/history']);
+      expect(await screen.findByTestId('unit-history')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('unit-history')).toBeInTheDocument();
     });
 
-    it('renders UnitMassEditPropertySelect for /group/:groupId/mass-edit route', () => {
+    it('renders UnitMassEditPropertySelect for /group/:groupId/mass-edit route', async () => {
       renderWithRouter(['/group/test-group/mass-edit']);
+      expect(await screen.findByTestId('unit-mass-edit-property-select')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('unit-mass-edit-property-select')).toBeInTheDocument();
     });
 
-    it('renders UnitMassEdit for /group/:groupId/mass-edit/:propertyId route', () => {
+    it('renders UnitMassEdit for /group/:groupId/mass-edit/:propertyId route', async () => {
       renderWithRouter(['/group/test-group/mass-edit/property1']);
+      expect(await screen.findByTestId('unit-mass-edit')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('unit-mass-edit')).toBeInTheDocument();
     });
 
-    it('renders UpdateConfirmation for /unit/:unitId/update/:propertyId/:valueId route', () => {
+    it('renders UpdateConfirmation for /unit/:unitId/update/:propertyId/:valueId route', async () => {
       renderWithRouter(['/unit/123/update/property1/value1']);
+      expect(await screen.findByTestId('update-confirmation')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('update-confirmation')).toBeInTheDocument();
     });
 
-    it('renders DeleteConfirmation for /unit/:unitId/delete/:propertyId route', () => {
+    it('renders DeleteConfirmation for /unit/:unitId/delete/:propertyId route', async () => {
       renderWithRouter(['/unit/123/delete/property1']);
+      expect(await screen.findByTestId('delete-confirmation')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('delete-confirmation')).toBeInTheDocument();
     });
 
-    it('renders UpdateQueue for /queue route', () => {
+    it('renders UpdateQueue for /queue route', async () => {
       renderWithRouter(['/queue']);
+      expect(await screen.findByTestId('update-queue')).toBeInTheDocument();
       expect(screen.getByTestId('main-component')).toBeInTheDocument();
-      expect(screen.getByTestId('update-queue')).toBeInTheDocument();
     });
   });
 
@@ -137,7 +134,7 @@ describe('AppRoutes Component', () => {
       expect(screen.queryByTestId('main-component')).not.toBeInTheDocument();
     });
 
-    it('nests all protected routes under Main component', () => {
+    it('nests all protected routes under Main component', async () => {
       const protectedRoutes = [
         '/',
         '/group',
@@ -152,25 +149,25 @@ describe('AppRoutes Component', () => {
         '/unknown-path'
       ];
 
-      protectedRoutes.forEach(route => {
+      for (const route of protectedRoutes) {
         const { unmount } = renderWithRouter([route]);
-        expect(screen.getByTestId('main-component')).toBeInTheDocument();
+        expect(await screen.findByTestId('main-component')).toBeInTheDocument();
         unmount();
-      });
+      }
     });
   });
 
   describe('Route Matching Specificity', () => {
-    it('matches most specific route for nested paths', () => {
+    it('matches most specific route for nested paths', async () => {
       // Should match /unit/:unitId/history, not /unit/:unitId
       renderWithRouter(['/unit/123/history']);
-      expect(screen.getByTestId('unit-history')).toBeInTheDocument();
+      expect(await screen.findByTestId('unit-history')).toBeInTheDocument();
       expect(screen.queryByTestId('unit-details')).not.toBeInTheDocument();
     });
 
-    it('matches catch-all route for unmatched nested paths', () => {
+    it('matches catch-all route for unmatched nested paths', async () => {
       renderWithRouter(['/unit/123/some/unknown/path']);
-      expect(screen.getByTestId('not-found')).toBeInTheDocument();
+      expect(await screen.findByTestId('not-found')).toBeInTheDocument();
     });
 
     it('matches exact route for root path', () => {
