@@ -1,5 +1,10 @@
 import URI from 'urijs';
-import _ from 'lodash';
+import keyBy from 'lodash/keyBy';
+import compact from 'lodash/compact';
+import map from 'lodash/map';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import reduce from 'lodash/reduce';
 
 import { CredentialError } from '../util/error';
 import {
@@ -92,7 +97,7 @@ function preProcessResponse<T>(resourceType: string, preprocess: boolean) {
     return function (obj: { results: T[] }): {
       [key: string]: { [id: string]: T };
     } {
-      return { [resourceType]: _.keyBy(obj.results, 'id') };
+      return { [resourceType]: keyBy(obj.results, 'id') };
     };
   }
   return (obj: { results: T[] }): T[] => {
@@ -246,8 +251,8 @@ export function unitObservableProperties(
   if (unit === null || unit === undefined) {
     return [];
   }
-  const unitServices = _.compact(
-    _.map(unit.services, (id: number) => {
+  const unitServices = compact(
+    map(unit.services, (id: number) => {
       return services[id];
     })
   );
@@ -255,7 +260,7 @@ export function unitObservableProperties(
     collection: ObservableProperty[],
     element: Service
   ): ObservableProperty[] => {
-    let observableProperties = _.filter(
+    let observableProperties = filter(
       element.observable_properties,
       (property: ObservableProperty) => {
         return property.observation_type === 'categorical';
@@ -263,7 +268,7 @@ export function unitObservableProperties(
     );
 
     if (qualityObservationsOnly) {
-      observableProperties = _.filter(
+      observableProperties = filter(
         observableProperties,
         (property: ObservableProperty) => {
           return (
@@ -271,7 +276,7 @@ export function unitObservableProperties(
             // There must be at least one allowedValue
             // with a quality specified
             undefined !==
-              _.find(property.allowed_values, (value: AllowedValue) => {
+              find(property.allowed_values, (value: AllowedValue) => {
                 return value.quality !== 'unknown';
               })
           );
@@ -283,7 +288,7 @@ export function unitObservableProperties(
     }
     return collection;
   };
-  return _.reduce(unitServices, reducer, []);
+  return reduce(unitServices, reducer, []);
 }
 
 export function getNearestUnits(

@@ -4,7 +4,7 @@ require('styles/App.scss');
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import _ from 'lodash';
+import size from 'lodash/size';
 
 import { fetchUnitsWithServices, fetchResource, setUserLocation, getNearestUnits, setResourceFetchStart } from '../actions/index';
 import { getCurrentSeason } from './utils';
@@ -30,7 +30,7 @@ const AppComponent: React.FC = () => {
   const navigate = useNavigate();
   
   const auth = useSelector((state: RootState) => state.auth);
-  const unsentUpdateCount = useSelector((state: RootState) => _.size(state.updateQueue));
+  const unsentUpdateCount = useSelector((state: RootState) => size(state.updateQueue));
   const maintenanceOrganization = useSelector((state: RootState) => state.auth.maintenance_organization);
   const serviceGroup = useSelector((state: RootState) => state.serviceGroup);
 

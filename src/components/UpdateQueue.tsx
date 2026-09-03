@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import map from 'lodash/map';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ interface LatestUpdatesProps {
 }
 
 function LatestUpdates({ units }: Readonly<LatestUpdatesProps>) {
-  const elements = _.map(units, (u, index) => {
+  const elements = map(units, (u, index) => {
     return <UnitListElement key={`${u.id}-${index}`} unit={u} />;
   });
   return (
@@ -39,7 +39,7 @@ const UpdateQueue: React.FC = () => {
   
   // Memoize the latest units array to prevent unnecessary re-renders
   const latest = useMemo(() => {
-    return _.map(unitsByUpdateTime, (id) => units[id]);
+    return map(unitsByUpdateTime, (id) => units[id]);
   }, [unitsByUpdateTime, units]);
 
   const logout = () => {
@@ -54,7 +54,7 @@ const UpdateQueue: React.FC = () => {
     dispatch(action as any);
   };
 
-  const queueItems = _.map(items, (i, index) => {
+  const queueItems = map(items, (i, index) => {
     return (
       <Link className="list-group-item" to={`/unit/${i.unitId}`} key={`${i.unitId}-${index}`}>
         { units[i.unitId].name.fi }

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import find from 'lodash/find';
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -21,7 +21,7 @@ const UnitDescriptiveStatusForm: React.FC<UnitDescriptiveStatusFormProps> = ({ u
     ev.preventDefault();
   };
 
-  const textualDescription: UnitObservation | undefined = _.find(unit.observations, (o: UnitObservation) => o.property === 'notice');
+  const textualDescription: UnitObservation | undefined = find(unit.observations, (o: UnitObservation) => o.property === 'notice');
 
   const defaultValue = typeof textualDescription?.value === 'string' ? textualDescription.value : textualDescription?.value?.fi ?? null;
 

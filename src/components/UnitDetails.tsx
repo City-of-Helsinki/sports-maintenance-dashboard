@@ -1,4 +1,6 @@
-import _ from 'lodash';
+import fromPairs from 'lodash/fromPairs';
+import map from 'lodash/map';
+import each from 'lodash/each';
 import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -79,7 +81,7 @@ const UnitDetails: React.FC = () => {
   }, [unit, services, serviceGroup]);
 
   const allowedValues = useMemo(() => {
-    return _.fromPairs(_.map(observableProperties, (p) => [p.id, allowedValuesByQuality(p)]));
+    return fromPairs(map(observableProperties, (p) => [p.id, allowedValuesByQuality(p)]));
   }, [observableProperties]);
 
   if (isLoading) {
@@ -92,11 +94,11 @@ const UnitDetails: React.FC = () => {
 
 
 
-  const panels = _.map(observableProperties, (property) => {
+  const panels = map(observableProperties, (property) => {
     let values: React.ReactElement[] = [];
 
-    _.each(QUALITIES, (quality) => {
-      values = values.concat(_.map(allowedValues[property.id][quality], (v) => {
+    each(QUALITIES, (quality) => {
+      values = values.concat(map(allowedValues[property.id][quality], (v) => {
         return <ObservableProperty key={v.identifier} {...v} unitId={unit.id} />;
       }));
     });
@@ -118,7 +120,7 @@ const UnitDetails: React.FC = () => {
 export function allowedValuesByQuality(property: ObservablePropertyType): Record<string, AllowedValue[]> {
   let result: Record<string, AllowedValue[]> = {};
 
-  _.each(property.allowed_values, (value) => {
+  each(property.allowed_values, (value) => {
     const modifiedValue = { ...value, property: property.id };
     result[value.quality] = result[value.quality] || [];
     result[value.quality].push(modifiedValue);

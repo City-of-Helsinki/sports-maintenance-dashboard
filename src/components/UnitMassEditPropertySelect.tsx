@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import _ from 'lodash';
+import filter from 'lodash/filter';
 
 import { unitObservableProperties } from '../lib/municipalServicesClient';
 import * as constants from '../constants/index';
@@ -28,7 +28,7 @@ const UnitMassEditPropertySelect: React.FC<UnitMassEditPropertySelectProps> = ()
   }
 
   // Filter units by group
-  const units = _.filter(unit, (u: Unit) => u.extensions?.maintenance_group === groupId);
+  const units = filter(unit, (u: Unit) => u.extensions?.maintenance_group === groupId);
   const onlyQualityProperties = serviceGroup !== constants.SERVICE_GROUPS.swimming.id;
 
   // Get all available properties

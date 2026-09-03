@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import _ from 'lodash';
+import map from 'lodash/map';
 import { calculateGroups } from './utils';
 import { RootState } from '../reducers/types';
 
@@ -37,7 +37,7 @@ const GroupList: React.FC = () => {
     return <div>Ladataan...</div>;
   }
 
-  const elements = _.map(groups, (group, groupId) => {
+  const elements = map(groups, (group, groupId) => {
     return <GroupListElement key={groupId} id={groupId} name={groupId} />;
   });
 
