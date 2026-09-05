@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/City-of-Helsinki/sports-maintenance-dashboard/compare/sports-maintenance-dashboard-v1.0.1...sports-maintenance-dashboard-v1.0.2) (2026-09-05)
+
+
+### Bug Fixes
+
+* Pipeline refactor ([#59](https://github.com/City-of-Helsinki/sports-maintenance-dashboard/issues/59)) ([1e574b4](https://github.com/City-of-Helsinki/sports-maintenance-dashboard/commit/1e574b4fd70cf277b225ddaaa7bdbe530a7cc8cd))
+* **styles:** Update swimming beach status colors to match map spec ([#86](https://github.com/City-of-Helsinki/sports-maintenance-dashboard/issues/86)) ([13af756](https://github.com/City-of-Helsinki/sports-maintenance-dashboard/commit/13af756fb019d6ce3d17217deb9e5e06e28ccdc5))
+
 ## [1.0.1](https://github.com/City-of-Helsinki/sports-maintenance-dashboard/compare/sports-maintenance-dashboard-v1.0.0...sports-maintenance-dashboard-v1.0.1) (2026-01-12)
 
 
