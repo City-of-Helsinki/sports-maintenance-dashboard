@@ -2,6 +2,7 @@ import {
   QUALITIES,
   COLORS,
   ICONS,
+  conditionButtonClassName,
   statusBarClassName,
   getQualityObservation,
   calculateGroups,
@@ -101,6 +102,16 @@ describe('Utils', () => {
     it('should handle observation with quality not in COLORS mapping', () => {
       const observation = { ...baseObservation, quality: 'unknown' };
       expect(statusBarClassName(observation)).toBe('unit-status unit-status--unknown label-undefined');
+    });
+  });
+
+  describe('conditionButtonClassName', () => {
+    it('uses a semantic class for known qualities', () => {
+      expect(conditionButtonClassName('satisfactory')).toBe('btn-quality-satisfactory');
+    });
+
+    it('uses the generic primary style for other qualities', () => {
+      expect(conditionButtonClassName('poor')).toBe('btn-primary');
     });
   });
 

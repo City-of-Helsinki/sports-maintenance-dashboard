@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import UnitStatusSummary from './UnitStatusSummary';
-import { COLORS, ICONS } from './utils';
+import { conditionButtonClassName, ICONS } from './utils';
 import { unitObservableProperties } from '../lib/municipalServicesClient';
 import { AllowedValue, ObservableProperty } from '../types';
 import { RootState } from '../reducers/types';
@@ -32,7 +32,7 @@ interface ConfirmButtonProps {
 
 function ConfirmButton({ unitId, allowedValue, type, enqueueObservation }: Readonly<ConfirmButtonProps>) {
   const iconClassName = `icon ${ICONS[allowedValue.identifier]}`;
-  const buttonClassName = `btn btn-${COLORS[allowedValue.quality] || 'primary'} btn-block btn__confirmation`;
+  const buttonClassName = `btn ${conditionButtonClassName(allowedValue.quality)} btn-block btn__confirmation`;
   return (
     <Link to={`/unit/${unitId}`} className={buttonClassName} onClick={() => { enqueueObservation(allowedValue.property, allowedValue, unitId, (type === 'serviced')); }}>
       <h6>{ ACTION_TYPE[type] }</h6>

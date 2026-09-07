@@ -16,6 +16,10 @@ export const COLORS: Record<string, string> = {
   good: 'success'
 };
 
+export function conditionButtonClassName(quality: string): string {
+  return QUALITIES.includes(quality) ? `btn-quality-${quality}` : 'btn-primary';
+}
+
 export const ICONS: Record<string, string> = {
   good: 'icon-smile-o',
   satisfactory: 'icon-meh-o',
