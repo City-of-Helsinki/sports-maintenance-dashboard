@@ -201,11 +201,31 @@ body {
 }
 
 .condition-warning {
-  background-color: #B600C7;
+  background-color: $brand-warning;
 }
 
 .condition-unknown {
   background-color: #6f7a7d;
+}
+
+.btn-quality-good {
+  @include button-variant(#fff, $brand-success, $brand-success);
+}
+
+.btn-quality-unusable {
+  @include button-variant(#fff, #222222, #222222);
+}
+
+.btn-quality-satisfactory {
+  @include button-variant(#fff, $brand-warning, $brand-warning);
+}
+
+.btn-quality-warning {
+  @include button-variant(#fff, $brand-warning, $brand-warning);
+}
+
+.btn-quality-unknown {
+  @include button-variant(#fff, #6f7a7d, #6f7a7d);
 }
 
 .action-icon {

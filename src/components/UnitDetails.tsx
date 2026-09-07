@@ -13,7 +13,7 @@ import {
   LocalizedText
 } from '../types';
 
-import { COLORS, ICONS, QUALITIES } from './utils';
+import { conditionButtonClassName, ICONS, QUALITIES } from './utils';
 import { RootState } from 'reducers/types';
 
 // Component-specific interfaces
@@ -32,9 +32,8 @@ interface ObservablePropertyPanelProps {
 
 export function ObservableProperty({ quality, property, identifier, name, unitId }: Readonly<ObservablePropertyProps>): React.ReactElement {
   const url = `/unit/${unitId}/update/${property}/${identifier}`;
-  const color = COLORS[quality] || 'primary';
   const icon = ICONS[identifier];
-  const buttonClassName = `btn btn-${color} btn-block btn__newstatus`;
+  const buttonClassName = `btn ${conditionButtonClassName(quality)} btn-block btn__newstatus`;
   const iconClassName = `icon ${icon}`;
   
   return <Link to={url} className={buttonClassName}><span className={iconClassName}></span><br />{name.fi}</Link>;

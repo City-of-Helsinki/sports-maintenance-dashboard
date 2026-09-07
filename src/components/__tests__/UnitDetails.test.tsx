@@ -197,7 +197,7 @@ describe('UnitDetails Component', () => {
 
       const link = screen.getByTestId('link');
       expect(link).toHaveAttribute('href', '/unit/123/update/test-property/good-condition');
-      expect(link).toHaveClass('btn', 'btn-success', 'btn-block', 'btn__newstatus');
+      expect(link).toHaveClass('btn', 'btn-quality-good', 'btn-block', 'btn__newstatus');
       expect(screen.getByText('Good Condition')).toBeInTheDocument();
     });
 
@@ -205,14 +205,14 @@ describe('UnitDetails Component', () => {
       renderWithProviders(<ObservableProperty {...observablePropertyProps} quality="satisfactory" />);
 
       const link = screen.getByTestId('link');
-      expect(link).toHaveClass('btn-warning');
+      expect(link).toHaveClass('btn-quality-satisfactory');
     });
 
     it('uses primary color for unmapped quality', () => {
       renderWithProviders(<ObservableProperty {...observablePropertyProps} quality="unknown" />);
 
       const link = screen.getByTestId('link');
-      expect(link).toHaveClass('btn-primary');
+      expect(link).toHaveClass('btn-quality-unknown');
     });
 
     it('includes icon span element', () => {
