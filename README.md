@@ -6,7 +6,7 @@ compatible observations REST API.
 
 # Requirements #
 
-Node.js version 22
+Node.js version 24
 
 # Setup #
 
