@@ -37,6 +37,17 @@ in `.env` (or as build args, see `Dockerfile`):
 
 Run `pnpm start`
 
+## Commit messages ##
+
+`pnpm install` sets up a Husky `commit-msg` hook that validates messages with
+commitlint. Use Conventional Commits, for example `fix: correct unit status`.
+Scopes are optional. Allowed types are `build`, `chore`, `ci`, `deps`, `docs`,
+`feat`, `fix`, `perf`, `refactor`, `revert`, `style`, and `test`.
+
+Keep the header and body lines at most 72 characters long, and separate the
+body from the header with a blank line. Commits signed off by `dependabot[bot]`
+or `sol-office-file-synchronization[bot]` are ignored.
+
 ## Development with Docker ##
 
 Build and start the development container with:
