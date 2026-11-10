@@ -38,7 +38,12 @@ module.exports = {
     })
   ],
   devServer: {
-    static: './src/',
+    static: {
+      directory: './src/',
+      watch: {
+        ignored: /\.(?:[jt]sx?|css|s[ac]ss|less|styl)$/
+      }
+    },
     historyApiFallback: true,
     hot: true,
     port: defaultSettings.port,
