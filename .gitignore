@@ -17,6 +17,7 @@ coverage
 .grunt
 
 .env
+.env*.local
 
 # node-waf configuration
 .lock-wscript

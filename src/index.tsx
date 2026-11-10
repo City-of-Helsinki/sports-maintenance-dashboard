@@ -17,6 +17,7 @@ import rootReducer from './reducers/index';
 import AppRoutes from './components/AppRoutes';
 
 import moment from 'moment';
+import 'moment/locale/fi';
 
 // Extend Window interface for Redux DevTools
 declare global {

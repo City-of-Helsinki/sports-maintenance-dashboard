@@ -10,8 +10,11 @@ Node.js version 24
 
 # Setup #
 
-Copy .env.example to .env and edit the API_URL variable to
-point to the correct API root or use the API_URL environment variable.
+Optionally copy `.env.example` to `.env` and edit `API_URL` to point to the
+correct API root, or set the `API_URL` environment variable. Development uses
+`.env.example` defaults; production uses `.env.defaults`. Vite also loads
+mode-specific files such as `.env.production`. Process environment variables
+take precedence over files.
 
 Run `pnpm install`
 
@@ -36,6 +39,26 @@ in `.env` (or as build args, see `Dockerfile`):
 # Development #
 
 Run `pnpm start`
+
+The Vite development server listens on http://localhost:8001 and supports
+React Fast Refresh. It selects the next available port if 8001 is occupied.
+
+| Command | Description |
+|---------|-------------|
+| `pnpm start` / `pnpm serve` | Start the development server |
+| `pnpm build` / `pnpm dist` | Build production assets into `dist` |
+| `pnpm serve:dist` | Preview the production build locally |
+| `pnpm typecheck` | Check application, test, and Vite configuration types |
+| `pnpm test` | Run Jest tests and ESLint |
+
+The root `index.html` is the application entry point. Vite generates references
+to content-hashed JavaScript, CSS, and font assets. Files in `public` are copied
+without renaming. The obsolete application-cache manifest is no longer used.
+
+`API_URL` and the `REACT_APP_*` keys in the defaults files are public build-time
+settings. Existing variable names and Docker build arguments remain supported;
+no runtime environment injection is included. Never put secrets in these keys.
+Jest continues to use the existing Babel configuration.
 
 ## Commit messages ##
 
@@ -84,6 +107,7 @@ The build system automatically handles both JavaScript and TypeScript files.
 
 # Production build #
 
-1. Important! Update the version in `src/pulkka.appcache`
+1. Run `pnpm typecheck` and `pnpm test`.
 2. Run `pnpm build`.
-3. Deploy the contents of the dist folder as static files.
+3. Deploy the contents of `dist` as static files, with SPA routes falling back
+  to `index.html`. Cache hashed assets long-term, but revalidate `index.html`.
