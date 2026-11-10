@@ -35,11 +35,11 @@
   },
   "include": [
     "src/**/*",
-    "test/**/*"
+    "test/**/*",
+    "vite.config.mts"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "cfg"
+    "dist"
   ]
 }

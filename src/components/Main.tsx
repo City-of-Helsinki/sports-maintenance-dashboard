@@ -1,5 +1,5 @@
-require('normalize.css/normalize.css');
-require('styles/App.scss');
+import 'normalize.css/normalize.css';
+import 'styles/App.scss';
 
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
