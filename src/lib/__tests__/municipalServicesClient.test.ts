@@ -19,6 +19,28 @@ describe('municipalServicesClient utility functions', () => {
   });
 
   describe('fetchResource', () => {
+    it('uses the runtime API URL instead of the build-time URL', async () => {
+      window._env_ = { API_URL: 'https://runtime.example.com/api' };
+      try {
+        let runtimeClient: typeof municipalClient;
+        jest.isolateModules(() => {
+          runtimeClient = require('../municipalServicesClient');
+        });
+        const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
+        mockFetch.mockResolvedValue({
+          json: () => Promise.resolve({ results: [] })
+        } as Response);
+
+        await runtimeClient!.fetchResource('units', null, null, null, null, { preprocess: false });
+
+        expect(mockFetch).toHaveBeenCalledWith(
+          expect.stringContaining('https://runtime.example.com/api/units/')
+        );
+      } finally {
+        delete window._env_;
+      }
+    });
+
     it('should make correct API call and return processed data', async () => {
       const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
       const mockData = {

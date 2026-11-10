@@ -1,29 +1,35 @@
 import * as Sentry from '@sentry/react';
+import { getEnvValue } from '../util/envUtils';
 
 // Sentry stays off unless a DSN is configured for the current environment
-if (process.env.REACT_APP_SENTRY_DSN) {
+const dsn = getEnvValue('REACT_APP_SENTRY_DSN', process.env.REACT_APP_SENTRY_DSN);
+if (dsn) {
   Sentry.init({
-    dsn: process.env.REACT_APP_SENTRY_DSN,
-    environment: process.env.REACT_APP_SENTRY_ENVIRONMENT,
-    release: process.env.REACT_APP_SENTRY_RELEASE,
+    dsn,
+    environment: getEnvValue('REACT_APP_SENTRY_ENVIRONMENT', process.env.REACT_APP_SENTRY_ENVIRONMENT),
+    release: getEnvValue('REACT_APP_SENTRY_RELEASE', process.env.REACT_APP_SENTRY_RELEASE),
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.browserProfilingIntegration(),
       Sentry.replayIntegration()
     ],
-    tracesSampleRate: Number.parseFloat(process.env.REACT_APP_SENTRY_TRACES_SAMPLE_RATE || '0'),
+    tracesSampleRate: Number.parseFloat(
+      getEnvValue('REACT_APP_SENTRY_TRACES_SAMPLE_RATE', process.env.REACT_APP_SENTRY_TRACES_SAMPLE_RATE) || '0'
+    ),
     tracePropagationTargets: (
-      process.env.REACT_APP_SENTRY_TRACE_PROPAGATION_TARGETS || ''
+      getEnvValue('REACT_APP_SENTRY_TRACE_PROPAGATION_TARGETS', process.env.REACT_APP_SENTRY_TRACE_PROPAGATION_TARGETS) || ''
     )
       .split(',')
       .map((target) => target.trim())
       .filter(Boolean),
-    profilesSampleRate: Number.parseFloat(process.env.REACT_APP_SENTRY_PROFILES_SAMPLE_RATE || '0'),
+    profilesSampleRate: Number.parseFloat(
+      getEnvValue('REACT_APP_SENTRY_PROFILES_SAMPLE_RATE', process.env.REACT_APP_SENTRY_PROFILES_SAMPLE_RATE) || '0'
+    ),
     replaysSessionSampleRate: Number.parseFloat(
-      process.env.REACT_APP_SENTRY_REPLAYS_SESSION_SAMPLE_RATE || '0'
+      getEnvValue('REACT_APP_SENTRY_REPLAYS_SESSION_SAMPLE_RATE', process.env.REACT_APP_SENTRY_REPLAYS_SESSION_SAMPLE_RATE) || '0'
     ),
     replaysOnErrorSampleRate: Number.parseFloat(
-      process.env.REACT_APP_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE || '0'
+      getEnvValue('REACT_APP_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE', process.env.REACT_APP_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE) || '0'
     )
   });
 }

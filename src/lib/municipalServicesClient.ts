@@ -7,6 +7,7 @@ import find from 'lodash/find';
 import reduce from 'lodash/reduce';
 
 import { CredentialError } from '../util/error';
+import { getEnvValue } from '../util/envUtils';
 import {
   Unit,
   ObservableProperty,
@@ -15,7 +16,7 @@ import {
   UnitObservation
 } from '../types';
 
-const API_BASE_URL = process.env.API_URL;
+const API_BASE_URL = getEnvValue('API_URL', process.env.API_URL);
 
 // Type definitions
 interface FetchOptions {

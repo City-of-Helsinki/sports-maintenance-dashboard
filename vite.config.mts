@@ -1,23 +1,34 @@
-import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { parseEnv } from 'node:util';
 import react from '@vitejs/plugin-react';
-import { defineConfig, loadEnv, type UserConfig } from 'vite';
+import { defineConfig, type UserConfig } from 'vite';
+import { getPublicEnvironment, writeRuntimeEnvironment } from './scripts/update-runtime-env.mts';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const sourcePath = (path: string) => fileURLToPath(new URL(`./src/${path}`, import.meta.url));
 
 export default defineConfig(({ command, mode }): UserConfig => {
-  const defaultsFile = mode === 'production' ? '.env.defaults' : '.env.example';
-  const defaults = parseEnv(readFileSync(new URL(defaultsFile, import.meta.url), 'utf8'));
-  const environment = loadEnv(mode, root, '');
+  const environment = getPublicEnvironment(mode, root);
 
   return {
-    plugins: react(),
+    plugins: [
+      ...react(),
+      {
+        name: 'runtime-environment',
+        configureServer(server) {
+          server.middlewares.use('/env-config.js', (_request, response) => {
+            response.setHeader('Content-Type', 'application/javascript');
+            response.setHeader('Cache-Control', 'no-store');
+            response.end(`window._env_ = ${JSON.stringify(environment)};\n`);
+          });
+        },
+        buildStart() {
+          writeRuntimeEnvironment(environment, root);
+        }
+      }
+    ],
     define: Object.fromEntries(
-      Object.entries(defaults)
-        .filter(([key]) => key === 'API_URL' || /^REACT_APP_[A-Z0-9_]+$/.test(key))
-        .map(([key, fallback]) => [`process.env.${key}`, JSON.stringify(environment[key] ?? fallback)])
+      Object.entries(environment)
+        .map(([key, value]) => [`process.env.${key}`, JSON.stringify(value)])
     ),
     resolve: {
       alias: {

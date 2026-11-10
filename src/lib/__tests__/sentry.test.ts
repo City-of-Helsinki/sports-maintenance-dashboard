@@ -39,6 +39,36 @@ describe('sentry instrumentation', () => {
     process.env = ORIGINAL_ENV;
   });
 
+  afterEach(() => {
+    delete window._env_;
+  });
+
+  it('prefers runtime Sentry settings', () => {
+    process.env.REACT_APP_SENTRY_DSN = 'https://build@example.ingest.sentry.io/1';
+    window._env_ = {
+      REACT_APP_SENTRY_DSN: 'https://runtime@example.ingest.sentry.io/2',
+      REACT_APP_SENTRY_ENVIRONMENT: 'production',
+      REACT_APP_SENTRY_TRACES_SAMPLE_RATE: '0.25'
+    };
+
+    importSentryModule();
+
+    expect(mockInit).toHaveBeenCalledWith(expect.objectContaining({
+      dsn: 'https://runtime@example.ingest.sentry.io/2',
+      environment: 'production',
+      tracesSampleRate: 0.25
+    }));
+  });
+
+  it('allows an empty runtime DSN to disable build-time Sentry', () => {
+    process.env.REACT_APP_SENTRY_DSN = 'https://build@example.ingest.sentry.io/1';
+    window._env_ = { REACT_APP_SENTRY_DSN: '' };
+
+    importSentryModule();
+
+    expect(mockInit).not.toHaveBeenCalled();
+  });
+
   it('does not initialize Sentry when no DSN is configured', () => {
     importSentryModule();
 

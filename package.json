@@ -11,6 +11,7 @@
     "build": "pnpm dist",
     "clean": "find dist -mindepth 1 -not -name 'README.md' -delete 2>/dev/null || true",
     "dist": "vite build",
+    "update-runtime-env": "node scripts/update-runtime-env.mts",
     "lint": "eslint ./src",
     "typecheck": "tsc --noEmit",
     "posttest": "pnpm run lint",

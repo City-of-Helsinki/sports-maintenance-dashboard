@@ -23,7 +23,7 @@ Run `pnpm install`
 The app reports errors, traces, profiles and (optionally) session replays to
 [Sentry](https://city-of-helsinki.sentry.io/). It stays disabled unless `REACT_APP_SENTRY_DSN`
 is set, so no configuration is required for local development. To enable it, set these variables
-in `.env` (or as build args, see `Dockerfile`):
+in `.env` or as container environment variables:
 
 - `REACT_APP_SENTRY_DSN` — Sentry project DSN; leave empty to keep Sentry off.
 - `REACT_APP_SENTRY_ENVIRONMENT` — e.g. `local`, `review`, `development`, `testing`, `staging`,
@@ -48,6 +48,7 @@ React Fast Refresh. It selects the next available port if 8001 is occupied.
 | `pnpm start` / `pnpm serve` | Start the development server |
 | `pnpm build` / `pnpm dist` | Build production assets into `dist` |
 | `pnpm serve:dist` | Preview the production build locally |
+| `pnpm update-runtime-env --mode production` | Generate public browser configuration manually |
 | `pnpm typecheck` | Check application, test, and Vite configuration types |
 | `pnpm test` | Run Jest tests and ESLint |
 
@@ -55,10 +56,13 @@ The root `index.html` is the application entry point. Vite generates references
 to content-hashed JavaScript, CSS, and font assets. Files in `public` are copied
 without renaming. The obsolete application-cache manifest is no longer used.
 
-`API_URL` and the `REACT_APP_*` keys in the defaults files are public build-time
-settings. Existing variable names and Docker build arguments remain supported;
-no runtime environment injection is included. Never put secrets in these keys.
-Jest continues to use the existing Babel configuration.
+`API_URL` and the `REACT_APP_*` keys listed in `.env.example` are public browser
+settings. Vite generates `public/env-config.js` and `.env.runtime` at startup
+and build time using the selected mode. This also works for custom Vite modes.
+The browser loads `/env-config.js` before the application, and runtime values
+take precedence over the existing build-time fallbacks. Restart the dev server
+after changing environment settings. Never put secrets in these keys; unlisted
+keys are excluded. Jest continues to use the existing Babel configuration.
 
 ## Commit messages ##
 
@@ -81,6 +85,45 @@ docker compose up --build
 
 Open http://localhost:8001 in your browser. Stop the container with `Ctrl+C`,
 or run `docker compose down` from another terminal.
+
+Configure the development API and Sentry settings in the bind-mounted `.env`
+file or as Compose environment variables. Without overrides, Vite uses the
+defaults from `.env.example`.
+
+## Production with Docker ##
+
+The Dockerfile uses the shared Helsinki Node.js builder and Nginx SPA images.
+Build once and supply public settings when starting the container:
+
+```sh
+docker build --target production -t sports-maintenance-dashboard .
+docker run --rm --env-file .env -p 8080:8080 sports-maintenance-dashboard
+```
+
+Open http://localhost:8080. Image defaults come from `.env.example` and
+`.env.defaults`; Docker configuration build arguments are not used. The shared
+Nginx entrypoint regenerates `/env-config.js` at container startup, using
+environment variables over those defaults. The application runs
+as a non-root user and provides `/healthz` and versioned `/readiness` endpoints.
+Runtime configuration is served without caching; content-hashed assets retain
+the shared image's immutable caching.
+
+Set `REACT_APP_SENTRY_RELEASE` at runtime for browser error tracking and
+`APP_RELEASE` for the release reported by `/readiness`. An optional
+`docker build --build-arg REACT_APP_SENTRY_RELEASE=<commit-sha> ...` sets the
+image's default `APP_RELEASE`; a runtime `APP_RELEASE` overrides it. This
+metadata argument does not configure the browser's Sentry release. The base
+image reads the application version from `package.json`.
+
+Deployments that currently pass API or Sentry settings as Docker build
+arguments must move them to runtime environment variables or ConfigMaps.
+Shared Azure pipeline settings are maintained in `ulkoliikuntakartta-pipelines`;
+the commented examples in this repository show the runtime configuration.
+
+Only keys listed in `.env.example` are injected. The shared startup helper
+treats empty environment variables as missing and falls back to image defaults;
+leave the DSN empty in image defaults when Sentry must remain disabled. The
+browser lookup itself preserves explicitly empty runtime values.
 
 ## TypeScript Support ##
 

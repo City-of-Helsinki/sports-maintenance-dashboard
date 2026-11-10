@@ -40,11 +40,12 @@ extends:
   # Filename in Azure DevOps Repository
   template: components/sports-maintenance-dashboard/pipelines/sports-maintenance-dashboard-dev.yml@ulkoliikuntakartta-pipelines
   # parameters:
-    # Application build arguments and config map values as key value pairs.
-    # Does not contain all buildArguments or configMap values, the rest located in ulkoliikuntakartta-pipelines
+    # Application runtime config map values as key value pairs.
+    # Does not contain all configMap values, the rest located in ulkoliikuntakartta-pipelines
     # The values here will override the values defined in the ulkoliikuntakartta-pipelines repository
-    # buildArgs:
-    #   DEBUG: 1
+    # configMap: # pod environment variables
+    #   API_URL: https://palvelukartta.api.test.hel.ninja/v2
+    #   APP_RELEASE: $(Build.SourceVersion)
     #   # Cloud Sentry (https://city-of-helsinki.sentry.io/), set per environment
     #   REACT_APP_SENTRY_DSN: https://...@city-of-helsinki.sentry.io/...
     #   REACT_APP_SENTRY_ENVIRONMENT: development
@@ -54,5 +55,3 @@ extends:
     #   REACT_APP_SENTRY_PROFILES_SAMPLE_RATE: 1
     #   REACT_APP_SENTRY_REPLAYS_SESSION_SAMPLE_RATE: 0
     #   REACT_APP_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE: 0
-    # configMap: # pod environment variables
-    #   DEBUG: 1
