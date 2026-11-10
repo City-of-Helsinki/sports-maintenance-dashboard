@@ -11,6 +11,7 @@ overrides:
   uuid: ">=11.1.1"
 
 allowBuilds:
+  '@parcel/watcher': false
   core-js: true
   core-js-pure: true
   unrs-resolver: true
