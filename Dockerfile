@@ -8,7 +8,7 @@ WORKDIR /app
 
 RUN yum update -y && yum install -y bzip2 && yum clean all
 
-RUN npm install --global pnpm@11.22.0
+RUN npm install --global pnpm@11.28.11
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
